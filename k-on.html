@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>轻音少女！ · 追番手账</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='18' height='18' rx='5' fill='%23EF9CB0'/%3E%3Crect x='6' y='6' width='12' height='12' rx='2' fill='%23fff'/%3E%3Cpath d='M8.5 9.5h7M8.5 12.5h7M8.5 15.5h4' stroke='%23EF9CB0' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* ===== 基础 ===== */
+:root{
+  --bg:#FDF8F1;
+  --bg-soft:#F8EFE4;
+  --ink:#4B3B3A;
+  --ink-soft:#7A6A66;
+  --pink:#EF9CB0;
+  --pink-deep:#E0789A;
+  --blue:#7FA8D9;
+  --yellow:#F4C76B;
+  --card:#FFFFFF;
+  --line:#EFE2D4;
+  --radius:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+a,button,.cast,.g-item,.anime-tile{outline:none}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--ink);
+  line-height:1.75;font-size:15px;
+}
+.serif{font-family:"Noto Serif SC",Georgia,"Songti SC",serif}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+
+/* ===== 顶部导航 ===== */
+.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(253,248,241,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{display:flex;align-items:center;gap:10px;font-family:"Noto Serif SC",serif;font-weight:900;font-size:19px}
+.brand .logo{width:30px;height:30px;flex:none}
+.brand .logo .pin{fill:var(--pink-deep)}
+.nav-links{display:flex;gap:22px;font-size:14px;font-weight:500;color:var(--ink-soft)}
+.nav-links a:hover{color:var(--pink-deep)}
+
+/* ===== Hero ===== */
+.hero{
+  position:relative;min-height:78vh;display:flex;align-items:center;
+  overflow:hidden;color:#fff;
+}
+.hero-bg-track{
+  position:absolute;inset:0;display:flex;align-items:center;
+  width:210vw;animation:hero-scroll 48s linear infinite;
+  will-change:transform;
+}
+.hero-panel{
+  flex:none;overflow:hidden;margin-right:-2vw;
+  box-shadow:0 16px 34px rgba(0,0,0,.32);
+  outline:1px solid rgba(255,255,255,.14);
+}
+.hero-panel img{
+  display:block;width:100%;height:100%;object-fit:cover;
+  filter:saturate(1.06);
+}
+.hero-panel.hp1{width:20vw;height:80%;align-self:flex-start;transform:rotate(-2.5deg)}
+.hero-panel.hp2{width:24vw;height:66%;align-self:flex-end;transform:rotate(2deg)}
+.hero-panel.hp3{width:26vw;height:56%;align-self:center;transform:rotate(-1.5deg)}
+.hero-panel.hp4{width:25vw;height:64%;align-self:flex-start;transform:rotate(1.5deg)}
+.hero-panel.hp5{width:20vw;height:82%;align-self:flex-end;transform:rotate(-2deg)}
+@keyframes hero-scroll{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-105vw)}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-bg-track{animation:none}
+}
+.hero h1 sup{
+  font-size:.5em;vertical-align:super;letter-spacing:.04em;margin-left:.06em;
+  text-shadow:0 3px 18px rgba(0,0,0,.35);
+}
+.hero::before{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:150px;z-index:1;
+  background:linear-gradient(180deg,rgba(253,248,241,0) 0%,rgba(253,248,241,.72) 82%,var(--bg) 100%);
+}
+.hero::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(52,38,44,.62) 0%,rgba(52,38,44,.4) 30%,rgba(52,38,44,.16) 52%,rgba(52,38,44,.38) 78%,rgba(52,38,44,.62) 100%);
+}
+.hero .wrap{position:relative;z-index:2;text-align:center}
+.hero .kicker{
+  display:inline-block;letter-spacing:.35em;font-size:13px;
+  color:#FFE3EA;margin-bottom:16px;
+}
+.hero h1{
+  font-family:"Noto Serif SC",serif;font-size:clamp(44px,8vw,84px);
+  font-weight:900;line-height:1.15;letter-spacing:.08em;
+  text-shadow:0 3px 18px rgba(0,0,0,.35);
+}
+.hero .sub{
+  margin:18px auto 0;max-width:560px;font-size:15px;color:#FFF3F5;
+  text-shadow:0 1px 8px rgba(0,0,0,.4);
+}
+.hero .scroll-hint{
+  margin-top:34px;font-size:13px;letter-spacing:.2em;color:#FFDDE4;opacity:.9;
+}
+.hero .scroll-hint svg{display:inline-block;vertical-align:-2px;margin-left:6px;animation:bounce 1.8s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* ===== 章节通用 ===== */
+section{padding:72px 0}
+.section-head{margin-bottom:34px;max-width:760px}
+.section-head .eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;letter-spacing:.25em;color:var(--pink-deep);font-weight:700;
+}
+.section-head .eyebrow::before{content:"";width:26px;height:2px;background:var(--pink);border-radius:2px}
+.section-head h2{
+  font-family:"Noto Serif SC",serif;font-size:clamp(26px,3.6vw,36px);
+  font-weight:900;margin:10px 0 8px;
+}
+.section-head p{color:var(--ink-soft);font-size:14.5px}
+
+/* ===== 追番记录 ===== */
+.records{background:var(--bg-soft)}
+.anime-card{
+  display:grid;grid-template-columns:340px 1fr;gap:28px;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;box-shadow:0 8px 26px rgba(120,90,70,.08);
+}
+.anime-card .cover{position:relative;aspect-ratio:4/3;overflow:hidden}
+.anime-card .cover img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.anime-card:hover .cover img{transform:scale(1.04)}
+.anime-card .cover::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(0deg,rgba(40,28,30,.32),transparent 42%);
+}
+.status-badge{
+  position:absolute;left:16px;bottom:14px;z-index:2;
+  background:var(--pink);color:#fff;font-size:12.5px;font-weight:700;
+  padding:4px 14px;border-radius:999px;letter-spacing:.08em;
+  box-shadow:0 3px 10px rgba(0,0,0,.18);
+}
+.anime-info{padding:26px 30px 28px 0}
+.anime-info .title-line{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.anime-info h3{
+  font-family:"Noto Serif SC",serif;font-size:27px;font-weight:900;
+}
+.anime-info .jp{color:var(--ink-soft);font-size:13px;letter-spacing:.06em}
+.meta-line{
+  display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 14px;
+}
+.chip{
+  font-size:12.5px;color:#5E504B;background:var(--bg-soft);
+  border:1px solid var(--line);border-radius:8px;padding:3px 11px;
+}
+.chip b{color:var(--pink-deep);font-weight:700}
+.anime-info .desc{color:#5A4C48;font-size:14.5px;margin-bottom:12px}
+.note{
+  border-left:3px solid var(--pink);background:#FDF3F5;
+  padding:10px 16px;border-radius:0 10px 10px 0;font-size:13.5px;color:#6B4A52;
+}
+.note .who{font-weight:700;color:var(--pink-deep)}
+
+/* ===== 成员 ===== */
+.cast-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:6px;
+}
+.cast-grid.cg6{grid-template-columns:repeat(3,1fr)}
+.cast{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px 14px 18px;text-align:center;transition:transform .25s ease, box-shadow .25s ease;
+}
+.cast:hover{transform:translateY(-4px);box-shadow:0 10px 22px rgba(120,90,70,.12)}
+.cast .role-icon{
+  width:64px;height:64px;margin:0 auto 12px;border-radius:50%;
+  background:var(--card);display:flex;align-items:center;justify-content:center;
+  overflow:hidden;border:2px solid var(--pink);
+  box-shadow:0 4px 12px rgba(224,120,154,.28);
+}
+.cast .role-icon img{width:100%;height:100%;object-fit:cover}
+.cast h4{font-family:"Noto Serif SC",serif;font-size:17px;font-weight:900}
+.cast .romaji{font-size:12px;color:var(--ink-soft);margin:2px 0 8px;letter-spacing:.05em}
+.cast .duty{font-size:12.5px;font-weight:700;color:var(--pink-deep);margin-bottom:6px}
+.cast p{font-size:12.5px;color:var(--ink-soft);line-height:1.6}
+
+/* ===== 画廊 ===== */
+.gallery-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.g-item{
+  position:relative;border-radius:14px;overflow:hidden;cursor:zoom-in;
+  border:1px solid var(--line);background:var(--card);aspect-ratio:4/3;
+}
+.g-item img{width:100%;height:100%;object-fit:cover;transition:transform .45s ease}
+.g-item:hover img{transform:scale(1.05)}
+.g-item figcaption{
+  position:absolute;left:0;right:0;bottom:0;padding:26px 14px 10px;
+  background:linear-gradient(0deg,rgba(40,28,30,.55),transparent);
+  color:#fff;font-size:12.5px;text-align:left;opacity:0;transition:opacity .3s ease;
+}
+.g-item:hover figcaption{opacity:1}
+
+/* ===== Lightbox ===== */
+.lightbox{
+  position:fixed;inset:0;z-index:100;
+  background:rgba(20,14,16,0);
+  display:flex;align-items:center;justify-content:center;padding:40px;
+  visibility:hidden;opacity:0;
+  transition:opacity .32s ease, visibility .32s, background .32s ease;
+}
+.lightbox.open{visibility:visible;opacity:1;background:rgba(20,14,16,.94)}
+.lightbox img{
+  max-width:92vw;max-height:84vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.5);
+  transform:scale(.08);opacity:0;
+  transition:transform .36s cubic-bezier(.3,.75,.2,1), opacity .28s ease;
+}
+.lightbox.open img{transform:scale(1);opacity:1}
+.lb-caption{
+  position:absolute;bottom:22px;left:0;right:0;text-align:center;color:#EAD9DD;font-size:13px;letter-spacing:.04em;
+  opacity:0;transition:opacity .3s ease .14s;
+}
+.lightbox.open .lb-caption{opacity:1}
+.lb-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  background:rgba(255,255,255,.08);border:none;color:#fff;cursor:pointer;
+  width:48px;height:48px;border-radius:50%;font-size:22px;display:flex;align-items:center;justify-content:center;
+  transition:background .2s ease, opacity .3s ease .14s;opacity:0;
+}
+.lightbox.open .lb-nav{opacity:1}
+.lb-nav:hover{background:rgba(255,255,255,.2)}
+.lb-prev{left:20px}.lb-next{right:20px}
+
+/* ===== 角色详情弹窗 ===== */
+.cast{cursor:pointer}
+.cast .open-hint{
+  display:inline-flex;align-items:center;gap:5px;
+  margin-top:14px;background:var(--pink);color:#fff;
+  font-size:13px;font-weight:700;letter-spacing:.06em;
+  padding:8px 18px;border-radius:999px;
+  box-shadow:0 8px 18px rgba(244,114,146,.32);
+  transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.cast:hover .open-hint{transform:translateY(-2px);box-shadow:0 12px 24px rgba(244,114,146,.45);background:#E0688C}
+.cast .open-hint::after{content:"→";margin-left:3px}
+
+/* ===== 点选引导：列表可点 + 角色可点 ===== */
+.tap-hint{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:max-content;max-width:100%;margin:0 auto 30px;
+  background:var(--pink);color:#fff;
+  padding:11px 24px;border-radius:999px;
+  font-size:14.5px;font-weight:700;letter-spacing:.05em;
+  box-shadow:0 12px 26px rgba(244,114,146,.38);
+  animation:hint-bob 2.4s ease-in-out infinite;
+}
+.tap-hint svg{flex:none;animation:hint-wave 2.4s ease-in-out infinite}
+@keyframes hint-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes hint-wave{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.anime-tile::after{
+  content:"点我进入 →";
+  position:absolute;left:50%;top:50%;z-index:3;
+  transform:translate(-50%,-50%) scale(.82);
+  background:rgba(255,255,255,.94);color:#C0506E;
+  font-size:13.5px;font-weight:800;letter-spacing:.05em;
+  padding:9px 20px;border-radius:999px;
+  box-shadow:0 10px 24px rgba(0,0,0,.28);
+  opacity:0;transition:opacity .28s ease, transform .28s ease;
+  pointer-events:none;
+}
+.anime-tile:hover::after{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.char-modal{
+  position:fixed;inset:0;z-index:110;
+  background:rgba(20,14,16,0);
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  visibility:hidden;opacity:0;
+  transition:opacity .32s ease, visibility .32s, background .32s ease;
+}
+.char-modal.open{visibility:visible;opacity:1;background:rgba(20,14,16,.9)}
+.char-modal .sheet{
+  background:var(--bg);border-radius:20px;max-width:880px;width:100%;
+  max-height:86vh;overflow:auto;display:grid;grid-template-columns:300px 1fr;
+  box-shadow:0 30px 80px rgba(0,0,0,.45);
+  transform:scale(.1);opacity:0;
+  transition:transform .36s cubic-bezier(.3,.75,.2,1), opacity .28s ease;
+}
+.char-modal.open .sheet{transform:scale(1);opacity:1}
+.char-modal .cimg{position:relative;overflow:hidden;min-height:440px}
+.char-modal .cimg img{width:100%;height:100%;object-fit:cover}
+.char-modal .cinfo{padding:28px 30px 30px}
+.char-modal .cname{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.char-modal .cname h3{font-family:"Noto Serif SC",serif;font-size:26px;font-weight:900}
+.char-modal .cname .cjp{color:var(--ink-soft);font-size:13px;letter-spacing:.06em}
+.char-modal .ctags{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 16px}
+.citems{list-style:none}
+.citems li{
+  display:flex;gap:14px;padding:9px 0;border-bottom:1px dashed var(--line);
+  font-size:14px;line-height:1.7;
+}
+.citems li:last-child{border-bottom:none}
+.citems .k{flex:none;width:64px;color:var(--pink-deep);font-weight:700;font-size:13.5px}
+.citems .v{color:#574A46}
+
+/* ===== 返回顶部 ===== */
+.back-top{
+  position:fixed;right:22px;bottom:26px;z-index:60;
+  width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;
+  background:var(--pink);color:#fff;box-shadow:0 8px 22px rgba(224,120,154,.4);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transform:translateY(10px);
+  transition:opacity .3s ease, transform .3s ease, visibility .3s;
+}
+.back-top.show{opacity:1;visibility:visible;transform:translateY(0)}
+.back-top:hover{background:var(--pink-deep)}
+
+/* ===== 番列表（一级页） ===== */
+.anime-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;
+}
+.anime-tile{
+  position:relative;display:block;border-radius:16px;overflow:hidden;
+  aspect-ratio:4/3;border:1px solid var(--line);background:var(--card);
+  box-shadow:0 6px 18px rgba(120,90,70,.1);
+  transition:transform .3s ease, box-shadow .3s ease;
+}
+.anime-tile:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(120,90,70,.18)}
+.anime-tile img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform .4s ease;
+}
+.anime-tile:hover img{transform:scale(1.06)}
+.anime-tile .tile-mask{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(40,28,30,0) 38%,rgba(40,28,30,.62) 100%);
+}
+.anime-tile .tile-text{position:absolute;left:0;right:0;bottom:0;padding:16px 16px 14px;color:#fff}
+.anime-tile .tile-text h3{
+  font-family:"Noto Serif SC",serif;font-size:21px;font-weight:900;
+  text-shadow:0 2px 10px rgba(0,0,0,.55);
+}
+.anime-tile .tile-text .tjp{
+  font-size:12px;color:rgba(255,255,255,.88);margin:3px 0 9px;
+  text-shadow:0 1px 6px rgba(0,0,0,.5);
+}
+.anime-tile .tile-status{
+  display:inline-block;background:var(--pink);color:#fff;font-size:11.5px;font-weight:700;
+  padding:2px 10px;border-radius:999px;letter-spacing:.06em;
+}
+.anime-tile.placeholder{
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg-soft);border-style:dashed;border-color:#DCCDBE;
+  color:var(--ink-soft);font-size:14px;letter-spacing:.15em;
+  box-shadow:none;
+}
+
+/* ===== 二级页视图 ===== */
+.view-anime{display:none;position:relative}
+.view-anime::before{
+  content:"";position:fixed;inset:0;z-index:-1;
+  background-size:cover;background-position:center;
+  filter:saturate(.78) brightness(.62);
+}
+.view-anime.bg-kon::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FKo2bs1U1odVt7x8d48c04vZntf");
+}
+.view-anime.bg-chuuni::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DUuZbzgAooEGdKxQBCPcGiuXnik");
+}
+/* SLICE1-CSS-BEGIN */
+.view-anime.bg-charlotte::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Cf0ibI4cjo5k3cxGBIuc6Ltande");
+}
+.view-anime.bg-cells::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MEnib7N7XoArBoxbRJtcs8D4nFg");
+}
+.view-anime.bg-hanako::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TfhLbFzNuo9AUYxZqIqcfzjxntg");
+}
+.view-anime.bg-spy::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JyXdbvMjlo2rcRxV3p2cPgcqndf");
+}
+/* SLICE1-CSS-END */
+/* SLICE2-CSS-BEGIN */
+.view-anime.bg-eva::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YFZsbWbBwoddB4xeithcVJKWntc");
+}
+.view-anime.bg-kimetsu::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/UfzBbASXAo2XM4x7ZpBcJ64jnGf");
+}
+.view-anime.bg-anohana::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/V48bbVb5Honecdxdu9McqtJjnEC");
+}
+.view-anime.bg-initiald::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/APE3bPOgCoay1RxdDu9cXhPZn4f");
+}
+/* SLICE2-CSS-END */
+/* SLICE3-CSS-BEGIN */
+.view-anime.bg-clannad::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Uu0ubSI3OoOhCjxiYpycu84Jncg");
+}
+.view-anime.bg-railgun::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/N1XLbpVDWo7mIxxpBAWclB4Ynrc");
+}
+.view-anime.bg-girlslt::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/VF96butA8oTV1dxkNFNcD9lbnAb");
+}
+.view-anime.bg-shigatsu::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/INDGbFpXFovAKgxAce0cJS5OnFh");
+}
+/* SLICE3-CSS-END */
+/* SLICE4-CSS-BEGIN */
+.view-anime.bg-wataten::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YFdZbJoNIoN8ynxKV5FcQuP7nJh");
+}
+.view-anime.bg-violet::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/D4yYb1dgXow5fmxkTNwcetenn7g");
+}
+.view-anime.bg-henneko::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ODoHbyUEhoVrYyx6n64cNCgxnAK");
+}
+.view-anime.bg-chikyu::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/I0DXb6gQsoEyImxAE1ncDQB1nBb");
+}
+/* SLICE4-CSS-END */
+.view-anime::after{
+  content:"";position:fixed;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(32,24,28,.22) 0%,rgba(32,24,28,.4) 55%,rgba(32,24,28,.52) 100%);
+}
+.view-anime .records{background:transparent}
+.view-anime .gallery-sec{background:transparent}
+.view-anime .cast-sec{background:transparent}
+/* 图片收藏区顶部用渐变过渡：从暗色底图虚化渐变到浅色图集区，边界不突兀 */
+.view-anime .gallery-sec{background:linear-gradient(180deg,rgba(248,239,228,0) 0%,rgba(248,239,228,.95) 150px)}
+.view-anime .gallery-sec .section-head h2{color:var(--ink)}
+.view-anime .gallery-sec .section-head p{color:var(--ink-soft)}
+.view-anime .gallery-sec .section-head .eyebrow{color:var(--pink-deep)}
+.view-anime .gallery-sec .section-head .eyebrow::before{background:var(--pink)}
+.view-anime .section-head h2{color:#FFF6EF}
+.view-anime .section-head p{color:rgba(255,244,236,.85)}
+.view-anime .section-head .eyebrow{color:#FFD9E3}
+.view-anime .section-head .eyebrow::before{background:var(--pink)}
+.backbar{
+  position:sticky;top:60px;z-index:40;
+  background:rgba(253,248,241,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.backbar .wrap{display:flex;align-items:center;gap:12px;height:52px}
+.backbar a{
+  display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--pink-deep);
+  font-size:14px;border:1.5px solid var(--pink);background:#fff;border-radius:999px;
+  padding:5px 14px;box-shadow:0 2px 8px rgba(224,120,154,.18);
+  transition:background .2s ease, color .2s ease, box-shadow .2s ease;
+}
+.backbar a:hover{background:var(--pink);color:#fff;box-shadow:0 4px 14px rgba(224,120,154,.35)}
+.backbar .bb-title{font-family:"Noto Serif SC",serif;font-weight:900;font-size:16px;color:var(--ink)}
+
+/* ===== 视图过渡动画 ===== */
+.vt-overlay{
+  position:fixed;z-index:90;overflow:hidden;border-radius:16px;background:#2E2326;
+  transition:left .54s cubic-bezier(.3,.75,.2,1), top .54s cubic-bezier(.3,.75,.2,1),
+    width .54s cubic-bezier(.3,.75,.2,1), height .54s cubic-bezier(.3,.75,.2,1),
+    border-radius .54s cubic-bezier(.3,.75,.2,1), opacity .4s ease;
+  will-change:left,top,width,height;
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
+}
+.vt-overlay img{width:100%;height:100%;object-fit:cover;opacity:.5}
+.vt-overlay.vt-expand{left:0 !important;top:0 !important;width:100vw !important;height:100vh !important;border-radius:0}
+.vt-mask{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(40,28,30,.08) 0%,rgba(40,28,30,.55) 100%);
+}
+.vt-title{
+  position:absolute;left:0;right:0;top:20px;text-align:center;color:#fff;
+  font-family:"Noto Serif SC",serif;font-weight:900;font-size:clamp(24px,4vw,34px);
+  letter-spacing:.08em;text-shadow:0 2px 14px rgba(0,0,0,.55);
+  opacity:0;transform:translateY(14px);
+  transition:opacity .4s ease .18s, transform .4s ease .18s;
+}
+.vt-title-show{opacity:1;transform:translateY(0)}
+.vt-overlay.vt-fade{opacity:0}
+
+/* ===== 底部 ===== */
+footer{border-top:1px solid var(--line);padding:34px 0 42px;text-align:center;color:var(--ink-soft);font-size:13px}
+footer .f-brand{font-family:"Noto Serif SC",serif;font-weight:900;color:var(--ink);font-size:16px;margin-bottom:6px}
+footer .hint{margin-top:14px;color:#A08E87;font-size:12.5px}
+
+/* ===== 响应式 ===== */
+@media (max-width:960px){
+  .cast-grid{grid-template-columns:repeat(3,1fr)}
+  .anime-card{grid-template-columns:280px 1fr}
+}
+@media (max-width:760px){
+  section{padding:54px 0}
+  .nav-links{gap:14px;font-size:13px}
+  .anime-card{grid-template-columns:1fr}
+  .anime-card .cover{aspect-ratio:16/10}
+  .anime-info{padding:20px 22px 24px}
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
+  .cast-grid{grid-template-columns:repeat(2,1fr)}
+  .chip{font-size:13px}
+  .cast p{font-size:14px}
+  .lightbox{padding:18px}
+  .lb-nav{width:40px;height:40px}
+  .char-modal .sheet{grid-template-columns:1fr}
+  .char-modal .cimg{min-height:0;height:36vh}
+  .char-modal .cinfo{padding:20px 20px 24px}
+}
+/* 三级详情页：本页没有 hash 路由，直接展示详情块 */
+.view-anime{display:block}
+</style>
+</head>
+<body>
+<!-- ===== 顶部导航 ===== -->
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <svg class="logo" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="#EF9CB0"/><rect x="6" y="6" width="12" height="12" rx="2" fill="#fff"/><path d="M8.5 9.5h7M8.5 12.5h7M8.5 15.5h4" stroke="#EF9CB0" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Three 的小窝
+    </a>
+    <div class="nav-links">
+      <a href="bilibili.html">追番手账</a>
+    </div>
+  </div>
+</nav>
+<div id="view-anime-kon" class="view-anime bg-kon">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="index.html"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>小窝</a>
+      <a href="bilibili.html"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">轻音少女！</span>
+    </div>
+  </div>
+
+<!-- ===== 追番记录 ===== -->
+<section class="records" id="records">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WATCH LOG</span>
+      <h2>追番记录</h2>
+      <p>每一部都是完整看完才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+    </div>
+
+    <!-- 单部番卡片模板：往后新增动画，复制这一个 .anime-card 结构，替换封面图与文字即可 -->
+    <article class="anime-card">
+      <div class="cover">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FKo2bs1U1odVt7x8d48c04vZntf" alt="轻音少女 放学后的练习室">
+        <span class="status-badge">已看完</span>
+      </div>
+      <div class="anime-info">
+        <div class="title-line">
+          <h3>轻音少女！</h3>
+          <span class="jp">けいおん！ K-ON!</span>
+        </div>
+        <div class="meta-line">
+          <span class="chip">首播 <b>2009</b></span>
+          <span class="chip">制作 <b>京都动画</b></span>
+          <span class="chip">类型 <b>日常 / 校园 / 音乐</b></span>
+          <span class="chip">追完 <b>TV 两季 + 剧场版</b></span>
+        </div>
+        <p class="desc">改编自かきふらい连载于芳文社的四格漫画。樱丘高中轻音部眼看就要因缺人废部，天然呆少女平泽唯一句"轻音部是什么意思呀"闯了进来，于是四位一年级生加上后来加入的后辈中野梓，组成了放学后喝茶聊天、顺带练练乐队的放课后Tea Time。喝茶、甜品、Live，还有一起度过的每一个平凡又闪亮的放学后。</p>
+        <div class="note"><span class="who">我的短评：</span>一部让人看完想把吉他捡起来的动画。京都动画的作画和配乐把"青春"两个字揉得又软又亮，最后一集和剧场版每次看都会眼眶发热。想改自己的短评随时告诉我。</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ===== 轻音部成员 ===== -->
+<section class="cast-sec" id="cast">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">HO-KAGO TEA TIME</span>
+      <h2>樱丘高中 · 轻音部</h2>
+      <p>五个人，四件乐器，一间部室，和数不清的纸杯蛋糕。</p>
+    </div>
+    <div class="cast-grid">
+      <div class="cast" data-char="yui">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Mc4gbZWaSoh7eUxgKndcUedvnue" alt="平泽唯 Q版头像"></div>
+        <h4>平泽唯</h4><div class="romaji">Yui Hirasawa</div>
+        <div class="duty">吉他 · 主唱</div>
+        <p>天然呆担当，为了一口蛋糕什么都能做。轻音部的起点。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="mio">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/IMgybHKPvomvgXxIkoucGElmnKf" alt="秋山澪 Q版头像"></div>
+        <h4>秋山澪</h4><div class="romaji">Mio Akiyama</div>
+        <div class="duty">贝斯 · 词曲</div>
+        <p>怕鬼怕高、外冷内热的贝斯手，认真起来是全队的定心丸。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="ritsu">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Tg2zb1OI9oHztVxuRdDcUEs8nag" alt="田井中律 Q版头像"></div>
+        <h4>田井中律</h4><div class="romaji">Ritsu Tainaka</div>
+        <div class="duty">鼓手 · 部长</div>
+        <p>元气满满的轻音部部长，负责把大家（尤其澪）逗得团团转。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="mugi">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DjK8by1drob0H5xHlI6cnGJMnRf" alt="琴吹紬 Q版头像"></div>
+        <h4>琴吹紬</h4><div class="romaji">Tsumugi Kotobuki</div>
+        <div class="duty">键盘</div>
+        <p>温柔的大小姐，家里有游泳池和别墅，梦想却是当个普通高中生。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="azusa">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/J5kEbtLyvozG0FxFV8BcNPSanlb" alt="中野梓 Q版头像"></div>
+        <h4>中野梓</h4><div class="romaji">Azusa Nakano</div>
+        <div class="duty">吉他 · 后辈</div>
+        <p>认真到会被前辈带偏节奏的后辈，全队唯一"正常"的人。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 图片收藏 ===== -->
+<section class="gallery-sec" id="gallery">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GALLERY</span>
+      <h2>图片收藏</h2>
+      <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AxfRb5w98ohayHxS2adccZfjn4d" alt="轻音少女 五人 · 蓝天合影"><figcaption>放学后的茶会 · 五人合影</figcaption></figure>
+      <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TrSZbScgvoO1Inxhv2ScbGM7nxd" alt="轻音少女 部室里的五人"><figcaption>部室墙上的"放课后Tea Time"</figcaption></figure>
+      <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/NnjpbCbjfoPPZfxnCJOcs0THnVg" alt="轻音少女 晴空下的四人"><figcaption>晴空下的日常</figcaption></figure>
+      <figure class="g-item" data-gi="3"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MhTSbd3tXoU9PGxiXtFcczqYn8G" alt="轻音少女 练习室演奏"><figcaption>"部员募集！"练习时间</figcaption></figure>
+      <figure class="g-item" data-gi="4"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JeAkb8fOPooZ3wxbcFbcKRIYn9c" alt="轻音少女 秋山澪 · 秋日湖畔"><figcaption>秋山澪 · 秋日湖畔</figcaption></figure>
+      <figure class="g-item" data-gi="5"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FKo2bs1U1odVt7x8d48c04vZntf" alt="轻音少女 放学后的练习室"><figcaption>放学后的练习室</figcaption></figure>
+      <figure class="g-item" data-gi="6"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/LAPVbDvL3oBIZaxbYRgcJjzenNd" alt="轻音少女 夏日树荫午休"><figcaption>夏日 · 树荫下的午休</figcaption></figure>
+      <figure class="g-item" data-gi="7"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EQqCbdZQwoW6wAxvLW2ci8sgnAc" alt="轻音少女 官方海报"><figcaption>官方海报 · "想悄悄传达给你"</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+<!-- ===== Lightbox ===== -->
+<div class="lightbox" id="lightbox" role="dialog" aria-label="图片放大查看">
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="上一张">&#8249;</button>
+  <img id="lbImg" src="" alt="">
+  <button class="lb-nav lb-next" id="lbNext" aria-label="下一张">&#8250;</button>
+  <div class="lb-caption" id="lbCaption"></div>
+</div>
+
+<!-- ===== 角色详情弹窗 ===== -->
+<div class="char-modal" id="charModal" role="dialog" aria-label="角色详情">
+  <div class="sheet">
+    <div class="cimg"><img id="cmImg" src="" alt=""></div>
+    <div class="cinfo">
+      <div class="cname"><h3 id="cmName"></h3><span class="cjp" id="cmJp"></span></div>
+      <div class="ctags" id="cmTags"></div>
+      <ul class="citems" id="cmItems"></ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 返回顶部 ===== -->
+<button class="back-top" id="backTop" aria-label="返回顶部">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M6 14l6-6 6 6"/></svg>
+</button>
+<!-- ===== 底部 ===== -->
+<footer>
+  <div class="wrap">
+    <div class="f-brand">Three 的小窝</div>
+    <div>轻音少女！ · 追番手账的一页</div>
+  </div>
+</footer>
+<script>
+/* 画廊图片列表（本页只有轻音一部番） */
+var GALLERIES = {
+  kon: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AxfRb5w98ohayHxS2adccZfjn4d", cap:"放学后的茶会 · 五人合影"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TrSZbScgvoO1Inxhv2ScbGM7nxd", cap:"部室墙上的“放课后Tea Time”"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/NnjpbCbjfoPPZfxnCJOcs0THnVg", cap:"晴空下的日常"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MhTSbd3tXoU9PGxiXtFcczqYn8G", cap:"“部员募集！”练习时间"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JeAkb8fOPooZ3wxbcFbcKRIYn9c", cap:"秋山澪 · 秋日湖畔"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FKo2bs1U1odVt7x8d48c04vZntf", cap:"放学后的练习室"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/LAPVbDvL3oBIZaxbYRgcJjzenNd", cap:"夏日 · 树荫下的午休"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EQqCbdZQwoW6wAxvLW2ci8sgnAc", cap:"官方海报 · “想悄悄传达给你”"}
+  ],
+};
+var currentAnime = 'kon';
+function curG(){ return GALLERIES[currentAnime] || GALLERIES.kon; }
+var lb = document.getElementById('lightbox');
+var lbImg = document.getElementById('lbImg');
+var lbCap = document.getElementById('lbCaption');
+var cur = 0;
+
+function openLb(i, el){
+  if(el){
+    var r = el.getBoundingClientRect();
+    lbImg.style.transformOrigin = ((r.left + r.width/2) / window.innerWidth * 100) + '% ' + ((r.top + r.height/2) / window.innerHeight * 100) + '%';
+  }else{
+    lbImg.style.transformOrigin = '50% 50%';
+  }
+  var g = curG();
+  cur = i % g.length;
+  lbImg.src = g[cur].src;
+  lbImg.alt = g[cur].cap;
+  lbCap.textContent = (cur + 1) + " / " + g.length + "　" + g[cur].cap;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLb(){
+  lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function stepLb(d){
+  var g = curG();
+  cur = (cur + d + g.length) % g.length;
+  lbImg.src = g[cur].src;
+  lbImg.alt = g[cur].cap;
+  lbCap.textContent = (cur + 1) + " / " + g.length + "　" + g[cur].cap;
+}
+
+/* 给画廊每个格子绑定点击：index 取自 data-gi（当前番画廊内的序号），避免跨番错位 */
+var items = document.querySelectorAll('.g-item');
+for(var i=0;i<items.length;i++){
+  (function(idx, el){
+    el.addEventListener('click', function(){
+      var gi = parseInt(el.getAttribute('data-gi'), 10);
+      if(isNaN(gi)) gi = idx;
+      openLb(gi, el);
+    });
+  })(i, items[i]);
+}
+
+/* 点击任意位置关闭；箭头切图不触发关闭 */
+document.getElementById('lbPrev').addEventListener('click', function(e){ e.stopPropagation(); stepLb(-1); });
+document.getElementById('lbNext').addEventListener('click', function(e){ e.stopPropagation(); stepLb(1); });
+lb.addEventListener('click', function(){ closeLb(); });
+document.addEventListener('keydown', function(e){
+  if(lb.classList.contains('open')){
+    if(e.key === 'Escape') closeLb();
+    if(e.key === 'ArrowLeft') stepLb(-1);
+    if(e.key === 'ArrowRight') stepLb(1);
+  }else if(cm.classList.contains('open')){
+    if(e.key === 'Escape') closeCharModal();
+  }
+});
+/* ===== 角色资料 ===== */
+var CHAR_DATA = {
+  yui: {
+    name:"平泽唯", jp:"Yui Hirasawa · ひらさわ ゆい",
+    tags:["吉他 · 主唱"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JDdmbFKg6ocDDJxS6eScgxDtnde",
+    items:[
+      ["乐器","吉他“吉太”（Gibson Les Paul 樱桃渐变款）"],
+      ["年级","高一 → 高三"],
+      ["生日","11月27日"],
+      ["性格","天然呆、嗜甜、迷迷糊糊，却有着惊人的音乐天赋；为了蛋糕可以全力以赴"],
+      ["家庭","父母 + 妹妹平泽忧（家务全能的可靠孩子）"],
+      ["CV","丰崎爱生"],
+      ["小细节","入部时连吉他都不会弹，用存了很久的钱买下“吉太”后开始自学成才"]
+    ]
+  },
+  mio: {
+    name:"秋山澪", jp:"Mio Akiyama · あきやま みお",
+    tags:["贝斯 · 词曲"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/P1XjbBiZqoAk0KxvYqEc8SHHn0e",
+    items:[
+      ["乐器","贝斯“伊丽莎白”（Fender Jazz Bass，左撇子款）"],
+      ["年级","高一 → 高三"],
+      ["生日","1月15日"],
+      ["性格","认真内敛、成绩优秀，但怕生又怕鬼；乐队的大部分词曲都出自她手"],
+      ["家庭","父母（爸爸是摄影师，常被女儿吐槽）"],
+      ["CV","日笠阳子"],
+      ["小细节","左撇子；在学园祭上人气极高，却总是想把自己藏起来"]
+    ]
+  },
+  ritsu: {
+    name:"田井中律", jp:"Ritsu Tainaka · たいなか りつ",
+    tags:["鼓手 · 部长"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Z7ENb2HNhoWhtHx1XdcclC6Bnzg",
+    items:[
+      ["乐器","架子鼓（Yamaha 套装）"],
+      ["年级","高一 → 高三"],
+      ["生日","8月21日"],
+      ["性格","元气满满、大大咧咧，行动力超强；最喜欢捉弄澪，也是把乐队凑起来的发起人"],
+      ["家庭","父母 + 弟弟田井中聪"],
+      ["CV","佐藤聪美"],
+      ["小细节","平时吊儿郎当，关键时刻意外可靠；和澪是从小的好朋友"]
+    ]
+  },
+  mugi: {
+    name:"琴吹紬", jp:"Tsumugi Kotobuki · ことぶき つむぎ",
+    tags:["键盘"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Qrr6bWS6foSBJbxIZsdcj5bYnSN",
+    items:[
+      ["乐器","键盘（KORG Triton）"],
+      ["年级","高一 → 高三"],
+      ["生日","7月2日"],
+      ["性格","温柔体贴的大小姐，向往普通高中生的日常；家里有游泳池和别墅"],
+      ["家庭","富豪家庭，父亲是公司社长"],
+      ["CV","寿美菜子"],
+      ["小细节","看起来文静，其实好奇心旺盛、力气大得惊人；部室的点心茶水基本由她包办"]
+    ]
+  },
+  azusa: {
+    name:"中野梓", jp:"Azusa Nakano · なかの あずさ",
+    tags:["吉他 · 后辈"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HarobXg8fot7VYxEwBYcpIBWnNe",
+    items:[
+      ["乐器","吉他（Fender Mustang 白色款）"],
+      ["年级","后辈（前辈毕业后继任部长）"],
+      ["生日","11月11日"],
+      ["性格","认真努力、基本功扎实，一开始觉得前辈们太松懈，后来彻底喜欢上轻音部"],
+      ["家庭","父母，曾在轻音部演出时到场支持"],
+      ["CV","竹达彩奈"],
+      ["小细节","因为名字像猫叫被唯叫作“梓喵”；是所有前辈的团宠"]
+    ]
+  },
+};
+/* ===== 角色弹窗 ===== */
+var cm = document.getElementById('charModal');
+var cmImg = document.getElementById('cmImg');
+var cmName = document.getElementById('cmName');
+var cmJp = document.getElementById('cmJp');
+var cmTags = document.getElementById('cmTags');
+var cmItems = document.getElementById('cmItems');
+
+function openCharModal(key, el){
+  var d = CHAR_DATA[key];
+  if(!d) return;
+  var sheet = cm.querySelector('.sheet');
+  if(el){
+    var r = el.getBoundingClientRect();
+    sheet.style.transformOrigin = ((r.left + r.width/2) / window.innerWidth * 100) + '% ' + ((r.top + r.height/2) / window.innerHeight * 100) + '%';
+  }else{
+    sheet.style.transformOrigin = '50% 50%';
+  }
+  cmImg.src = d.img;
+  cmImg.alt = d.name;
+  cmName.textContent = d.name;
+  cmJp.textContent = d.jp;
+  cmTags.innerHTML = "";
+  for(var i=0;i<d.tags.length;i++){
+    var s = document.createElement('span');
+    s.className = 'chip';
+    s.innerHTML = '<b>' + d.tags[i] + '</b>';
+    cmTags.appendChild(s);
+  }
+  cmItems.innerHTML = "";
+  for(var j=0;j<d.items.length;j++){
+    var li = document.createElement('li');
+    li.innerHTML = '<span class="k">' + d.items[j][0] + '</span><span class="v">' + d.items[j][1] + '</span>';
+    cmItems.appendChild(li);
+  }
+  cm.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCharModal(){
+  cm.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* 绑定角色卡片点击 */
+var casts = document.querySelectorAll('.cast');
+for(var c=0;c<casts.length;c++){
+  (function(el){
+    el.addEventListener('click', function(){
+      openCharModal(el.getAttribute('data-char'), el);
+    });
+  })(casts[c]);
+}
+/* 点击任意位置关闭 */
+cm.addEventListener('click', function(){ closeCharModal(); });
+
+/* ===== 返回顶部 ===== */
+var backTop = document.getElementById('backTop');
+window.addEventListener('scroll', function(){
+  if(window.scrollY > 480){
+    backTop.classList.add('show');
+  }else{
+    backTop.classList.remove('show');
+  }
+});
+backTop.addEventListener('click', function(){
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+</script>
+</body>
+</html>
