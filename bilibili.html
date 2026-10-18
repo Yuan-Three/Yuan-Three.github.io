@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>追番手账 · Three 的小窝</title>
+<title>追番手账 · 我的动漫收藏</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='18' height='18' rx='5' fill='%23EF9CB0'/%3E%3Crect x='6' y='6' width='12' height='12' rx='2' fill='%23fff'/%3E%3Cpath d='M8.5 9.5h7M8.5 12.5h7M8.5 15.5h4' stroke='%23EF9CB0' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
 <style>
@@ -509,21 +509,28 @@ footer .hint{margin-top:14px;color:#A08E87;font-size:12.5px}
   .char-modal .cimg{min-height:0;height:36vh}
   .char-modal .cinfo{padding:20px 20px 24px}
 }
+/* SECTION: back-home 返回首页入口 */
+.back-home{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border:1px solid var(--pink);border-radius:999px;color:var(--pink-deep)!important;background:rgba(239,156,176,.1)}
+.back-home:hover{background:var(--pink);color:#fff!important}
 </style>
 </head>
 <body>
+
 <!-- ===== 顶部导航 ===== -->
 <nav class="nav">
   <div class="wrap">
-    <a class="brand" href="index.html">
+    <a class="brand" href="#home">
       <svg class="logo" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="#EF9CB0"/><rect x="6" y="6" width="12" height="12" rx="2" fill="#fff"/><path d="M8.5 9.5h7M8.5 12.5h7M8.5 15.5h4" stroke="#EF9CB0" stroke-width="1.4" stroke-linecap="round"/></svg>
-      Three 的小窝
+      追番手账
     </a>
     <div class="nav-links">
+      <a class="back-home" href="index.html">&larr; 回到小窝</a>
       <a href="#anime-list">番列表</a>
     </div>
   </div>
 </nav>
+
+<!-- ===== 一级页：hero + 番列表 ===== -->
 <div id="view-home">
 <header class="hero" id="top">
   <div class="hero-bg-track">
@@ -561,7 +568,7 @@ footer .hint{margin-top:14px;color:#A08E87;font-size:12.5px}
       </div>
       <div class="anime-grid">
         <!-- 每部番一张卡片：复制这个 .anime-tile，替换 data-id（如 kon）、底图、番名；链接 hash 用同一 id，如 #anime/kon，对应二级块 id view-anime-kon -->
-        <a class="anime-tile tile-out" href="k-on.html" data-id="kon">
+        <a class="anime-tile" href="#anime/kon" data-id="kon">
           <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FKo2bs1U1odVt7x8d48c04vZntf" alt="轻音少女封面">
           <div class="tile-mask"></div>
           <div class="tile-text">
@@ -745,6 +752,120 @@ footer .hint{margin-top:14px;color:#A08E87;font-size:12.5px}
     </div>
   </footer>
 </div>
+
+<!-- ===== 二级页：番详情（每部番一个 view-anime 块，新增番时复制一份并改 id / 内容） ===== -->
+<div id="view-anime-kon" class="view-anime bg-kon">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">轻音少女！</span>
+    </div>
+  </div>
+
+<!-- ===== 追番记录 ===== -->
+<section class="records" id="records">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WATCH LOG</span>
+      <h2>追番记录</h2>
+      <p>每一部都是完整看完才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+    </div>
+
+    <!-- 单部番卡片模板：往后新增动画，复制这一个 .anime-card 结构，替换封面图与文字即可 -->
+    <article class="anime-card">
+      <div class="cover">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FKo2bs1U1odVt7x8d48c04vZntf" alt="轻音少女 放学后的练习室">
+        <span class="status-badge">已看完</span>
+      </div>
+      <div class="anime-info">
+        <div class="title-line">
+          <h3>轻音少女！</h3>
+          <span class="jp">けいおん！ K-ON!</span>
+        </div>
+        <div class="meta-line">
+          <span class="chip">首播 <b>2009</b></span>
+          <span class="chip">制作 <b>京都动画</b></span>
+          <span class="chip">类型 <b>日常 / 校园 / 音乐</b></span>
+          <span class="chip">追完 <b>TV 两季 + 剧场版</b></span>
+        </div>
+        <p class="desc">改编自かきふらい连载于芳文社的四格漫画。樱丘高中轻音部眼看就要因缺人废部，天然呆少女平泽唯一句"轻音部是什么意思呀"闯了进来，于是四位一年级生加上后来加入的后辈中野梓，组成了放学后喝茶聊天、顺带练练乐队的放课后Tea Time。喝茶、甜品、Live，还有一起度过的每一个平凡又闪亮的放学后。</p>
+        <div class="note"><span class="who">我的短评：</span>一部让人看完想把吉他捡起来的动画。京都动画的作画和配乐把"青春"两个字揉得又软又亮，最后一集和剧场版每次看都会眼眶发热。想改自己的短评随时告诉我。</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ===== 轻音部成员 ===== -->
+<section class="cast-sec" id="cast">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">HO-KAGO TEA TIME</span>
+      <h2>樱丘高中 · 轻音部</h2>
+      <p>五个人，四件乐器，一间部室，和数不清的纸杯蛋糕。</p>
+    </div>
+    <div class="cast-grid">
+      <div class="cast" data-char="yui">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Mc4gbZWaSoh7eUxgKndcUedvnue" alt="平泽唯 Q版头像"></div>
+        <h4>平泽唯</h4><div class="romaji">Yui Hirasawa</div>
+        <div class="duty">吉他 · 主唱</div>
+        <p>天然呆担当，为了一口蛋糕什么都能做。轻音部的起点。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="mio">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/IMgybHKPvomvgXxIkoucGElmnKf" alt="秋山澪 Q版头像"></div>
+        <h4>秋山澪</h4><div class="romaji">Mio Akiyama</div>
+        <div class="duty">贝斯 · 词曲</div>
+        <p>怕鬼怕高、外冷内热的贝斯手，认真起来是全队的定心丸。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="ritsu">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Tg2zb1OI9oHztVxuRdDcUEs8nag" alt="田井中律 Q版头像"></div>
+        <h4>田井中律</h4><div class="romaji">Ritsu Tainaka</div>
+        <div class="duty">鼓手 · 部长</div>
+        <p>元气满满的轻音部部长，负责把大家（尤其澪）逗得团团转。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="mugi">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DjK8by1drob0H5xHlI6cnGJMnRf" alt="琴吹紬 Q版头像"></div>
+        <h4>琴吹紬</h4><div class="romaji">Tsumugi Kotobuki</div>
+        <div class="duty">键盘</div>
+        <p>温柔的大小姐，家里有游泳池和别墅，梦想却是当个普通高中生。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="azusa">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/J5kEbtLyvozG0FxFV8BcNPSanlb" alt="中野梓 Q版头像"></div>
+        <h4>中野梓</h4><div class="romaji">Azusa Nakano</div>
+        <div class="duty">吉他 · 后辈</div>
+        <p>认真到会被前辈带偏节奏的后辈，全队唯一"正常"的人。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 图片收藏 ===== -->
+<section class="gallery-sec" id="gallery">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GALLERY</span>
+      <h2>图片收藏</h2>
+      <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AxfRb5w98ohayHxS2adccZfjn4d" alt="轻音少女 五人 · 蓝天合影"><figcaption>放学后的茶会 · 五人合影</figcaption></figure>
+      <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TrSZbScgvoO1Inxhv2ScbGM7nxd" alt="轻音少女 部室里的五人"><figcaption>部室墙上的"放课后Tea Time"</figcaption></figure>
+      <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/NnjpbCbjfoPPZfxnCJOcs0THnVg" alt="轻音少女 晴空下的四人"><figcaption>晴空下的日常</figcaption></figure>
+      <figure class="g-item" data-gi="3"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MhTSbd3tXoU9PGxiXtFcczqYn8G" alt="轻音少女 练习室演奏"><figcaption>"部员募集！"练习时间</figcaption></figure>
+      <figure class="g-item" data-gi="4"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JeAkb8fOPooZ3wxbcFbcKRIYn9c" alt="轻音少女 秋山澪 · 秋日湖畔"><figcaption>秋山澪 · 秋日湖畔</figcaption></figure>
+      <figure class="g-item" data-gi="5"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FKo2bs1U1odVt7x8d48c04vZntf" alt="轻音少女 放学后的练习室"><figcaption>放学后的练习室</figcaption></figure>
+      <figure class="g-item" data-gi="6"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/LAPVbDvL3oBIZaxbYRgcJjzenNd" alt="轻音少女 夏日树荫午休"><figcaption>夏日 · 树荫下的午休</figcaption></figure>
+      <figure class="g-item" data-gi="7"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EQqCbdZQwoW6wAxvLW2ci8sgnAc" alt="轻音少女 官方海报"><figcaption>官方海报 · "想悄悄传达给你"</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ===== 二级页：中二病也要谈恋爱 ===== -->
 <div id="view-anime-chuuni" class="view-anime bg-chuuni">
   <div class="backbar">
     <div class="wrap">
@@ -2538,6 +2659,8 @@ footer .hint{margin-top:14px;color:#A08E87;font-size:12.5px}
   </div>
 </section>
 </div>
+<!-- SLICE4-VIEW-END -->
+
 <!-- ===== Lightbox ===== -->
 <div class="lightbox" id="lightbox" role="dialog" aria-label="图片放大查看">
   <button class="lb-nav lb-prev" id="lbPrev" aria-label="上一张">&#8249;</button>
@@ -2562,10 +2685,20 @@ footer .hint{margin-top:14px;color:#A08E87;font-size:12.5px}
 <button class="back-top" id="backTop" aria-label="返回顶部">
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M6 14l6-6 6 6"/></svg>
 </button>
-<script>
+
 <script>
 /* 画廊图片列表（按番分库）：新增图片时，把图片 URL 和标题加进对应数组即可 */
 var GALLERIES = {
+  kon: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AxfRb5w98ohayHxS2adccZfjn4d", cap:"放学后的茶会 · 五人合影"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TrSZbScgvoO1Inxhv2ScbGM7nxd", cap:"部室墙上的“放课后Tea Time”"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/NnjpbCbjfoPPZfxnCJOcs0THnVg", cap:"晴空下的日常"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MhTSbd3tXoU9PGxiXtFcczqYn8G", cap:"“部员募集！”练习时间"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JeAkb8fOPooZ3wxbcFbcKRIYn9c", cap:"秋山澪 · 秋日湖畔"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FKo2bs1U1odVt7x8d48c04vZntf", cap:"放学后的练习室"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/LAPVbDvL3oBIZaxbYRgcJjzenNd", cap:"夏日 · 树荫下的午休"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EQqCbdZQwoW6wAxvLW2ci8sgnAc", cap:"官方海报 · “想悄悄传达给你”"}
+  ],
   chuuni: [
     {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DtZHbodACoTZDexwsqqcqNEAn4b", cap:"昼寝结社 · 六花与她的“使魔们”"},
     {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DUuZbzgAooEGdKxQBCPcGiuXnik", cap:"邪王真眼 · 夜之城"},
@@ -2674,8 +2807,9 @@ var GALLERIES = {
   ],
   /* SLICE4-GALL-END */
 };
-var currentAnime = 'chuuni';
-function curG(){ return GALLERIES[currentAnime] || GALLERIES.chuuni; }
+var currentAnime = 'kon';
+function curG(){ return GALLERIES[currentAnime] || GALLERIES.kon; }
+
 var lb = document.getElementById('lightbox');
 var lbImg = document.getElementById('lbImg');
 var lbCap = document.getElementById('lbCaption');
@@ -2733,8 +2867,79 @@ document.addEventListener('keydown', function(e){
     if(e.key === 'Escape') closeCharModal();
   }
 });
+
 /* ===== 角色资料 ===== */
 var CHAR_DATA = {
+  yui: {
+    name:"平泽唯", jp:"Yui Hirasawa · ひらさわ ゆい",
+    tags:["吉他 · 主唱"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JDdmbFKg6ocDDJxS6eScgxDtnde",
+    items:[
+      ["乐器","吉他“吉太”（Gibson Les Paul 樱桃渐变款）"],
+      ["年级","高一 → 高三"],
+      ["生日","11月27日"],
+      ["性格","天然呆、嗜甜、迷迷糊糊，却有着惊人的音乐天赋；为了蛋糕可以全力以赴"],
+      ["家庭","父母 + 妹妹平泽忧（家务全能的可靠孩子）"],
+      ["CV","丰崎爱生"],
+      ["小细节","入部时连吉他都不会弹，用存了很久的钱买下“吉太”后开始自学成才"]
+    ]
+  },
+  mio: {
+    name:"秋山澪", jp:"Mio Akiyama · あきやま みお",
+    tags:["贝斯 · 词曲"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/P1XjbBiZqoAk0KxvYqEc8SHHn0e",
+    items:[
+      ["乐器","贝斯“伊丽莎白”（Fender Jazz Bass，左撇子款）"],
+      ["年级","高一 → 高三"],
+      ["生日","1月15日"],
+      ["性格","认真内敛、成绩优秀，但怕生又怕鬼；乐队的大部分词曲都出自她手"],
+      ["家庭","父母（爸爸是摄影师，常被女儿吐槽）"],
+      ["CV","日笠阳子"],
+      ["小细节","左撇子；在学园祭上人气极高，却总是想把自己藏起来"]
+    ]
+  },
+  ritsu: {
+    name:"田井中律", jp:"Ritsu Tainaka · たいなか りつ",
+    tags:["鼓手 · 部长"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Z7ENb2HNhoWhtHx1XdcclC6Bnzg",
+    items:[
+      ["乐器","架子鼓（Yamaha 套装）"],
+      ["年级","高一 → 高三"],
+      ["生日","8月21日"],
+      ["性格","元气满满、大大咧咧，行动力超强；最喜欢捉弄澪，也是把乐队凑起来的发起人"],
+      ["家庭","父母 + 弟弟田井中聪"],
+      ["CV","佐藤聪美"],
+      ["小细节","平时吊儿郎当，关键时刻意外可靠；和澪是从小的好朋友"]
+    ]
+  },
+  mugi: {
+    name:"琴吹紬", jp:"Tsumugi Kotobuki · ことぶき つむぎ",
+    tags:["键盘"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Qrr6bWS6foSBJbxIZsdcj5bYnSN",
+    items:[
+      ["乐器","键盘（KORG Triton）"],
+      ["年级","高一 → 高三"],
+      ["生日","7月2日"],
+      ["性格","温柔体贴的大小姐，向往普通高中生的日常；家里有游泳池和别墅"],
+      ["家庭","富豪家庭，父亲是公司社长"],
+      ["CV","寿美菜子"],
+      ["小细节","看起来文静，其实好奇心旺盛、力气大得惊人；部室的点心茶水基本由她包办"]
+    ]
+  },
+  azusa: {
+    name:"中野梓", jp:"Azusa Nakano · なかの あずさ",
+    tags:["吉他 · 后辈"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HarobXg8fot7VYxEwBYcpIBWnNe",
+    items:[
+      ["乐器","吉他（Fender Mustang 白色款）"],
+      ["年级","后辈（前辈毕业后继任部长）"],
+      ["生日","11月11日"],
+      ["性格","认真努力、基本功扎实，一开始觉得前辈们太松懈，后来彻底喜欢上轻音部"],
+      ["家庭","父母，曾在轻音部演出时到场支持"],
+      ["CV","竹达彩奈"],
+      ["小细节","因为名字像猫叫被唯叫作“梓喵”；是所有前辈的团宠"]
+    ]
+  },
   rikka: {
     name:"小鸟游六花", jp:"Rikka Takanashi · たかなし りっか",
     tags:["邪王真眼"],
@@ -3904,6 +4109,7 @@ var CHAR_DATA = {
   },
   /* SLICE4-CHAR-END */
 };
+
 /* ===== 角色弹窗 ===== */
 var cm = document.getElementById('charModal');
 var cmImg = document.getElementById('cmImg');
@@ -3971,6 +4177,7 @@ window.addEventListener('scroll', function(){
 backTop.addEventListener('click', function(){
   window.scrollTo({top:0, behavior:'smooth'});
 });
+
 /* ===== 两级路由：一级番列表 / 二级番详情 ===== */
 function route(){
   var h = location.hash || '#home';
@@ -4095,9 +4302,13 @@ function goHome(){
     });
   });
   setTimeout(function(){
+    if(ov.parentNode) ov.parentNode.removeChild(ov);
+    document.body.style.overflow = '';
+  }, 600);
+}
 
 /* 卡片点击：拦截默认跳转，改走展开动画 */
-var animeTiles = document.querySelectorAll('.anime-tile:not(.placeholder):not(.tile-out)');
+var animeTiles = document.querySelectorAll('.anime-tile:not(.placeholder)');
 for(var t=0;t<animeTiles.length;t++){
   (function(el){
     el.addEventListener('click', function(e){
@@ -4106,6 +4317,7 @@ for(var t=0;t<animeTiles.length;t++){
     });
   })(animeTiles[t]);
 }
+
 /* 返回按钮：拦截默认跳转，改走收束动画 */
 var backLinks = document.querySelectorAll('.backbar a');
 for(var b=0;b<backLinks.length;b++){
@@ -4116,7 +4328,6 @@ for(var b=0;b<backLinks.length;b++){
     });
   })(backLinks[b]);
 }
-</script>
 </script>
 </body>
 </html>
