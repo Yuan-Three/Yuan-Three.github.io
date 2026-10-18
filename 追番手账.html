@@ -1,0 +1,4329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>追番手账 · 我的动漫收藏</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='18' height='18' rx='5' fill='%23EF9CB0'/%3E%3Crect x='6' y='6' width='12' height='12' rx='2' fill='%23fff'/%3E%3Cpath d='M8.5 9.5h7M8.5 12.5h7M8.5 15.5h4' stroke='%23EF9CB0' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* ===== 基础 ===== */
+:root{
+  --bg:#FDF8F1;
+  --bg-soft:#F8EFE4;
+  --ink:#4B3B3A;
+  --ink-soft:#7A6A66;
+  --pink:#EF9CB0;
+  --pink-deep:#E0789A;
+  --blue:#7FA8D9;
+  --yellow:#F4C76B;
+  --card:#FFFFFF;
+  --line:#EFE2D4;
+  --radius:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+a,button,.cast,.g-item,.anime-tile{outline:none}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--ink);
+  line-height:1.75;font-size:15px;
+}
+.serif{font-family:"Noto Serif SC",Georgia,"Songti SC",serif}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+
+/* ===== 顶部导航 ===== */
+.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(253,248,241,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{display:flex;align-items:center;gap:10px;font-family:"Noto Serif SC",serif;font-weight:900;font-size:19px}
+.brand .logo{width:30px;height:30px;flex:none}
+.brand .logo .pin{fill:var(--pink-deep)}
+.nav-links{display:flex;gap:22px;font-size:14px;font-weight:500;color:var(--ink-soft)}
+.nav-links a:hover{color:var(--pink-deep)}
+
+/* ===== Hero ===== */
+.hero{
+  position:relative;min-height:78vh;display:flex;align-items:center;
+  overflow:hidden;color:#fff;
+}
+.hero-bg-track{
+  position:absolute;inset:0;display:flex;align-items:center;
+  width:210vw;animation:hero-scroll 48s linear infinite;
+  will-change:transform;
+}
+.hero-panel{
+  flex:none;overflow:hidden;margin-right:-2vw;
+  box-shadow:0 16px 34px rgba(0,0,0,.32);
+  outline:1px solid rgba(255,255,255,.14);
+}
+.hero-panel img{
+  display:block;width:100%;height:100%;object-fit:cover;
+  filter:saturate(1.06);
+}
+.hero-panel.hp1{width:20vw;height:80%;align-self:flex-start;transform:rotate(-2.5deg)}
+.hero-panel.hp2{width:24vw;height:66%;align-self:flex-end;transform:rotate(2deg)}
+.hero-panel.hp3{width:26vw;height:56%;align-self:center;transform:rotate(-1.5deg)}
+.hero-panel.hp4{width:25vw;height:64%;align-self:flex-start;transform:rotate(1.5deg)}
+.hero-panel.hp5{width:20vw;height:82%;align-self:flex-end;transform:rotate(-2deg)}
+@keyframes hero-scroll{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-105vw)}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-bg-track{animation:none}
+}
+.hero h1 sup{
+  font-size:.5em;vertical-align:super;letter-spacing:.04em;margin-left:.06em;
+  text-shadow:0 3px 18px rgba(0,0,0,.35);
+}
+.hero::before{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:150px;z-index:1;
+  background:linear-gradient(180deg,rgba(253,248,241,0) 0%,rgba(253,248,241,.72) 82%,var(--bg) 100%);
+}
+.hero::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(52,38,44,.62) 0%,rgba(52,38,44,.4) 30%,rgba(52,38,44,.16) 52%,rgba(52,38,44,.38) 78%,rgba(52,38,44,.62) 100%);
+}
+.hero .wrap{position:relative;z-index:2;text-align:center}
+.hero .kicker{
+  display:inline-block;letter-spacing:.35em;font-size:13px;
+  color:#FFE3EA;margin-bottom:16px;
+}
+.hero h1{
+  font-family:"Noto Serif SC",serif;font-size:clamp(44px,8vw,84px);
+  font-weight:900;line-height:1.15;letter-spacing:.08em;
+  text-shadow:0 3px 18px rgba(0,0,0,.35);
+}
+.hero .sub{
+  margin:18px auto 0;max-width:560px;font-size:15px;color:#FFF3F5;
+  text-shadow:0 1px 8px rgba(0,0,0,.4);
+}
+.hero .scroll-hint{
+  margin-top:34px;font-size:13px;letter-spacing:.2em;color:#FFDDE4;opacity:.9;
+}
+.hero .scroll-hint svg{display:inline-block;vertical-align:-2px;margin-left:6px;animation:bounce 1.8s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* ===== 章节通用 ===== */
+section{padding:72px 0}
+.section-head{margin-bottom:34px;max-width:760px}
+.section-head .eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;letter-spacing:.25em;color:var(--pink-deep);font-weight:700;
+}
+.section-head .eyebrow::before{content:"";width:26px;height:2px;background:var(--pink);border-radius:2px}
+.section-head h2{
+  font-family:"Noto Serif SC",serif;font-size:clamp(26px,3.6vw,36px);
+  font-weight:900;margin:10px 0 8px;
+}
+.section-head p{color:var(--ink-soft);font-size:14.5px}
+
+/* ===== 追番记录 ===== */
+.records{background:var(--bg-soft)}
+.anime-card{
+  display:grid;grid-template-columns:340px 1fr;gap:28px;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;box-shadow:0 8px 26px rgba(120,90,70,.08);
+}
+.anime-card .cover{position:relative;aspect-ratio:4/3;overflow:hidden}
+.anime-card .cover img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.anime-card:hover .cover img{transform:scale(1.04)}
+.anime-card .cover::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(0deg,rgba(40,28,30,.32),transparent 42%);
+}
+.status-badge{
+  position:absolute;left:16px;bottom:14px;z-index:2;
+  background:var(--pink);color:#fff;font-size:12.5px;font-weight:700;
+  padding:4px 14px;border-radius:999px;letter-spacing:.08em;
+  box-shadow:0 3px 10px rgba(0,0,0,.18);
+}
+.anime-info{padding:26px 30px 28px 0}
+.anime-info .title-line{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.anime-info h3{
+  font-family:"Noto Serif SC",serif;font-size:27px;font-weight:900;
+}
+.anime-info .jp{color:var(--ink-soft);font-size:13px;letter-spacing:.06em}
+.meta-line{
+  display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 14px;
+}
+.chip{
+  font-size:12.5px;color:#5E504B;background:var(--bg-soft);
+  border:1px solid var(--line);border-radius:8px;padding:3px 11px;
+}
+.chip b{color:var(--pink-deep);font-weight:700}
+.anime-info .desc{color:#5A4C48;font-size:14.5px;margin-bottom:12px}
+.note{
+  border-left:3px solid var(--pink);background:#FDF3F5;
+  padding:10px 16px;border-radius:0 10px 10px 0;font-size:13.5px;color:#6B4A52;
+}
+.note .who{font-weight:700;color:var(--pink-deep)}
+
+/* ===== 成员 ===== */
+.cast-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:6px;
+}
+.cast-grid.cg6{grid-template-columns:repeat(3,1fr)}
+.cast{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px 14px 18px;text-align:center;transition:transform .25s ease, box-shadow .25s ease;
+}
+.cast:hover{transform:translateY(-4px);box-shadow:0 10px 22px rgba(120,90,70,.12)}
+.cast .role-icon{
+  width:64px;height:64px;margin:0 auto 12px;border-radius:50%;
+  background:var(--card);display:flex;align-items:center;justify-content:center;
+  overflow:hidden;border:2px solid var(--pink);
+  box-shadow:0 4px 12px rgba(224,120,154,.28);
+}
+.cast .role-icon img{width:100%;height:100%;object-fit:cover}
+.cast h4{font-family:"Noto Serif SC",serif;font-size:17px;font-weight:900}
+.cast .romaji{font-size:12px;color:var(--ink-soft);margin:2px 0 8px;letter-spacing:.05em}
+.cast .duty{font-size:12.5px;font-weight:700;color:var(--pink-deep);margin-bottom:6px}
+.cast p{font-size:12.5px;color:var(--ink-soft);line-height:1.6}
+
+/* ===== 画廊 ===== */
+.gallery-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.g-item{
+  position:relative;border-radius:14px;overflow:hidden;cursor:zoom-in;
+  border:1px solid var(--line);background:var(--card);aspect-ratio:4/3;
+}
+.g-item img{width:100%;height:100%;object-fit:cover;transition:transform .45s ease}
+.g-item:hover img{transform:scale(1.05)}
+.g-item figcaption{
+  position:absolute;left:0;right:0;bottom:0;padding:26px 14px 10px;
+  background:linear-gradient(0deg,rgba(40,28,30,.55),transparent);
+  color:#fff;font-size:12.5px;text-align:left;opacity:0;transition:opacity .3s ease;
+}
+.g-item:hover figcaption{opacity:1}
+
+/* ===== Lightbox ===== */
+.lightbox{
+  position:fixed;inset:0;z-index:100;
+  background:rgba(20,14,16,0);
+  display:flex;align-items:center;justify-content:center;padding:40px;
+  visibility:hidden;opacity:0;
+  transition:opacity .32s ease, visibility .32s, background .32s ease;
+}
+.lightbox.open{visibility:visible;opacity:1;background:rgba(20,14,16,.94)}
+.lightbox img{
+  max-width:92vw;max-height:84vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.5);
+  transform:scale(.08);opacity:0;
+  transition:transform .36s cubic-bezier(.3,.75,.2,1), opacity .28s ease;
+}
+.lightbox.open img{transform:scale(1);opacity:1}
+.lb-caption{
+  position:absolute;bottom:22px;left:0;right:0;text-align:center;color:#EAD9DD;font-size:13px;letter-spacing:.04em;
+  opacity:0;transition:opacity .3s ease .14s;
+}
+.lightbox.open .lb-caption{opacity:1}
+.lb-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  background:rgba(255,255,255,.08);border:none;color:#fff;cursor:pointer;
+  width:48px;height:48px;border-radius:50%;font-size:22px;display:flex;align-items:center;justify-content:center;
+  transition:background .2s ease, opacity .3s ease .14s;opacity:0;
+}
+.lightbox.open .lb-nav{opacity:1}
+.lb-nav:hover{background:rgba(255,255,255,.2)}
+.lb-prev{left:20px}.lb-next{right:20px}
+
+/* ===== 角色详情弹窗 ===== */
+.cast{cursor:pointer}
+.cast .open-hint{
+  display:inline-flex;align-items:center;gap:5px;
+  margin-top:14px;background:var(--pink);color:#fff;
+  font-size:13px;font-weight:700;letter-spacing:.06em;
+  padding:8px 18px;border-radius:999px;
+  box-shadow:0 8px 18px rgba(244,114,146,.32);
+  transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.cast:hover .open-hint{transform:translateY(-2px);box-shadow:0 12px 24px rgba(244,114,146,.45);background:#E0688C}
+.cast .open-hint::after{content:"→";margin-left:3px}
+
+/* ===== 点选引导：列表可点 + 角色可点 ===== */
+.tap-hint{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:max-content;max-width:100%;margin:0 auto 30px;
+  background:var(--pink);color:#fff;
+  padding:11px 24px;border-radius:999px;
+  font-size:14.5px;font-weight:700;letter-spacing:.05em;
+  box-shadow:0 12px 26px rgba(244,114,146,.38);
+  animation:hint-bob 2.4s ease-in-out infinite;
+}
+.tap-hint svg{flex:none;animation:hint-wave 2.4s ease-in-out infinite}
+@keyframes hint-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes hint-wave{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.anime-tile::after{
+  content:"点我进入 →";
+  position:absolute;left:50%;top:50%;z-index:3;
+  transform:translate(-50%,-50%) scale(.82);
+  background:rgba(255,255,255,.94);color:#C0506E;
+  font-size:13.5px;font-weight:800;letter-spacing:.05em;
+  padding:9px 20px;border-radius:999px;
+  box-shadow:0 10px 24px rgba(0,0,0,.28);
+  opacity:0;transition:opacity .28s ease, transform .28s ease;
+  pointer-events:none;
+}
+.anime-tile:hover::after{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.char-modal{
+  position:fixed;inset:0;z-index:110;
+  background:rgba(20,14,16,0);
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  visibility:hidden;opacity:0;
+  transition:opacity .32s ease, visibility .32s, background .32s ease;
+}
+.char-modal.open{visibility:visible;opacity:1;background:rgba(20,14,16,.9)}
+.char-modal .sheet{
+  background:var(--bg);border-radius:20px;max-width:880px;width:100%;
+  max-height:86vh;overflow:auto;display:grid;grid-template-columns:300px 1fr;
+  box-shadow:0 30px 80px rgba(0,0,0,.45);
+  transform:scale(.1);opacity:0;
+  transition:transform .36s cubic-bezier(.3,.75,.2,1), opacity .28s ease;
+}
+.char-modal.open .sheet{transform:scale(1);opacity:1}
+.char-modal .cimg{position:relative;overflow:hidden;min-height:440px}
+.char-modal .cimg img{width:100%;height:100%;object-fit:cover}
+.char-modal .cinfo{padding:28px 30px 30px}
+.char-modal .cname{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.char-modal .cname h3{font-family:"Noto Serif SC",serif;font-size:26px;font-weight:900}
+.char-modal .cname .cjp{color:var(--ink-soft);font-size:13px;letter-spacing:.06em}
+.char-modal .ctags{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 16px}
+.citems{list-style:none}
+.citems li{
+  display:flex;gap:14px;padding:9px 0;border-bottom:1px dashed var(--line);
+  font-size:14px;line-height:1.7;
+}
+.citems li:last-child{border-bottom:none}
+.citems .k{flex:none;width:64px;color:var(--pink-deep);font-weight:700;font-size:13.5px}
+.citems .v{color:#574A46}
+
+/* ===== 返回顶部 ===== */
+.back-top{
+  position:fixed;right:22px;bottom:26px;z-index:60;
+  width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;
+  background:var(--pink);color:#fff;box-shadow:0 8px 22px rgba(224,120,154,.4);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transform:translateY(10px);
+  transition:opacity .3s ease, transform .3s ease, visibility .3s;
+}
+.back-top.show{opacity:1;visibility:visible;transform:translateY(0)}
+.back-top:hover{background:var(--pink-deep)}
+
+/* ===== 番列表（一级页） ===== */
+.anime-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;
+}
+.anime-tile{
+  position:relative;display:block;border-radius:16px;overflow:hidden;
+  aspect-ratio:4/3;border:1px solid var(--line);background:var(--card);
+  box-shadow:0 6px 18px rgba(120,90,70,.1);
+  transition:transform .3s ease, box-shadow .3s ease;
+}
+.anime-tile:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(120,90,70,.18)}
+.anime-tile img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform .4s ease;
+}
+.anime-tile:hover img{transform:scale(1.06)}
+.anime-tile .tile-mask{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(40,28,30,0) 38%,rgba(40,28,30,.62) 100%);
+}
+.anime-tile .tile-text{position:absolute;left:0;right:0;bottom:0;padding:16px 16px 14px;color:#fff}
+.anime-tile .tile-text h3{
+  font-family:"Noto Serif SC",serif;font-size:21px;font-weight:900;
+  text-shadow:0 2px 10px rgba(0,0,0,.55);
+}
+.anime-tile .tile-text .tjp{
+  font-size:12px;color:rgba(255,255,255,.88);margin:3px 0 9px;
+  text-shadow:0 1px 6px rgba(0,0,0,.5);
+}
+.anime-tile .tile-status{
+  display:inline-block;background:var(--pink);color:#fff;font-size:11.5px;font-weight:700;
+  padding:2px 10px;border-radius:999px;letter-spacing:.06em;
+}
+.anime-tile.placeholder{
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg-soft);border-style:dashed;border-color:#DCCDBE;
+  color:var(--ink-soft);font-size:14px;letter-spacing:.15em;
+  box-shadow:none;
+}
+
+/* ===== 二级页视图 ===== */
+.view-anime{display:none;position:relative}
+.view-anime::before{
+  content:"";position:fixed;inset:0;z-index:-1;
+  background-size:cover;background-position:center;
+  filter:saturate(.78) brightness(.62);
+}
+.view-anime.bg-kon::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FKo2bs1U1odVt7x8d48c04vZntf");
+}
+.view-anime.bg-chuuni::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DUuZbzgAooEGdKxQBCPcGiuXnik");
+}
+/* SLICE1-CSS-BEGIN */
+.view-anime.bg-charlotte::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Cf0ibI4cjo5k3cxGBIuc6Ltande");
+}
+.view-anime.bg-cells::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MEnib7N7XoArBoxbRJtcs8D4nFg");
+}
+.view-anime.bg-hanako::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TfhLbFzNuo9AUYxZqIqcfzjxntg");
+}
+.view-anime.bg-spy::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JyXdbvMjlo2rcRxV3p2cPgcqndf");
+}
+/* SLICE1-CSS-END */
+/* SLICE2-CSS-BEGIN */
+.view-anime.bg-eva::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YFZsbWbBwoddB4xeithcVJKWntc");
+}
+.view-anime.bg-kimetsu::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/UfzBbASXAo2XM4x7ZpBcJ64jnGf");
+}
+.view-anime.bg-anohana::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/V48bbVb5Honecdxdu9McqtJjnEC");
+}
+.view-anime.bg-initiald::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/APE3bPOgCoay1RxdDu9cXhPZn4f");
+}
+/* SLICE2-CSS-END */
+/* SLICE3-CSS-BEGIN */
+.view-anime.bg-clannad::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Uu0ubSI3OoOhCjxiYpycu84Jncg");
+}
+.view-anime.bg-railgun::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/N1XLbpVDWo7mIxxpBAWclB4Ynrc");
+}
+.view-anime.bg-girlslt::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/VF96butA8oTV1dxkNFNcD9lbnAb");
+}
+.view-anime.bg-shigatsu::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/INDGbFpXFovAKgxAce0cJS5OnFh");
+}
+/* SLICE3-CSS-END */
+/* SLICE4-CSS-BEGIN */
+.view-anime.bg-wataten::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YFdZbJoNIoN8ynxKV5FcQuP7nJh");
+}
+.view-anime.bg-violet::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/D4yYb1dgXow5fmxkTNwcetenn7g");
+}
+.view-anime.bg-henneko::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ODoHbyUEhoVrYyx6n64cNCgxnAK");
+}
+.view-anime.bg-chikyu::before{
+  background-image:url("https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/I0DXb6gQsoEyImxAE1ncDQB1nBb");
+}
+/* SLICE4-CSS-END */
+.view-anime::after{
+  content:"";position:fixed;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(32,24,28,.22) 0%,rgba(32,24,28,.4) 55%,rgba(32,24,28,.52) 100%);
+}
+.view-anime .records{background:transparent}
+.view-anime .gallery-sec{background:transparent}
+.view-anime .cast-sec{background:transparent}
+/* 图片收藏区顶部用渐变过渡：从暗色底图虚化渐变到浅色图集区，边界不突兀 */
+.view-anime .gallery-sec{background:linear-gradient(180deg,rgba(248,239,228,0) 0%,rgba(248,239,228,.95) 150px)}
+.view-anime .gallery-sec .section-head h2{color:var(--ink)}
+.view-anime .gallery-sec .section-head p{color:var(--ink-soft)}
+.view-anime .gallery-sec .section-head .eyebrow{color:var(--pink-deep)}
+.view-anime .gallery-sec .section-head .eyebrow::before{background:var(--pink)}
+.view-anime .section-head h2{color:#FFF6EF}
+.view-anime .section-head p{color:rgba(255,244,236,.85)}
+.view-anime .section-head .eyebrow{color:#FFD9E3}
+.view-anime .section-head .eyebrow::before{background:var(--pink)}
+.backbar{
+  position:sticky;top:60px;z-index:40;
+  background:rgba(253,248,241,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.backbar .wrap{display:flex;align-items:center;gap:12px;height:52px}
+.backbar a{
+  display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--pink-deep);
+  font-size:14px;border:1.5px solid var(--pink);background:#fff;border-radius:999px;
+  padding:5px 14px;box-shadow:0 2px 8px rgba(224,120,154,.18);
+  transition:background .2s ease, color .2s ease, box-shadow .2s ease;
+}
+.backbar a:hover{background:var(--pink);color:#fff;box-shadow:0 4px 14px rgba(224,120,154,.35)}
+.backbar .bb-title{font-family:"Noto Serif SC",serif;font-weight:900;font-size:16px;color:var(--ink)}
+
+/* ===== 视图过渡动画 ===== */
+.vt-overlay{
+  position:fixed;z-index:90;overflow:hidden;border-radius:16px;background:#2E2326;
+  transition:left .54s cubic-bezier(.3,.75,.2,1), top .54s cubic-bezier(.3,.75,.2,1),
+    width .54s cubic-bezier(.3,.75,.2,1), height .54s cubic-bezier(.3,.75,.2,1),
+    border-radius .54s cubic-bezier(.3,.75,.2,1), opacity .4s ease;
+  will-change:left,top,width,height;
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
+}
+.vt-overlay img{width:100%;height:100%;object-fit:cover;opacity:.5}
+.vt-overlay.vt-expand{left:0 !important;top:0 !important;width:100vw !important;height:100vh !important;border-radius:0}
+.vt-mask{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(40,28,30,.08) 0%,rgba(40,28,30,.55) 100%);
+}
+.vt-title{
+  position:absolute;left:0;right:0;top:20px;text-align:center;color:#fff;
+  font-family:"Noto Serif SC",serif;font-weight:900;font-size:clamp(24px,4vw,34px);
+  letter-spacing:.08em;text-shadow:0 2px 14px rgba(0,0,0,.55);
+  opacity:0;transform:translateY(14px);
+  transition:opacity .4s ease .18s, transform .4s ease .18s;
+}
+.vt-title-show{opacity:1;transform:translateY(0)}
+.vt-overlay.vt-fade{opacity:0}
+
+/* ===== 底部 ===== */
+footer{border-top:1px solid var(--line);padding:34px 0 42px;text-align:center;color:var(--ink-soft);font-size:13px}
+footer .f-brand{font-family:"Noto Serif SC",serif;font-weight:900;color:var(--ink);font-size:16px;margin-bottom:6px}
+footer .hint{margin-top:14px;color:#A08E87;font-size:12.5px}
+
+/* ===== 响应式 ===== */
+@media (max-width:960px){
+  .cast-grid{grid-template-columns:repeat(3,1fr)}
+  .anime-card{grid-template-columns:280px 1fr}
+}
+@media (max-width:760px){
+  section{padding:54px 0}
+  .nav-links{gap:14px;font-size:13px}
+  .anime-card{grid-template-columns:1fr}
+  .anime-card .cover{aspect-ratio:16/10}
+  .anime-info{padding:20px 22px 24px}
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
+  .cast-grid{grid-template-columns:repeat(2,1fr)}
+  .chip{font-size:13px}
+  .cast p{font-size:14px}
+  .lightbox{padding:18px}
+  .lb-nav{width:40px;height:40px}
+  .char-modal .sheet{grid-template-columns:1fr}
+  .char-modal .cimg{min-height:0;height:36vh}
+  .char-modal .cinfo{padding:20px 20px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 顶部导航 ===== -->
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="#home">
+      <svg class="logo" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="#EF9CB0"/><rect x="6" y="6" width="12" height="12" rx="2" fill="#fff"/><path d="M8.5 9.5h7M8.5 12.5h7M8.5 15.5h4" stroke="#EF9CB0" stroke-width="1.4" stroke-linecap="round"/></svg>
+      追番手账
+    </a>
+    <div class="nav-links">
+      <a href="#anime-list">番列表</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== 一级页：hero + 番列表 ===== -->
+<div id="view-home">
+<header class="hero" id="top">
+  <div class="hero-bg-track">
+    <div class="hero-panel hp1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/M2BdbBJ8zoBhojx7IF2cYRmXnto" alt="轻音少女 平泽唯与中野梓 吉他练习"></div>
+    <div class="hero-panel hp2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DtZHbodACoTZDexwsqqcqNEAn4b" alt="中二病也要谈恋爱 六花与使魔们"></div>
+    <div class="hero-panel hp3"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Cf0ibI4cjo5k3cxGBIuc6Ltande" alt="Charlotte 夏洛特 学生会主视觉"></div>
+    <div class="hero-panel hp4"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/N1XLbpVDWo7mIxxpBAWclB4Ynrc" alt="某科学的超电磁炮 御坂美琴 电光"></div>
+    <div class="hero-panel hp5"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/I0DXb6gQsoEyImxAE1ncDQB1nBb" alt="地。关于地球的运动 星轨主视觉"></div>
+    <div class="hero-panel hp1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/M2BdbBJ8zoBhojx7IF2cYRmXnto" alt="轻音少女 平泽唯与中野梓 吉他练习"></div>
+    <div class="hero-panel hp2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DtZHbodACoTZDexwsqqcqNEAn4b" alt="中二病也要谈恋爱 六花与使魔们"></div>
+    <div class="hero-panel hp3"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Cf0ibI4cjo5k3cxGBIuc6Ltande" alt="Charlotte 夏洛特 学生会主视觉"></div>
+    <div class="hero-panel hp4"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/N1XLbpVDWo7mIxxpBAWclB4Ynrc" alt="某科学的超电磁炮 御坂美琴 电光"></div>
+    <div class="hero-panel hp5"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/I0DXb6gQsoEyImxAE1ncDQB1nBb" alt="地。关于地球的运动 星轨主视觉"></div>
+  </div>
+  <div class="wrap">
+    <div class="kicker">MY ANIME JOURNAL</div>
+    <h1>Three<sup>'s</sup><br>追番手账</h1>
+    <p class="sub">把看过的每一部动画、每一个心动的瞬间，都记进这本手账里。<br>点开任意一部番的卡片，进入它的专属记录页。</p>
+    <div class="scroll-hint">往下翻
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+  </div>
+</header>
+
+  <section id="anime-list">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">MY ANIME LIST</span>
+        <h2>追番列表</h2>
+        <p>点开任意一部番的卡片，进入它的记录页：简介、角色、收藏图都在里面。</p>
+      </div>
+      <div class="tap-hint">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 11.5 4 10.5l2-4.5c.4-.9 1.4-1.3 2.3-.9l3 1.4c1.5.7 2.7 2 3.2 3.5l.6 1.6A4.5 4.5 0 0 1 19.5 16v1a3 3 0 0 1-3 3h-4.2a4 4 0 0 1-2.9-1.2L4.5 14.2"/><path d="M10 3a2 2 0 0 1 4 0"/></svg>
+        点一下卡片，进入它的专属记录页
+      </div>
+      <div class="anime-grid">
+        <!-- 每部番一张卡片：复制这个 .anime-tile，替换 data-id（如 kon）、底图、番名；链接 hash 用同一 id，如 #anime/kon，对应二级块 id view-anime-kon -->
+        <a class="anime-tile" href="#anime/kon" data-id="kon">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FKo2bs1U1odVt7x8d48c04vZntf" alt="轻音少女封面">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>轻音少女！</h3>
+            <div class="tjp">けいおん！ K-ON!</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <a class="anime-tile" href="#anime/chuuni" data-id="chuuni">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DtZHbodACoTZDexwsqqcqNEAn4b" alt="中二病也要谈恋爱 封面">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>中二病也要谈恋爱！</h3>
+            <div class="tjp">中二病でも恋がしたい！ Chuunibyou Demo Koi ga Shitai!</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <!-- SLICE1-TILE-BEGIN -->
+        <a class="anime-tile" href="#anime/charlotte" data-id="charlotte">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Cf0ibI4cjo5k3cxGBIuc6Ltande" alt="Charlotte 夏洛特 主视觉">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>Charlotte（夏洛特）</h3>
+            <div class="tjp">シャーロット Charlotte</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <a class="anime-tile" href="#anime/cells" data-id="cells">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MEnib7N7XoArBoxbRJtcs8D4nFg" alt="工作细胞 主视觉">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>工作细胞</h3>
+            <div class="tjp">はたらく細胞 Cells at Work!</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <a class="anime-tile" href="#anime/hanako" data-id="hanako">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TfhLbFzNuo9AUYxZqIqcfzjxntg" alt="地缚少年花子君 主视觉">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>地缚少年花子君</h3>
+            <div class="tjp">地縛少年花子くん Toilet-Bound Hanako-kun</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <a class="anime-tile" href="#anime/spy" data-id="spy">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JyXdbvMjlo2rcRxV3p2cPgcqndf" alt="间谍过家家 主视觉">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>间谍过家家</h3>
+            <div class="tjp">SPY×FAMILY</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <!-- SLICE1-TILE-END -->
+        <!-- SLICE2-TILE-BEGIN -->
+        <a class="anime-tile" href="#anime/eva" data-id="eva">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YFZsbWbBwoddB4xeithcVJKWntc" alt="新世纪福音战士 EVA 封面">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>新世纪福音战士</h3>
+            <div class="tjp">新世紀エヴァンゲリオン Neon Genesis Evangelion</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <a class="anime-tile" href="#anime/kimetsu" data-id="kimetsu">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/UfzBbASXAo2XM4x7ZpBcJ64jnGf" alt="鬼灭之刃 封面">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>鬼灭之刃</h3>
+            <div class="tjp">鬼滅の刃 Demon Slayer</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <a class="anime-tile" href="#anime/anohana" data-id="anohana">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/V48bbVb5Honecdxdu9McqtJjnEC" alt="未闻花名 封面">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>未闻花名</h3>
+            <div class="tjp">あの日見た花の名前を僕達はまだ知らない。 anohana</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <a class="anime-tile" href="#anime/initiald" data-id="initiald">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/APE3bPOgCoay1RxdDu9cXhPZn4f" alt="头文字D 封面">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>头文字D</h3>
+            <div class="tjp">頭文字D Initial D</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <!-- SLICE2-TILE-END -->
+        <!-- SLICE3-TILE-BEGIN -->
+        <a class="anime-tile" href="#anime/clannad" data-id="clannad">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Uu0ubSI3OoOhCjxiYpycu84Jncg" alt="CLANNAD After Story 主视觉">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>CLANNAD</h3>
+            <div class="tjp">CLANNAD -クラナド-</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <a class="anime-tile" href="#anime/railgun" data-id="railgun">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/N1XLbpVDWo7mIxxpBAWclB4Ynrc" alt="某科学的超电磁炮 主视觉">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>某科学的超电磁炮</h3>
+            <div class="tjp">とある科学の超電磁砲 A Certain Scientific Railgun</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <a class="anime-tile" href="#anime/girlslt" data-id="girlslt">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/VF96butA8oTV1dxkNFNcD9lbnAb" alt="少女终末旅行 主视觉">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>少女终末旅行</h3>
+            <div class="tjp">少女終末旅行 Girls' Last Tour</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <a class="anime-tile" href="#anime/shigatsu" data-id="shigatsu">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/INDGbFpXFovAKgxAce0cJS5OnFh" alt="四月是你的谎言 主视觉">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>四月是你的谎言</h3>
+            <div class="tjp">四月は君の嘘 Your Lie in April</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <!-- SLICE3-TILE-END -->
+        <!-- SLICE4-TILE-BEGIN -->
+        <a class="anime-tile" href="#anime/wataten" data-id="wataten">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YFdZbJoNIoN8ynxKV5FcQuP7nJh" alt="天使降临到我身边 封面">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>天使降临到我身边！</h3>
+            <div class="tjp">私に天使が舞い降りた！ Wataten!: An Angel Flew Down to Me</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <a class="anime-tile" href="#anime/violet" data-id="violet">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/D4yYb1dgXow5fmxkTNwcetenn7g" alt="紫罗兰永恒花园 封面">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>紫罗兰永恒花园</h3>
+            <div class="tjp">ヴァイオレット・エヴァーガーデン Violet Evergarden</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <a class="anime-tile" href="#anime/henneko" data-id="henneko">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ODoHbyUEhoVrYyx6n64cNCgxnAK" alt="变态王子与不笑猫 封面">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>变态王子与不笑猫。</h3>
+            <div class="tjp">変態王子と笑わない猫。 The "Hentai" Prince and the Stony Cat.</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <a class="anime-tile" href="#anime/chikyu" data-id="chikyu">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/I0DXb6gQsoEyImxAE1ncDQB1nBb" alt="地。关于地球的运动 封面">
+          <div class="tile-mask"></div>
+          <div class="tile-text">
+            <h3>地。关于地球的运动</h3>
+            <div class="tjp">チ。―地球の運動について― Orb: On the Movements of the Earth</div>
+            <span class="tile-status">已看完</span>
+          </div>
+        </a>
+        <!-- SLICE4-TILE-END -->
+        <div class="anime-tile placeholder">下一部番 · 待定</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 底部（仅一级页显示） ===== -->
+  <footer>
+    <div class="wrap">
+      <div class="f-brand">追番手账</div>
+      <div>MY ANIME JOURNAL · 记下每一部看过的动画</div>
+      <div class="hint">想添加新的动画？直接告诉我番名，我会按同样的格式把它加进手账。</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ===== 二级页：番详情（每部番一个 view-anime 块，新增番时复制一份并改 id / 内容） ===== -->
+<div id="view-anime-kon" class="view-anime bg-kon">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">轻音少女！</span>
+    </div>
+  </div>
+
+<!-- ===== 追番记录 ===== -->
+<section class="records" id="records">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WATCH LOG</span>
+      <h2>追番记录</h2>
+      <p>每一部都是完整看完才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+    </div>
+
+    <!-- 单部番卡片模板：往后新增动画，复制这一个 .anime-card 结构，替换封面图与文字即可 -->
+    <article class="anime-card">
+      <div class="cover">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FKo2bs1U1odVt7x8d48c04vZntf" alt="轻音少女 放学后的练习室">
+        <span class="status-badge">已看完</span>
+      </div>
+      <div class="anime-info">
+        <div class="title-line">
+          <h3>轻音少女！</h3>
+          <span class="jp">けいおん！ K-ON!</span>
+        </div>
+        <div class="meta-line">
+          <span class="chip">首播 <b>2009</b></span>
+          <span class="chip">制作 <b>京都动画</b></span>
+          <span class="chip">类型 <b>日常 / 校园 / 音乐</b></span>
+          <span class="chip">追完 <b>TV 两季 + 剧场版</b></span>
+        </div>
+        <p class="desc">改编自かきふらい连载于芳文社的四格漫画。樱丘高中轻音部眼看就要因缺人废部，天然呆少女平泽唯一句"轻音部是什么意思呀"闯了进来，于是四位一年级生加上后来加入的后辈中野梓，组成了放学后喝茶聊天、顺带练练乐队的放课后Tea Time。喝茶、甜品、Live，还有一起度过的每一个平凡又闪亮的放学后。</p>
+        <div class="note"><span class="who">我的短评：</span>一部让人看完想把吉他捡起来的动画。京都动画的作画和配乐把"青春"两个字揉得又软又亮，最后一集和剧场版每次看都会眼眶发热。想改自己的短评随时告诉我。</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ===== 轻音部成员 ===== -->
+<section class="cast-sec" id="cast">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">HO-KAGO TEA TIME</span>
+      <h2>樱丘高中 · 轻音部</h2>
+      <p>五个人，四件乐器，一间部室，和数不清的纸杯蛋糕。</p>
+    </div>
+    <div class="cast-grid">
+      <div class="cast" data-char="yui">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Mc4gbZWaSoh7eUxgKndcUedvnue" alt="平泽唯 Q版头像"></div>
+        <h4>平泽唯</h4><div class="romaji">Yui Hirasawa</div>
+        <div class="duty">吉他 · 主唱</div>
+        <p>天然呆担当，为了一口蛋糕什么都能做。轻音部的起点。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="mio">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/IMgybHKPvomvgXxIkoucGElmnKf" alt="秋山澪 Q版头像"></div>
+        <h4>秋山澪</h4><div class="romaji">Mio Akiyama</div>
+        <div class="duty">贝斯 · 词曲</div>
+        <p>怕鬼怕高、外冷内热的贝斯手，认真起来是全队的定心丸。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="ritsu">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Tg2zb1OI9oHztVxuRdDcUEs8nag" alt="田井中律 Q版头像"></div>
+        <h4>田井中律</h4><div class="romaji">Ritsu Tainaka</div>
+        <div class="duty">鼓手 · 部长</div>
+        <p>元气满满的轻音部部长，负责把大家（尤其澪）逗得团团转。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="mugi">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DjK8by1drob0H5xHlI6cnGJMnRf" alt="琴吹紬 Q版头像"></div>
+        <h4>琴吹紬</h4><div class="romaji">Tsumugi Kotobuki</div>
+        <div class="duty">键盘</div>
+        <p>温柔的大小姐，家里有游泳池和别墅，梦想却是当个普通高中生。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="azusa">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/J5kEbtLyvozG0FxFV8BcNPSanlb" alt="中野梓 Q版头像"></div>
+        <h4>中野梓</h4><div class="romaji">Azusa Nakano</div>
+        <div class="duty">吉他 · 后辈</div>
+        <p>认真到会被前辈带偏节奏的后辈，全队唯一"正常"的人。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 图片收藏 ===== -->
+<section class="gallery-sec" id="gallery">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GALLERY</span>
+      <h2>图片收藏</h2>
+      <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AxfRb5w98ohayHxS2adccZfjn4d" alt="轻音少女 五人 · 蓝天合影"><figcaption>放学后的茶会 · 五人合影</figcaption></figure>
+      <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TrSZbScgvoO1Inxhv2ScbGM7nxd" alt="轻音少女 部室里的五人"><figcaption>部室墙上的"放课后Tea Time"</figcaption></figure>
+      <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/NnjpbCbjfoPPZfxnCJOcs0THnVg" alt="轻音少女 晴空下的四人"><figcaption>晴空下的日常</figcaption></figure>
+      <figure class="g-item" data-gi="3"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MhTSbd3tXoU9PGxiXtFcczqYn8G" alt="轻音少女 练习室演奏"><figcaption>"部员募集！"练习时间</figcaption></figure>
+      <figure class="g-item" data-gi="4"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JeAkb8fOPooZ3wxbcFbcKRIYn9c" alt="轻音少女 秋山澪 · 秋日湖畔"><figcaption>秋山澪 · 秋日湖畔</figcaption></figure>
+      <figure class="g-item" data-gi="5"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FKo2bs1U1odVt7x8d48c04vZntf" alt="轻音少女 放学后的练习室"><figcaption>放学后的练习室</figcaption></figure>
+      <figure class="g-item" data-gi="6"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/LAPVbDvL3oBIZaxbYRgcJjzenNd" alt="轻音少女 夏日树荫午休"><figcaption>夏日 · 树荫下的午休</figcaption></figure>
+      <figure class="g-item" data-gi="7"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EQqCbdZQwoW6wAxvLW2ci8sgnAc" alt="轻音少女 官方海报"><figcaption>官方海报 · "想悄悄传达给你"</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ===== 二级页：中二病也要谈恋爱 ===== -->
+<div id="view-anime-chuuni" class="view-anime bg-chuuni">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">中二病也要谈恋爱！</span>
+    </div>
+  </div>
+
+<!-- ===== 追番记录 ===== -->
+<section class="records" id="records-c2">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WATCH LOG</span>
+      <h2>追番记录</h2>
+      <p>每一部都是认真看过才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+    </div>
+
+    <article class="anime-card">
+      <div class="cover">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DtZHbodACoTZDexwsqqcqNEAn4b" alt="中二病也要谈恋爱 封面大图">
+        <span class="status-badge">已看完</span>
+      </div>
+      <div class="anime-info">
+        <div class="title-line">
+          <h3>中二病也要谈恋爱！</h3>
+          <span class="jp">中二病でも恋がしたい！ Chuunibyou Demo Koi ga Shitai!</span>
+        </div>
+        <div class="meta-line">
+          <span class="chip">首播 <b>2012</b></span>
+          <span class="chip">制作 <b>京都动画</b></span>
+          <span class="chip">类型 <b>恋爱 / 校园 / 喜剧</b></span>
+          <span class="chip">进度 <b>已看完</b></span>
+        </div>
+        <p class="desc">改编自虎虎创作的轻小说、京都动画制片的校园恋爱喜剧。高一开学第一天，决心告别中二黑历史的富樫勇太，被坚信他是"漆黑烈火使"的同班少女小鸟游六花缠上——邪王真眼、森大人、雷神战机，一场又羞耻又闪光的妄想青春就此展开。恋爱、友情，还有不肯长大的夏天，全都留在了八坂高中。</p>
+        <div class="note"><span class="who">我的短评：</span>一篇写给所有"曾经中二"的人的情书——邪王真眼不是逃避现实，而是守住天真。这句是我先占的位，等你看到后面想改随时告诉我。</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ===== 角色 ===== -->
+<section class="cast-sec" id="cast-c2">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">極東魔術昼寝結社の夏</span>
+      <h2>私立八坂高中 · 极东魔术昼寝结社</h2>
+      <p>六个人，一堆妄想，和一个不肯长大的夏天。</p>
+    </div>
+    <div class="cast-grid cg6">
+      <div class="cast" data-char="rikka">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Mb7mbKv7Col4raxzMtTcdLF7nHb" alt="小鸟游六花 Q版头像"></div>
+        <h4>小鸟游六花</h4><div class="romaji">Rikka Takanashi</div>
+        <div class="duty">邪王真眼</div>
+        <p>坚信自己是"邪王真眼使"的少女，眼罩底下藏着一整个幻想宇宙。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="yuta">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/WCsTbPHL6or5ZUxJY3QcrQI6nOd" alt="富樫勇太 Q版头像"></div>
+        <h4>富樫勇太</h4><div class="romaji">Yuuta Togashi</div>
+        <div class="duty">漆黑烈火使</div>
+        <p>想做个普通高中生的前中二病，却逃不开六花的"契约"。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="shinka">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZbD6b9rFDoQ3p0x3beacG58On9s" alt="丹生谷森夏 Q版头像"></div>
+        <h4>丹生谷森夏</h4><div class="romaji">Shinka Nibutani</div>
+        <div class="duty">森大人</div>
+        <p>学生会会长候补，对黑历史深恶痛绝的现充大小姐。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="kumin">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/H9Qcbixa7ouATexogcGcF3OBnWg" alt="五月七日茴香 Q版头像"></div>
+        <h4>五月七日茴香</h4><div class="romaji">Kumin Tsuyuri</div>
+        <div class="duty">软绵绵前辈</div>
+        <p>二年级的软萌学姐，口头禅是"软绵绵的时间"。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="deko">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/IyTSbsxvTo5p1UxTfuDch8X9nPN" alt="凸守早苗 Q版头像"></div>
+        <h4>凸守早苗</h4><div class="romaji">Sanae Dekomori</div>
+        <div class="duty">雷神战机</div>
+        <p>自称"雷神战机"的元气后辈，森大人的头号弟子。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="satone">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Ab0Ob4zito2SQzx74eucTXvpnob" alt="七宫智音 Q版头像"></div>
+        <h4>七宫智音</h4><div class="romaji">Satone Shichimiya</div>
+        <div class="duty">魔法魔王少女</div>
+        <p>勇太的小学同学，自称"魔法魔王少女"的转学生。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 图片收藏 ===== -->
+<section class="gallery-sec" id="gallery-c2">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GALLERY</span>
+      <h2>图片收藏</h2>
+      <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DtZHbodACoTZDexwsqqcqNEAn4b" alt="中二病 六花与她的使魔们"><figcaption>昼寝结社 · 六花与她的"使魔们"</figcaption></figure>
+      <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DUuZbzgAooEGdKxQBCPcGiuXnik" alt="中二病 邪王真眼夜之城"><figcaption>邪王真眼 · 夜之城</figcaption></figure>
+      <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QPw6bGh0hoUFVSxl2LLcADgenNg" alt="中二病 新春参拜"><figcaption>新春参拜 · 脸贴脸的暖意</figcaption></figure>
+      <figure class="g-item" data-gi="3"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TTIfbCOd2oEUn1x3yvpc0qUbnJK" alt="中二病 地板上的青春"><figcaption>地板上的青春 · 和一只黑猫</figcaption></figure>
+      <figure class="g-item" data-gi="4"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/O0A1bh0cmoa23RxShYOc54oenAg" alt="中二病 勇太与森夏"><figcaption>勇太 & 森夏 · 冤家日常</figcaption></figure>
+      <figure class="g-item" data-gi="5"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DBhObJuavoHUbLx5gwccBu1WnCe" alt="中二病 冬日神社"><figcaption>冬日神社 · 指额头的约定</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- SLICE1-VIEW-BEGIN -->
+<div id="view-anime-charlotte" class="view-anime bg-charlotte">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">Charlotte（夏洛特）</span>
+    </div>
+  </div>
+
+<section class="records" id="records-c1">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WATCH LOG</span>
+      <h2>追番记录</h2>
+      <p>每一部都是认真看完才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+    </div>
+    <article class="anime-card">
+      <div class="cover">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Cf0ibI4cjo5k3cxGBIuc6Ltande" alt="Charlotte 夏洛特 学生会四人">
+        <span class="status-badge">已看完</span>
+      </div>
+      <div class="anime-info">
+        <div class="title-line">
+          <h3>Charlotte（夏洛特）</h3>
+          <span class="jp">シャーロット Charlotte</span>
+        </div>
+        <div class="meta-line">
+          <span class="chip">首播 <b>2015</b></span>
+          <span class="chip">制作 <b>P.A.WORKS</b></span>
+          <span class="chip">类型 <b>校园 / 超能力 / 青春</b></span>
+          <span class="chip">进度 <b>已看完</b></span>
+        </div>
+        <p class="desc">麻枝准担任原作与脚本、P.A.WORKS 制作的原创动画。星之海学园收容着一群短暂持有特殊能力的少年少女——乙坂有宇能附身他人五秒，却被学生会长友利奈绪当场抓住。每份能力都带着代价：高城的高速移动停不下来，柚咲的身体里住着已故姐姐的灵魂。当妹妹步未的意外撕碎日常，有宇独自踏上掠夺全世界能力的孤独旅程。</p>
+        <div class="note"><span class="who">我的短评：</span>麻枝准式的"笑着哭"。前半是学生会的日常喜剧，后半急转直下成一场世界规模的救赎。最后有宇说"我拯救了世界，却忘了最重要的人"，谁看谁破防。</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="cast-sec" id="cast-c1">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">星ノ海学園生徒会</span>
+      <h2>星之海学园 · 学生会</h2>
+      <p>一群能力有缺陷的少年少女，和他们拼命想要守住的日常。</p>
+    </div>
+    <div class="cast-grid cg6">
+      <div class="cast" data-char="charlotte_yu">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HdWcbeSEAo4CuoxFekGckW5dnWc" alt="乙坂有宇 头像"></div>
+        <h4>乙坂有宇</h4><div class="romaji">Yuu Otosaka</div>
+        <div class="duty">主角 · 能力者</div>
+        <p>表面玩世不恭的作弊少年，为了妹妹可以赌上一切。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="charlotte_nao">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/NQAnbg5Kqo5FGkxib1tc1BjknLf" alt="友利奈绪 头像"></div>
+        <h4>友利奈绪</h4><div class="romaji">Nao Tomori</div>
+        <div class="duty">学生会长</div>
+        <p>强硬又傲娇的学生会长，其实是乐队 ZHIEND 的死忠粉。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="charlotte_yusa">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/SnVtbzW10ouuLYxeEjVcsPvdnQc" alt="西森柚咲 头像"></div>
+        <h4>西森柚咲</h4><div class="romaji">Yusa Nishimori</div>
+        <div class="duty">现役偶像</div>
+        <p>笑容甜美的高中生偶像，身体里偶尔会住进姐姐美砂。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="charlotte_takajo">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZQqhblAYYoUbFtxzmzBc03FUnZ0" alt="高城丈士朗 头像"></div>
+        <h4>高城丈士朗</h4><div class="romaji">Jojiro Takajo</div>
+        <div class="duty">学生会成员</div>
+        <p>戴眼镜的绅士，实则柚咲脑残粉，高速移动却急停不能。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="charlotte_ayumi">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MiKMbZ154o0t23xof0ycz7dJnqf" alt="乙坂步未 头像"></div>
+        <h4>乙坂步未</h4><div class="romaji">Ayumi Otosaka</div>
+        <div class="duty">有宇的妹妹</div>
+        <p>温柔的妹系少女，天然呆，最拿手的是做蛋包饭。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="charlotte_kumagami">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/I1CpbCS4yoL1z6xmCxNcOUF0nqc" alt="熊耳 头像"></div>
+        <h4>熊耳</h4><div class="romaji">Kumagami</div>
+        <div class="duty">学生会协力者</div>
+        <p>总是全身湿透的神秘青年，用水滴和地图就能定位能力者。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-sec" id="gallery-c1">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GALLERY</span>
+      <h2>图片收藏</h2>
+      <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Cf0ibI4cjo5k3cxGBIuc6Ltande" alt="Charlotte 学生会四人"><figcaption>学生会四人 · 青空之下</figcaption></figure>
+      <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/UW1QbRmNWo4v8KxxKZKcXBVsn5d" alt="Charlotte 夜晚五人"><figcaption>星之海的夜晚 · 五人集合</figcaption></figure>
+      <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QadabrRSdomJ1axJp0gcG0Vmnab" alt="官方版权绘"><figcaption>官方版权绘 · 学生会四人</figcaption></figure>
+      <figure class="g-item" data-gi="3"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/R3m8bOARzoGFUbxb49Qcjda9nxg" alt="角色群像"><figcaption>角色群像 · 白底立绘</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+
+<div id="view-anime-cells" class="view-anime bg-cells">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">工作细胞</span>
+    </div>
+  </div>
+
+<section class="records" id="records-c2b">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WATCH LOG</span>
+      <h2>追番记录</h2>
+      <p>每一部都是认真看完才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+    </div>
+    <article class="anime-card">
+      <div class="cover">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MEnib7N7XoArBoxbRJtcs8D4nFg" alt="工作细胞 主视觉">
+        <span class="status-badge">已看完</span>
+      </div>
+      <div class="anime-info">
+        <div class="title-line">
+          <h3>工作细胞</h3>
+          <span class="jp">はたらく細胞 Cells at Work!</span>
+        </div>
+        <div class="meta-line">
+          <span class="chip">首播 <b>2018</b></span>
+          <span class="chip">制作 <b>David Production</b></span>
+          <span class="chip">类型 <b>科普 / 喜剧 / 动作</b></span>
+          <span class="chip">进度 <b>已看完</b></span>
+        </div>
+        <p class="desc">改编自清水茜同名漫画，把人体内约 37 兆 2 千亿个细胞全部拟人化。戴红帽的红细胞 AE3803 每天吭哧吭哧送氧气，戴白帽的中性粒细胞 U-1146 见菌就砍，小个子血小板们手拉手结成血栓堵伤口。肺炎球菌、金黄色葡萄球菌、擦伤、感冒……你身体里的每一场战役，都有这群"上班族"在拼命。</p>
+        <div class="note"><span class="who">我的短评：</span>把枯燥的生物课变成热血战斗番，看完真的会对自己身体里的细胞产生感情。血小板一集比一集可爱，巨噬姐姐挥大太刀的时候又飒又美。</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="cast-sec" id="cast-c2b">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">はたらく細胞</span>
+      <h2>你身体里的细胞们</h2>
+      <p>今天也在无名的血管里，为你拼命工作。</p>
+    </div>
+    <div class="cast-grid">
+      <div class="cast" data-char="cells_rbc">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/V8rrbUGHOofK9axFR5ScHKqWnYg" alt="红细胞 头像"></div>
+        <h4>红细胞</h4><div class="romaji">AE3803 · Red Blood Cell</div>
+        <div class="duty">氧气配送</div>
+        <p>路痴又冒失的新人配送员，送货路上总被白细胞救下。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="cells_wbc">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Vd6jbVLvgovBT2x3OcbcLJwHnYg" alt="白细胞 头像"></div>
+        <h4>白细胞</h4><div class="romaji">U-1146 · White Blood Cell</div>
+        <div class="duty">除菌部队</div>
+        <p>冷酷高效的中性粒细胞，永远第一个冲向细菌。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="cells_platelet">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/InEgbLu1AorZ6FxccLWcYEJmnFK" alt="血小板 头像"></div>
+        <h4>血小板</h4><div class="romaji">Platelet</div>
+        <div class="duty">止血凝血</div>
+        <p>个头最小的幼女军团，手拉手结成血栓堵住伤口。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="cells_killt">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TjuAbvRgyoNe2yxdWJicgLp7nJg" alt="杀手T细胞 头像"></div>
+        <h4>杀手T细胞</h4><div class="romaji">Killer T Cell</div>
+        <div class="duty">攻击部队</div>
+        <p>一身肌肉的处刑者，大喊"KILL"扑向被感染的细胞。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="cells_macro">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ESCFbv5ICoj6Ftx7Epwc8Jn7nmh" alt="巨噬细胞 头像"></div>
+        <h4>巨噬细胞</h4><div class="romaji">Macrophage</div>
+        <div class="duty">清扫警备</div>
+        <p>穿女仆装、挥大太刀的优雅姐姐，战力其实爆表。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-sec" id="gallery-c2b">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GALLERY</span>
+      <h2>图片收藏</h2>
+      <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MEnib7N7XoArBoxbRJtcs8D4nFg" alt="工作细胞 主视觉"><figcaption>红细胞与白细胞 · 体内大作战</figcaption></figure>
+      <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/CfStbQAu2oNmPNxrKuNcQsrcnog" alt="血小板们"><figcaption>血小板们 · 蜂蜜与矿泉水</figcaption></figure>
+      <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Ak09bH4odoSY06xjrxfcyf38nZg" alt="血小板列队"><figcaption>血小板列队 · 全体集合</figcaption></figure>
+      <figure class="g-item" data-gi="3"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Z3IbbnFhVowbhVxZ9oJcE4kMnCh" alt="白细胞 U-1146"><figcaption>第二季海报 · 体内大作战</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+<div id="view-anime-hanako" class="view-anime bg-hanako">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">地缚少年花子君</span>
+    </div>
+  </div>
+
+<section class="records" id="records-c3">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WATCH LOG</span>
+      <h2>追番记录</h2>
+      <p>每一部都是认真看完才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+    </div>
+    <article class="anime-card">
+      <div class="cover">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TfhLbFzNuo9AUYxZqIqcfzjxntg" alt="地缚少年花子君 屋顶跳跃五人">
+        <span class="status-badge">已看完</span>
+      </div>
+      <div class="anime-info">
+        <div class="title-line">
+          <h3>地缚少年花子君</h3>
+          <span class="jp">地縛少年花子くん Toilet-Bound Hanako-kun</span>
+        </div>
+        <div class="meta-line">
+          <span class="chip">首播 <b>2020</b></span>
+          <span class="chip">制作 <b>Lerche</b></span>
+          <span class="chip">类型 <b>校园 / 怪谈 / 恋爱</b></span>
+          <span class="chip">进度 <b>已看完</b></span>
+        </div>
+        <p class="desc">改编自あいだいろ漫画。海鸥学园流传着"旧校舍三楼女厕所第三间的花子同学会实现愿望"的传说。渴望恋爱的八寻宁宁撞进花子的地盘，被变成了金鱼腿，还成了他的助手。这位戴旧制帽、脸颊贴着"封"字符的少年，原来就是学院七大不可思议之第七位。华丽怪谈与青涩恋情，在傍晚的旧校舍里悄悄发酵。</p>
+        <div class="note"><span class="who">我的短评：</span>美术风格独树一帜，像绘本又像浮世绘。宁宁的花痴与花子的温柔反差萌，每集结尾都留钩子，又甜又刀。</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="cast-sec" id="cast-c3">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">七不思議</span>
+      <h2>海鸥学园 · 怪异与少年少女</h2>
+      <p>旧校舍的傍晚，厕所的第三间，等着来访的人。</p>
+    </div>
+    <div class="cast-grid cg6">
+      <div class="cast" data-char="hanako_hanako">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/IZoobLWDkohaPhxEzfOcycBFnCd" alt="花子君 头像"></div>
+        <h4>花子君</h4><div class="romaji">Hanako-kun / 柚木普</div>
+        <div class="duty">第七大不可思议</div>
+        <p>戴旧制帽的幽灵少年，表面调皮爱逗宁宁，实则背负沉重过往。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="hanako_nene">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/URJkbN913oJhnExVIeKcJd8Qngr" alt="八寻宁宁 头像"></div>
+        <h4>八寻宁宁</h4><div class="romaji">Nene Yashiro</div>
+        <div class="duty">主人公 · 助手</div>
+        <p>渴望恋爱的女生，因捡到海之 selenium 变成了金鱼腿。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="hanako_light">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/LQvyb82UxoHA6YxXNiycjk1hnnh" alt="源光 头像"></div>
+        <h4>源光</h4><div class="romaji">Ko Minamoto</div>
+        <div class="duty">驱魔师一族</div>
+        <p>源家次子，拿着雷霆法杖，一开始总想除掉花子。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="hanako_akane">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/GexEbywxwoQ7qXxKSGXcObwLnLg" alt="苍井茜 头像"></div>
+        <h4>苍井茜</h4><div class="romaji">Akane Aoi</div>
+        <div class="duty">学生会副会长</div>
+        <p>红发认真男，深爱着赤根葵，能力是在校内暂停时间。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="hanako_mitsukri">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Bzl9brjgHoZciGxrXWRc2uJenOd" alt="源辉 头像"></div>
+        <h4>源辉</h4><div class="romaji">Teru Minamoto</div>
+        <div class="duty">学生会长</div>
+        <p>源光的哥哥，文武双全的理想前辈，专业除妖。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="hanako_sakura">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MgHhbFW06oSomQx5W7WcmnGxnUe" alt="七峰樱 头像"></div>
+        <h4>七峰樱</h4><div class="romaji">Sakura Nanamine</div>
+        <div class="duty">神秘少女</div>
+        <p>绿发、戴宝石胸针，站在怪异一侧的谜之转学生。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-sec" id="gallery-c3">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GALLERY</span>
+      <h2>图片收藏</h2>
+      <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TfhLbFzNuo9AUYxZqIqcfzjxntg" alt="花子君 屋顶跳跃"><figcaption>屋顶上的五人 · 一起跳起来</figcaption></figure>
+      <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/T2sybkIbzogeLpxtiSncpWLcnub" alt="万圣节主视觉"><figcaption>万圣节主视觉 · 全员狂欢</figcaption></figure>
+      <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/OKlkbpnAJoxWUsxQ0TVcrf21n6d" alt="花子与宁宁"><figcaption>花子与宁宁 · 红墙之下</figcaption></figure>
+      <figure class="g-item" data-gi="3"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MC0mbwmEjotvJDxwvBOcWw2Nn6c" alt="花子与宁宁"><figcaption>花子与宁宁 · 暗红亲昵</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+
+<div id="view-anime-spy" class="view-anime bg-spy">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">间谍过家家</span>
+    </div>
+  </div>
+
+<section class="records" id="records-c4">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WATCH LOG</span>
+      <h2>追番记录</h2>
+      <p>每一部都是认真看完才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+    </div>
+    <article class="anime-card">
+      <div class="cover">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JyXdbvMjlo2rcRxV3p2cPgcqndf" alt="间谍过家家 福杰一家">
+        <span class="status-badge">已看完</span>
+      </div>
+      <div class="anime-info">
+        <div class="title-line">
+          <h3>间谍过家家</h3>
+          <span class="jp">SPY×FAMILY</span>
+        </div>
+        <div class="meta-line">
+          <span class="chip">首播 <b>2022</b></span>
+          <span class="chip">制作 <b>WIT × CloverWorks</b></span>
+          <span class="chip">类型 <b>谍报 / 家庭喜剧 / 动作</b></span>
+          <span class="chip">进度 <b>已看完</b></span>
+        </div>
+        <p class="desc">远藤达哉原作。西国王牌间谍"黄昏"为执行"枭"作战，48 小时内组建假家庭：领养了会读心的女儿阿尼亚，娶了表面公务员、实则杀手"荆棘公主"的约尔。三人各怀秘密，却在假扮家人的日子里渐渐变成真正的家人。阿尼亚在伊甸学园拼命刷星星，家犬邦德还能预知未来——和平，就靠这个鸡飞狗跳的家了。</p>
+        <div class="note"><span class="who">我的短评：</span>近年最稳的合家欢番，每个梗都不尬。阿尼亚的表情包统治了全网，约尔妈妈又强又呆，温馨里还藏着谍战的紧张感。</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="cast-sec" id="cast-c4">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">フォージャー家</span>
+      <h2>福杰家 · 彼此隐瞒的一家人</h2>
+      <p>间谍、杀手、读心超能力者，和一只会预知未来的狗。</p>
+    </div>
+    <div class="cast-grid">
+      <div class="cast" data-char="spy_loid">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HDamb6u27oa3HWx87OFcaP6AnJd" alt="劳埃德 头像"></div>
+        <h4>劳埃德·福杰</h4><div class="romaji">Loid Forger / 黄昏</div>
+        <div class="duty">间谍爸爸</div>
+        <p>西国精英间谍，扮演温和精神科医生，实则战术狂魔。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="spy_yor">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FnnibGmETo3FYBxduMocSR6nnre" alt="约尔 头像"></div>
+        <h4>约尔·福杰</h4><div class="romaji">Yor Forger / 荆棘公主</div>
+        <div class="duty">杀手妈妈</div>
+        <p>高战力职业杀手，脱下武器后生活上却意外天然呆。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="spy_anya">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/UP3qbPLN7oXlyaxp6rmcbUUynef" alt="阿尼亚 头像"></div>
+        <h4>阿尼亚·福杰</h4><div class="romaji">Anya Forger</div>
+        <div class="duty">读心女儿</div>
+        <p>实验体 007，能读心却从不声张，行走的表情包女王。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="spy_bond">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/SyNtbOLlnoJrZ8x6AH8clMUonag" alt="邦德 头像"></div>
+        <h4>邦德·福杰</h4><div class="romaji">Bond Forger</div>
+        <div class="duty">预知犬</div>
+        <p>"苹果计划"实验动物，体型庞大却温柔，能预知未来。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="spy_damian">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XTOlb7xpSocDLMxOaUHcT5NSnxe" alt="达米安 头像"></div>
+        <h4>达米安·德斯蒙</h4><div class="romaji">Damian Desmond</div>
+        <div class="duty">伊甸学园同学</div>
+        <p>目标多诺万的次子，傲娇富二代，被阿尼亚一拳打出好感。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-sec" id="gallery-c4">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GALLERY</span>
+      <h2>图片收藏</h2>
+      <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JyXdbvMjlo2rcRxV3p2cPgcqndf" alt="福杰一家"><figcaption>福杰一家 · 藏起身份的合影</figcaption></figure>
+      <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FfXjbgO6soaGcuxkdHqc6lNInGd" alt="官方主视觉"><figcaption>官方主视觉 · 一家与邦德</figcaption></figure>
+      <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZxDFbb84loDKcjxgQOicLCYqnMe" alt="温馨全家福"><figcaption>温馨全家福 · 高清壁纸</figcaption></figure>
+      <figure class="g-item" data-gi="3"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HDm6ba0JNoMlwxx7WbbcymaQnob" alt="春日野餐"><figcaption>春日野餐 · 官方海报</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+<!-- SLICE1-VIEW-END -->
+<!-- SLICE2-VIEW-BEGIN -->
+<!-- ===== 二级页：新世纪福音战士 ===== -->
+<div id="view-anime-eva" class="view-anime bg-eva">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">新世纪福音战士</span>
+    </div>
+  </div>
+
+<section class="records" id="records-eva">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WATCH LOG</span>
+      <h2>追番记录</h2>
+      <p>每一部都是认真看过才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+    </div>
+    <article class="anime-card">
+      <div class="cover">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YFZsbWbBwoddB4xeithcVJKWntc" alt="EVA 初号机与三人">
+        <span class="status-badge">已看完</span>
+      </div>
+      <div class="anime-info">
+        <div class="title-line">
+          <h3>新世纪福音战士</h3>
+          <span class="jp">新世紀エヴァンゲリオン Neon Genesis Evangelion</span>
+        </div>
+        <div class="meta-line">
+          <span class="chip">首播 <b>1995</b></span>
+          <span class="chip">制作 <b>GAINAX</b></span>
+          <span class="chip">类型 <b>科幻 / 机甲 / 心理</b></span>
+          <span class="chip">进度 <b>已看完</b></span>
+        </div>
+        <p class="desc">公元2015年，"第二次冲击"后的东京近郊，神秘使徒接连来袭。懦弱的少年碇真嗣被父亲叫到 NERV，被迫登上紫色的 EVA 初号机对抗使徒。庵野秀明执导的这部作品把机甲片拍成了青春期的心理剖面——同步率、AT力场、人类补完计划，外壳是机器人，里头全是人与人之间无法互相理解的距离。</p>
+        <div class="note"><span class="who">我的短评：</span>"不能逃避"这句话陪了我整个中学。初号机暴走、绫波丽的微笑、渚薰随手弹奏的那首曲子，二十多年过去还是会起鸡皮疙瘩。</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="cast-sec" id="cast-eva">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">NERV</span>
+      <h2>NERV · EVA 驾驶员与司令部</h2>
+      <p>六个被命运推上驾驶舱的人，和一个站在指挥台前的男人。</p>
+    </div>
+    <div class="cast-grid cg6">
+      <div class="cast" data-char="eva_shinji">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZpJCbLQkMoMQMmxMyrxcAclvnqh" alt="碇真嗣 Q版头像"></div>
+        <h4>碇真嗣</h4><div class="romaji">Shinji Ikari</div>
+        <div class="duty">初号机驾驶员</div>
+        <p>"我不能逃避。"被父亲叫来驾驶EVA的内向少年。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="eva_rei">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/OItEbz5CtoC90wxUsCEcko7fnzb" alt="绫波丽 Q版头像"></div>
+        <h4>绫波丽</h4><div class="romaji">Rei Ayanami</div>
+        <div class="duty">零号机驾驶员</div>
+        <p>沉默如人偶的少女，白色短发红色眼眸。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="eva_asuka">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XxPsbtJkpoglCwxj8kUc7NGpnNd" alt="明日香 Q版头像"></div>
+        <h4>式波明日香</h4><div class="romaji">Asuka Langley</div>
+        <div class="duty">二号机驾驶员</div>
+        <p>骄傲好强的天才混血少女，"你是笨蛋吗？"</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="eva_kaworu">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/IqExbXg2xo6fbCxcfJCcvddVnqe" alt="渚薰 Q版头像"></div>
+        <h4>渚薰</h4><div class="romaji">Kaworu Nagisa</div>
+        <div class="duty">第五少年</div>
+        <p>银发红瞳、温柔优雅，弹着钢琴走进真嗣的生活。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="eva_misato">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AVXdbMkvyo3wmnxIDT5cIYQknfh" alt="葛城美里 Q版头像"></div>
+        <h4>葛城美里</h4><div class="romaji">Misato Katsuragi</div>
+        <div class="duty">作战部长</div>
+        <p>工作干练、私下酗酒，像姐姐一样照看真嗣。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="eva_gendo">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XHGVb4413o9KcVxUnIWciU00neg" alt="碇源堂 Q版头像"></div>
+        <h4>碇源堂</h4><div class="romaji">Gendo Ikari</div>
+        <div class="duty">NERV司令官</div>
+        <p>真嗣的父亲，双手交叠于下巴，冷酷城府深。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-sec" id="gallery-eva">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GALLERY</span>
+      <h2>图片收藏</h2>
+      <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YFZsbWbBwoddB4xeithcVJKWntc" alt="EVA 初号机与真嗣明日香"><figcaption>红色海面 · 初号机与少年们</figcaption></figure>
+      <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/SGwBbG1Y2ovTTuxl8Z5cB3yInwc" alt="EVA新剧场版 序 海报"><figcaption>新剧场版：序 · 夕阳下的初号机</figcaption></figure>
+      <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QF3lbKdqqoGDhHxCNHRcAM1JnhO" alt="EVA 终 海边群像"><figcaption>新剧场版：终 · 再见了所有的福音战士</figcaption></figure>
+      <figure class="g-item" data-gi="3"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/CSg6bMyssov8CtxhLOmcEcKhnmo" alt="EVA 终 白色海滩"><figcaption>白沙滩上的五人 · 最终章视觉</figcaption></figure>
+      <figure class="g-item" data-gi="4"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/PXd7blTwqouPCKxOL9nc51xWn3q" alt="碇真嗣 教室托腮"><figcaption>教室托腮 · 真嗣的日常</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ===== 二级页：鬼灭之刃 ===== -->
+<div id="view-anime-kimetsu" class="view-anime bg-kimetsu">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">鬼灭之刃</span>
+    </div>
+  </div>
+
+<section class="records" id="records-kimetsu">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WATCH LOG</span>
+      <h2>追番记录</h2>
+      <p>每一部都是认真看过才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+    </div>
+    <article class="anime-card">
+      <div class="cover">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/UfzBbASXAo2XM4x7ZpBcJ64jnGf" alt="鬼灭之刃 四人组">
+        <span class="status-badge">已看完</span>
+      </div>
+      <div class="anime-info">
+        <div class="title-line">
+          <h3>鬼灭之刃</h3>
+          <span class="jp">鬼滅の刃 Demon Slayer</span>
+        </div>
+        <div class="meta-line">
+          <span class="chip">首播 <b>2019</b></span>
+          <span class="chip">制作 <b>ufotable</b></span>
+          <span class="chip">类型 <b>奇幻 / 热血 / 战斗</b></span>
+          <span class="chip">进度 <b>已看完</b></span>
+        </div>
+        <p class="desc">大正时代的日本，卖炭少年灶门炭治郎归家时发现家人被鬼屠戮，唯一幸存的妹妹祢豆子也变成了鬼。为了让妹妹变回人类、为了讨伐鬼王无惨，他加入了"鬼杀队"。ufotable 把水之呼吸、炎之呼吸、雷之呼吸一道道拍得像烟花，2019 年起席卷全球的现象级作品。</p>
+        <div class="note"><span class="who">我的短评：</span>无限列车篇最后那段"能做到的事我都会做"哭到缺氧。ufotable 的打戏是真的把经费烧在刀刃上。</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="cast-sec" id="cast-kimetsu">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">KIMETSU NO YAIBA</span>
+      <h2>鬼杀队 · 主角团与柱</h2>
+      <p>一个卖炭少年，一个咬竹筒的妹妹，和一路同行的伙伴们。</p>
+    </div>
+    <div class="cast-grid cg6">
+      <div class="cast" data-char="kimetsu_tanjiro">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/RfdVbpQpGoJPgxxs85xcjiBEnIe" alt="灶门炭治郎 Q版头像"></div>
+        <h4>灶门炭治郎</h4><div class="romaji">Tanjirou Kamado</div>
+        <div class="duty">水之呼吸</div>
+        <p>额头带伤、耳挂花牌，温柔到让鬼都心软的卖炭少年。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="kimetsu_nezuko">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/KLyjbwsFEoh14oxDqQyc7nNPn9e" alt="灶门祢豆子 Q版头像"></div>
+        <h4>灶门祢豆子</h4><div class="romaji">Nezuko Kamado</div>
+        <div class="duty">鬼之少女</div>
+        <p>嘴咬竹筒、粉发红蝴蝶结，不咬人的鬼妹妹。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="kimetsu_zenitsu">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/PmDtbmZTSopD5dxr8SzcAVAbn5e" alt="我妻善逸 Q版头像"></div>
+        <h4>我妻善逸</h4><div class="romaji">Zenitsu Agatsuma</div>
+        <div class="duty">雷之呼吸</div>
+        <p>平时哭唧唧、一睡着就秒变天才剑士的黄毛。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="kimetsu_inosuke">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/D5TdbHWfAo1aEvx8KuxcBrBJn0g" alt="嘴平伊之助 Q版头像"></div>
+        <h4>嘴平伊之助</h4><div class="romaji">Inosuke Hashibira</div>
+        <div class="duty">兽之呼吸</div>
+        <p>猪头套双刀流，山里长大的好战肌肉少年。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="kimetsu_giyuu">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DXzebvViNoyYLOxXcbCckW87nGh" alt="富冈义勇 Q版头像"></div>
+        <h4>富冈义勇</h4><div class="romaji">Giyuu Tomioka</div>
+        <div class="duty">水柱</div>
+        <p>左右不对称羽织的冷面水柱，其实很孤独。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="kimetsu_shinobu">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EWKDbaJgtomQxlxUzZVcSNwznSh" alt="蝴蝶忍 Q版头像"></div>
+        <h4>蝴蝶忍</h4><div class="romaji">Shinobu Kochou</div>
+        <div class="duty">虫柱</div>
+        <p>蝶翼发饰永远微笑，用藤花毒素刺鬼的姐姐。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-sec" id="gallery-kimetsu">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GALLERY</span>
+      <h2>图片收藏</h2>
+      <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/UfzBbASXAo2XM4x7ZpBcJ64jnGf" alt="鬼灭之刃 四人组战斗姿态"><figcaption>黄金云下 · 四人战斗姿态</figcaption></figure>
+      <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DdqDb3FXAoGzuDxfLUPcSyOTnXd" alt="鬼灭之刃 四人方图"><figcaption>蓝窗之前 · 主角团方图</figcaption></figure>
+      <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Z6uybbD5soAhBtxpp9xcxvgknWd" alt="鬼灭之刃 蝶屋敷"><figcaption>蝶屋敷之夜 · 风与蝴蝶</figcaption></figure>
+      <figure class="g-item" data-gi="3"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/RKqxb0YfGoqvfRxVQoVcySwYnKu" alt="炭治郎抱祢豆子 雪山"><figcaption>雪山预告 · 炭治郎护住祢豆子</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ===== 二级页：未闻花名 ===== -->
+<div id="view-anime-anohana" class="view-anime bg-anohana">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">未闻花名</span>
+    </div>
+  </div>
+
+<section class="records" id="records-anohana">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WATCH LOG</span>
+      <h2>追番记录</h2>
+      <p>每一部都是认真看过才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+    </div>
+    <article class="anime-card">
+      <div class="cover">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/V48bbVb5Honecdxdu9McqtJjnEC" alt="未闻花名 超和平Busters">
+        <span class="status-badge">已看完</span>
+      </div>
+      <div class="anime-info">
+        <div class="title-line">
+          <h3>未闻花名</h3>
+          <span class="jp">あの日見た花の名前を僕達はまだ知らない。 anohana</span>
+        </div>
+        <div class="meta-line">
+          <span class="chip">首播 <b>2011</b></span>
+          <span class="chip">制作 <b>A-1 Pictures</b></span>
+          <span class="chip">类型 <b>原创 / 催泪 / 治愈</b></span>
+          <span class="chip">进度 <b>已看完</b></span>
+        </div>
+        <p class="desc">儿时结成"超和平Busters"的六个玩伴，因本间芽衣子的意外落水而各奔东西、日渐疏远。多年后，已变成家里蹲的宿海仁太面前，出现了穿着白连衣裙、只有他能看见的面码。她希望儿时的伙伴们再聚在一起，完成"那个愿望"。A-1 Pictures 原创的 11 话青春群像剧。</p>
+        <div class="note"><span class="who">我的短评：</span>最后一集"面码找到你了"六个人在夏天的草地上一个个说出秘密，我哭到整个人抽过去。这首歌（《secret base》）一响就破防。</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="cast-sec" id="cast-anohana">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">超平和バスターズ</span>
+      <h2>超和平Busters · 六人组</h2>
+      <p>一个夏天，一个愿望，六个再也回不去童年的人。</p>
+    </div>
+    <div class="cast-grid cg6">
+      <div class="cast" data-char="anohana_jintan">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/U2X0bW4MUof1bZxcp5pcOY65nsd" alt="宿海仁太 Q版头像"></div>
+        <h4>宿海仁太</h4><div class="romaji">Jinta Yadomi</div>
+        <div class="duty">主角 / 队长</div>
+        <p>穿红色"地底人"T恤的家里蹲，唯一能看见面码。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="anohana_menma">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/OU6Ib9WrkoI6JjxqyJmc3kzBnXE" alt="本间芽衣子 Q版头像"></div>
+        <h4>本间芽衣子</h4><div class="romaji">Meiko Honma</div>
+        <div class="duty">幽灵 / 面码</div>
+        <p>银发白裙、张开手臂笑的天然系少女。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="anohana_anaru">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/W9rWb22MtorVtHxUg2ZcAc7OnSh" alt="安城鸣子 Q版头像"></div>
+        <h4>安城鸣子</h4><div class="romaji">Naruko Anjou</div>
+        <div class="duty">あなる</div>
+        <p>橙发双马尾傲娇，暗恋仁太的同班同学。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="anohana_yukiatsu">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QIHwbentGoOccexg2LXcWM4PnQb" alt="松雪集 Q版头像"></div>
+        <h4>松雪集</h4><div class="romaji">Atsumu Matsuyuki</div>
+        <div class="duty">ゆきあつ</div>
+        <p>优等生学生会长，好胜心强却最深恋面码。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="anohana_tsuruko">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/OcsjbcUJsoNgnAxM3nYcRaNbnMf" alt="鹤见知利子 Q版头像"></div>
+        <h4>鹤见知利子</h4><div class="romaji">Chiriko Tsurumi</div>
+        <div class="duty">つるこ</div>
+        <p>黑长直戴眼镜，最早看穿所有人心事的人。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="anohana_poppo">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HVfQbIIVyowQoEx1DeccTHBqnWd" alt="久川铁道 Q版头像"></div>
+        <h4>久川铁道</h4><div class="romaji">Tetsudo Hisakawa</div>
+        <div class="duty">ぽっぽ</div>
+        <p>穿紫花衬衫周游世界的开朗大哥。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-sec" id="gallery-anohana">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GALLERY</span>
+      <h2>图片收藏</h2>
+      <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QmxKbQUznoSEsyxAcBpcIwVMn5n" alt="未闻花名 桥上六人"><figcaption>那座天桥 · 六人与面码</figcaption></figure>
+      <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Fne1bi5OMo7dwcxWTH0c8fxMnUM" alt="未闻花名 面码花田"><figcaption>夏日花田 · 面码奔跑</figcaption></figure>
+      <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AKflbbWyjoEYvvx6ZhmcMIpenPe" alt="未闻花名 街道重逢"><figcaption>街道重逢 · 面码与仁太</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ===== 二级页：头文字D ===== -->
+<div id="view-anime-initiald" class="view-anime bg-initiald">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">头文字D</span>
+    </div>
+  </div>
+
+<section class="records" id="records-initiald">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WATCH LOG</span>
+      <h2>追番记录</h2>
+      <p>每一部都是认真看过才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+    </div>
+    <article class="anime-card">
+      <div class="cover">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/APE3bPOgCoay1RxdDu9cXhPZn4f" alt="头文字D 群马车队">
+        <span class="status-badge">已看完</span>
+      </div>
+      <div class="anime-info">
+        <div class="title-line">
+          <h3>头文字D</h3>
+          <span class="jp">頭文字D Initial D</span>
+        </div>
+        <div class="meta-line">
+          <span class="chip">首播 <b>1998</b></span>
+          <span class="chip">制作 <b>STUDIO COMET</b></span>
+          <span class="chip">类型 <b>赛车 / 热血 / 竞技</b></span>
+          <span class="chip">进度 <b>已看完</b></span>
+        </div>
+        <p class="desc">群马县秋名山，每晚凌晨开着父亲那台黑白丰田 AE86 送豆腐的高中生藤原拓海，不知不觉练出了神级下坡技术。赤城 RedSuns、妙义 NightKids、埼玉、神奈川……各路车队接连向秋名山下挑战书。重野秀一同名漫画改编，伴随 Eurobeat 跑曲的山路漂移传说。</p>
+        <div class="note"><span class="who">我的短评：</span>《Deja Vu》一响方向盘就自动打死。拓海那句"86，上！"和文太单手开GC8点烟的镜头，是我对"老司机"的全部想象。</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="cast-sec" id="cast-initiald">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">群馬エリア</span>
+      <h2>秋名 · 赤城 · 妙义 车手们</h2>
+      <p>一台86，一台FC，一台FD，和一群在山路上燃烧青春的人。</p>
+    </div>
+    <div class="cast-grid cg6">
+      <div class="cast" data-char="initiald_takumi">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZjE9bfs02oNkKUxh7BScEuL5nJh" alt="藤原拓海 Q版头像"></div>
+        <h4>藤原拓海</h4><div class="romaji">Takumi Fujiwara</div>
+        <div class="duty">AE86 / 主角</div>
+        <p>表面木讷的送豆腐少年，秋名山下坡的白色死神。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="initiald_bunta">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MzAGbeAeAorXQYxVBkGcZmHinFh" alt="藤原文太 Q版头像"></div>
+        <h4>藤原文太</h4><div class="romaji">Bunta Fujiwara</div>
+        <div class="duty">豆腐店老板</div>
+        <p>叼烟单手方向盘的传说，拓海的魔鬼教练。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="initiald_ryosuke">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Kjn5bMXhQo5vLaxnNmNc0JDmn5d" alt="高桥凉介 Q版头像"></div>
+        <h4>高桥凉介</h4><div class="romaji">Ryosuke Takahashi</div>
+        <div class="duty">RedSuns队长</div>
+        <p>开白色FC的医学院高材生，"公路最速理论"。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="initiald_keisuke">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/GUWxboJhAov0dJx55xbcbCf3nKc" alt="高桥启介 Q版头像"></div>
+        <h4>高桥启介</h4><div class="romaji">Keisuke Takahashi</div>
+        <div class="duty">RedSuns副将</div>
+        <p>开黄色FD的热血黄毛，视拓海为一生劲敌。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="initiald_natsuki">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MOxsb7w72okX0Axueu8cqnN2n8g" alt="茂木夏树 Q版头像"></div>
+        <h4>茂木夏树</h4><div class="romaji">Natsuki Mogi</div>
+        <div class="duty">女主角</div>
+        <p>棕色齐肩发的温柔女高中生，拓海的暗恋对象。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="initiald_nakazato">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/URNBblqo2oeOhLxtYdncGuWGnje" alt="中里毅 Q版头像"></div>
+        <h4>中里毅</h4><div class="romaji">Takeshi Nakazato</div>
+        <div class="duty">NightKids队长</div>
+        <p>开黑色GT-R的妙义队长，主张抓地跑法。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-sec" id="gallery-initiald">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GALLERY</span>
+      <h2>图片收藏</h2>
+      <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/APE3bPOgCoay1RxdDu9cXhPZn4f" alt="头文字D 夜色群像"><figcaption>夜色山道 · 群马车手集结</figcaption></figure>
+      <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MZyNbXzc9o8Cs7xM4bbc327Invb" alt="头文字D 新剧场版 觉醒"><figcaption>新剧场版：觉醒 · 黄昏六人</figcaption></figure>
+      <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TQlEbopDYoabAsxDGa0cJlFgnyd" alt="头文字D 黄昏群像"><figcaption>新剧场版 · 黄昏山脊</figcaption></figure>
+      <figure class="g-item" data-gi="3"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HDv5bkkQboJIUZx0sGycRDyynTD" alt="头文字D AE86 白底"><figcaption>AE86 Trueno · 藤原豆腐店</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+<!-- SLICE2-VIEW-END -->
+<!-- SLICE3-VIEW-BEGIN -->
+
+<!-- ===== 二级页：CLANNAD ===== -->
+<div id="view-anime-clannad" class="view-anime bg-clannad">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">CLANNAD</span>
+    </div>
+  </div>
+
+  <section class="records" id="records-c3a">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">WATCH LOG</span>
+        <h2>追番记录</h2>
+        <p>每一部都是完整看完才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+      </div>
+      <article class="anime-card">
+        <div class="cover">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Uu0ubSI3OoOhCjxiYpycu84Jncg" alt="CLANNAD After Story 夏日主视觉">
+          <span class="status-badge">已看完</span>
+        </div>
+        <div class="anime-info">
+          <div class="title-line">
+            <h3>CLANNAD</h3>
+            <span class="jp">CLANNAD -クラナド-</span>
+          </div>
+          <div class="meta-line">
+            <span class="chip">首播 <b>2007</b></span>
+            <span class="chip">制作 <b>京都动画</b></span>
+            <span class="chip">类型 <b>校园 / 亲情 / 催泪</b></span>
+            <span class="chip">进度 <b>已看完</b></span>
+          </div>
+          <p class="desc">改编自 Key 社同名恋爱冒险游戏，石原立也执导、志茂文彦系列构成。不良少年冈崎朋也在升学坡道上偶遇总在自言自语的少女古河渚，两人一起复兴停滞的演剧部，再一步步走过从校园到成家、从为人子到为人父的人生。After Story 把"家族"两个字写成了全番最重的一记催泪弹。</p>
+          <div class="note"><span class="who">我的短评：</span>第一季是校园青春，After Story 才是真正的杀器。"人生"这部剧名不虚传——团子大家族一响，整个人就被揉皱了。</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="cast-sec" id="cast-c3a">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">HIKARIZAKA</span>
+        <h2>光坂高中 · 我们的小镇</h2>
+        <p>六个人，一段坡道，和一个叫"家族"的故事。</p>
+      </div>
+      <div class="cast-grid cg6">
+        <div class="cast" data-char="clannad_tomoya">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DcpmbccRJo3faBxFeW6crUDgnTg" alt="冈崎朋也 Q版头像"></div>
+          <h4>冈崎朋也</h4><div class="romaji">Tomoya Okazaki</div>
+          <div class="duty">主角 · 不良少年</div>
+          <p>嘴上冷漠心里温柔，从逃避父亲的少年长成扛起家的男人。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+        <div class="cast" data-char="clannad_nagisa">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JyLkb6nEroR2lsxwetFcysrpnDg" alt="古河渚 Q版头像"></div>
+          <h4>古河渚</h4><div class="romaji">Nagisa Furukawa</div>
+          <div class="duty">女主角 · 演剧部</div>
+          <p>体弱又怯生，却咬着牙要把停摆的演剧部重新演完。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+        <div class="cast" data-char="clannad_tomoyo">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/A0TybOvyYoPVr2xBEGUcmUNDneL" alt="坂上智代 Q版头像"></div>
+          <h4>坂上智代</h4><div class="romaji">Tomoyo Sakagami</div>
+          <div class="duty">学生会长候选</div>
+          <p>战力爆表的银马尾学姐，为了守护樱花坡道拼命努力。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+        <div class="cast" data-char="clannad_kotomi">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/R0oYbAWFQoff6BxMNOPcRAqvn5O" alt="一之濑琴美 Q版头像"></div>
+          <h4>一之濑琴美</h4><div class="romaji">Kotomi Ichinose</div>
+          <div class="duty">学霸 · 读书狂</div>
+          <p>抱着词典躲在图书室的天才少女，藏着和朋也的童年约定。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+        <div class="cast" data-char="clannad_youhei">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/O4DLbHltQoHEUzx5eQGcYXvhnse" alt="春原阳平 Q版头像"></div>
+          <h4>春原阳平</h4><div class="romaji">Youhei Sunohara</div>
+          <div class="duty">损友 · 搞笑担当</div>
+          <p>被全体女主欺负的金毛跟班，却是朋也高中唯一的死党。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+        <div class="cast" data-char="clannad_kyou">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YklmbIEa7oPituxdMBsccMeJnGb" alt="藤林杏 Q版头像"></div>
+          <h4>藤林杏</h4><div class="romaji">Kyou Fujibayashi</div>
+          <div class="duty">班长 · 摩托车手</div>
+          <p>紫色马尾的爆辣学姐，开车能把人吓出心理阴影。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery-sec" id="gallery-c3a">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">GALLERY</span>
+        <h2>图片收藏</h2>
+        <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+      </div>
+      <div class="gallery-grid">
+        <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Uu0ubSI3OoOhCjxiYpycu84Jncg" alt="CLANNAD After Story 夏日家族"><figcaption>After Story · 夏日的坡道与一家人</figcaption></figure>
+        <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HC6OberUOoMHzWxB1oBccH12nIc" alt="CLANNAD 五位女主"><figcaption>樱花树下的女主们</figcaption></figure>
+        <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XmvEbMdCwomqx9xYsYsch7HOnKb" alt="CLANNAD After Story 朋也与渚黄昏"><figcaption>黄昏下 · 朋也与渚</figcaption></figure>
+        <figure class="g-item" data-gi="3"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/CKLCbOtd9oXgisxJG0mckNOznUh" alt="CLANNAD After Story 朋也扛汐"><figcaption>After Story · 朋也肩上的汐</figcaption></figure>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== 二级页：某科学的超电磁炮 ===== -->
+<div id="view-anime-railgun" class="view-anime bg-railgun">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">某科学的超电磁炮</span>
+    </div>
+  </div>
+
+  <section class="records" id="records-c3b">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">WATCH LOG</span>
+        <h2>追番记录</h2>
+        <p>学园都市的都市传说，从一枚硬币开始。</p>
+      </div>
+      <article class="anime-card">
+        <div class="cover">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/N1XLbpVDWo7mIxxpBAWclB4Ynrc" alt="某科学的超电磁炮 御坂美琴">
+          <span class="status-badge">已看完</span>
+        </div>
+        <div class="anime-info">
+          <div class="title-line">
+            <h3>某科学的超电磁炮</h3>
+            <span class="jp">とある科学の超電磁砲</span>
+          </div>
+          <div class="meta-line">
+            <span class="chip">首播 <b>2009</b></span>
+            <span class="chip">制作 <b>J.C.STAFF</b></span>
+            <span class="chip">类型 <b>超能力 / 学园 / 动作</b></span>
+            <span class="chip">进度 <b>已看完</b></span>
+          </div>
+          <p class="desc">《魔法禁书目录》的官方外传，以学园都市第三位超能力者御坂美琴为主角。Level 5 的"炮姐"与风纪委员白井黑子、初春饰利、佐天泪子一起，追查幻想御手、妹妹篇、乱杂开放等一连串都市怪谈。硬币以三倍音速射出的那一发，是多少人入站的瞬间。</p>
+          <div class="note"><span class="who">我的短评：</span>炮姐是少有的"男主光环女主配"也能完全立住的番——闺蜜团互动比主线还好看。</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="cast-sec" id="cast-c3b">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">JUDGMENT</span>
+        <h2>常盘台 & 栅川 · 风纪委员</h2>
+        <p>五位少女，一座学园都市，和一发硬币。</p>
+      </div>
+      <div class="cast-grid">
+        <div class="cast" data-char="railgun_mikoto">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/VIjWbL0OqoLonyx9VNmcgN2Cn3r" alt="御坂美琴 Q版头像"></div>
+          <h4>御坂美琴</h4><div class="romaji">Mikoto Misaka</div>
+          <div class="duty">Level 5 · 超电磁炮</div>
+          <p>学园都市第三位，最爱呱太玩偶和自动贩卖机的最强电击使。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+        <div class="cast" data-char="railgun_kuroko">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ItX4brO8OoyGfpx4HZhclu1ynqd" alt="白井黑子 Q版头像"></div>
+          <h4>白井黑子</h4><div class="romaji">Kuroko Shirai</div>
+          <div class="duty">风纪委员 · 空间移动</div>
+          <p>双马尾卷发的学姐控，用针刺枪和"婚后光子"般的吐槽撑起笑点。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+        <div class="cast" data-char="railgun_ruiko">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QZcCbqcHMoDRiyxs0CDcq7qVnCe" alt="佐天泪子 Q版头像"></div>
+          <h4>佐天泪子</h4><div class="romaji">Ruiko Saten</div>
+          <div class="duty">Level 0 · 日常系</div>
+          <p>没能力却最有"普通少女"感，掀裙子名场面的女主角。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+        <div class="cast" data-char="railgun_uiharu">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ULSlbw9pPo8g91xl3vDcZ6L5n9g" alt="初春饰利 Q版头像"></div>
+          <h4>初春饰利</h4><div class="romaji">Kazari Uiharu</div>
+          <div class="duty">风纪委员 · 电脑高手</div>
+          <p>满头花环的宅女程序员，都市传说的人肉搜索引擎。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+        <div class="cast" data-char="railgun_misaki">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/CtYObebfOo8QFDxaQEVchmIMnKf" alt="食蜂操祈 Q版头像"></div>
+          <h4>食蜂操祈</h4><div class="romaji">Misaki Shokuhou</div>
+          <div class="duty">Level 5 · 心理掌握</div>
+          <p>常盘台女王，星星眼的第五位超能力者，与美琴是宿命的对手。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery-sec" id="gallery-c3b">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">GALLERY</span>
+        <h2>图片收藏</h2>
+        <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+      </div>
+      <div class="gallery-grid">
+        <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/N1XLbpVDWo7mIxxpBAWclB4Ynrc" alt="超电磁炮 美琴硬币"><figcaption>指尖跃动的电光 · 最强电击使</figcaption></figure>
+        <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZGqEbK0tnoYyYaxGef3cU10knah" alt="超电磁炮 美琴碎玻璃战斗"><figcaption>雨天的都市 · 碎裂的车窗</figcaption></figure>
+        <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZKrIbEzUZoWdwRx5b7rcdCUunnf" alt="超电磁炮 美琴黑色背景"><figcaption>黑暗中的雷光</figcaption></figure>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== 二级页：少女终末旅行 ===== -->
+<div id="view-anime-girlslt" class="view-anime bg-girlslt">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">少女终末旅行</span>
+    </div>
+  </div>
+
+  <section class="records" id="records-c3c">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">WATCH LOG</span>
+        <h2>追番记录</h2>
+        <p>文明终结之后，两个少女的缓慢旅途。</p>
+      </div>
+      <article class="anime-card">
+        <div class="cover">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/VF96butA8oTV1dxkNFNcD9lbnAb" alt="少女终末旅行 千户与尤莉">
+          <span class="status-badge">已看完</span>
+        </div>
+        <div class="anime-info">
+          <div class="title-line">
+            <h3>少女终末旅行</h3>
+            <span class="jp">少女終末旅行 Girls' Last Tour</span>
+          </div>
+          <div class="meta-line">
+            <span class="chip">首播 <b>2017</b></span>
+            <span class="chip">制作 <b>WHITE FOX</b></span>
+            <span class="chip">类型 <b>末日 / 日常 / 治愈</b></span>
+            <span class="chip">进度 <b>已看完</b></span>
+          </div>
+          <p class="desc">改编自つくみず的同名漫画，尾崎隆晴执导。人类文明已彻底终结，两个身穿军装的少女——认真读书的千户、爱开枪的尤莉——开着一辆半履带小摩托，在层层叠叠的废墟城市里向上走。没有主线、没有敌人，只有罐头、篝火、星空和偶尔出现的、早已停摆的"过去的人"。</p>
+          <div class="note"><span class="who">我的短评：</span>最冷的末日、最暖的两个孩子。每一帧都像在看一幅会呼吸的废墟油画，结尾看一次空一次。</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="cast-sec" id="cast-c3c">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">LAST TOUR</span>
+        <h2>半履带摩托车上的两人</h2>
+        <p>千户、尤莉，和一辆永远在漏油的小摩托。</p>
+      </div>
+      <div class="cast-grid">
+        <div class="cast" data-char="girlslt_chito">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/P7gObsnreowGUPx5svkcWonpn7e" alt="千户 Q版头像"></div>
+          <h4>千户</h4><div class="romaji">Chito</div>
+          <div class="duty">知识担当 · 驾驶员</div>
+          <p>黑发双辫，爱读书写笔记，负责规划路线和生火的靠谱搭档。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+        <div class="cast" data-char="girlslt_yuri">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/RyaQbVagYo4qfzxP1Ayc9BLwngf" alt="尤莉 Q版头像"></div>
+          <h4>尤莉</h4><div class="romaji">Yuri</div>
+          <div class="duty">机枪担当 · 吃货</div>
+          <p>金发天然呆，枪法极准、肚子永远饿，是队伍里的浪漫主义者。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery-sec" id="gallery-c3c">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">GALLERY</span>
+        <h2>图片收藏</h2>
+        <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+      </div>
+      <div class="gallery-grid">
+        <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/VF96butA8oTV1dxkNFNcD9lbnAb" alt="少女终末旅行 半履带摩托"><figcaption>驾驶半履带摩托 · 向上层进发</figcaption></figure>
+        <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XWglbHl13oFsmwxzh2HctReinlf" alt="少女终末旅行 泡泡场景"><figcaption>废墟里漂浮的气泡</figcaption></figure>
+        <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MHqtbaj0moZVYGxUjw8cuB7Jnmf" alt="少女终末旅行 城市废墟"><figcaption>灰白的废弃城市天际线</figcaption></figure>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== 二级页：四月是你的谎言 ===== -->
+<div id="view-anime-shigatsu" class="view-anime bg-shigatsu">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">四月是你的谎言</span>
+    </div>
+  </div>
+
+  <section class="records" id="records-c3d">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">WATCH LOG</span>
+        <h2>追番记录</h2>
+        <p>没有你的四月，就要来了。</p>
+      </div>
+      <article class="anime-card">
+        <div class="cover">
+          <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/INDGbFpXFovAKgxAce0cJS5OnFh" alt="四月是你的谎言 钢琴与小提琴">
+          <span class="status-badge">已看完</span>
+        </div>
+        <div class="anime-info">
+          <div class="title-line">
+            <h3>四月是你的谎言</h3>
+            <span class="jp">四月は君の嘘 Your Lie in April</span>
+          </div>
+          <div class="meta-line">
+            <span class="chip">首播 <b>2014</b></span>
+            <span class="chip">制作 <b>A-1 Pictures</b></span>
+            <span class="chip">类型 <b>音乐 / 青春 / 恋爱</b></span>
+            <span class="chip">进度 <b>已看完</b></span>
+          </div>
+          <p class="desc">改编自新川直司的同名漫画，石黑恭平执导。天才钢琴少年有马公生因母亲去世的心理创伤而再也听不见自己琴声的声音，直到遇见自由奔放的小提琴手宫园薰。从一场公生"友人A"身份的伴奏开始，樱花、舞台、谎言与告白交织成一个关于音乐与告别的故事。</p>
+          <div class="note"><span class="who">我的短评：</span>每一集的演奏都像在听一场完整音乐会。最后那个「友人A」的梗，二刷还是会哭。</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="cast-sec" id="cast-c3d">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">ON THE STAGE</span>
+        <h2>杉并中级 · 音乐与青春</h2>
+        <p>六个人，一架钢琴、一把小提琴，和一个四月的谎言。</p>
+      </div>
+      <div class="cast-grid cg6">
+        <div class="cast" data-char="shigatsu_kousei">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/WJeUboeYUocwf9xoRN1cM1RZndc" alt="有马公生 Q版头像"></div>
+          <h4>有马公生</h4><div class="romaji">Kousei Arima</div>
+          <div class="duty">钢琴家 · 友人A</div>
+          <p>被称为"人形节拍器"的天才，因创伤听不见琴声，被薰重新拉回舞台。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+        <div class="cast" data-char="shigatsu_kaori">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/SUW6bVpLho2IGUxN8IzctMSYnOd" alt="宫园薰 Q版头像"></div>
+          <h4>宫园薰</h4><div class="romaji">Kaori Miyazono</div>
+          <div class="duty">小提琴手</div>
+          <p>自由奔放到不按谱拉琴的金发少女，用余生把公生推回了光里。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+        <div class="cast" data-char="shigatsu_tsubaki">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/LoGHbrXN7o7j4OxEPmOcS1G1ntc" alt="泽部椿 Q版头像"></div>
+          <h4>泽部椿</h4><div class="romaji">Tsubaki Sawabe</div>
+          <div class="duty">棒球少女 · 青梅竹马</div>
+          <p>短碎发的运动系女生，一直陪在公生身边，却迟迟说不出那句喜欢。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+        <div class="cast" data-char="shigatsu_watari">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/OGdObBEzMoQLZuxz8EocFxRhnCe" alt="渡亮太 Q版头像"></div>
+          <h4>渡亮太</h4><div class="romaji">Ryouta Watari</div>
+          <div class="duty">足球少年</div>
+          <p>公生的好友，阳光帅气的足球队王牌，也是薰"公开喜欢"的对象。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+        <div class="cast" data-char="shigatsu_emi">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Mxr6bLq4moANASxJdescTdCdncW" alt="井川绘见 Q版头像"></div>
+          <h4>井川绘见</h4><div class="romaji">Emi Igawa</div>
+          <div class="duty">钢琴竞争对手</div>
+          <p>黑长直的女钢琴家，从小把公生当作唯一必须超越的对手。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+        <div class="cast" data-char="shigatsu_takeshi">
+          <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/WeeubJf6UoX2EcxRG0kc9ZIanpm" alt="相座武士 Q版头像"></div>
+          <h4>相座武士</h4><div class="romaji">Takeshi Aiza</div>
+          <div class="duty">钢琴竞争对手</div>
+          <p>刺猬头的好胜少年，从小把公生当作必须追赶上的目标。</p>
+          <div class="open-hint">点我看详情</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery-sec" id="gallery-c3d">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">GALLERY</span>
+        <h2>图片收藏</h2>
+        <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+      </div>
+      <div class="gallery-grid">
+        <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/INDGbFpXFovAKgxAce0cJS5OnFh" alt="四月是你的谎言 钢琴小提琴"><figcaption>樱花树下的钢琴与小提琴</figcaption></figure>
+        <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EPGZbtUC5oWfkaxdjRfcpVFVnoh" alt="四月是你的谎言 秋冬主视觉"><figcaption>秋与冬 · 两个人的方向</figcaption></figure>
+        <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/T820boUD2oyZsnxzq4gcCfk5ngg" alt="四月是你的谎言 樱花树下牵手"><figcaption>樱花树下 · 没有你的四月</figcaption></figure>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- SLICE3-VIEW-END -->
+<!-- SLICE4-VIEW-BEGIN -->
+<!-- ===== 二级页：天使降临到我身边！ ===== -->
+<div id="view-anime-wataten" class="view-anime bg-wataten">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">天使降临到我身边！</span>
+    </div>
+  </div>
+
+<section class="records" id="records-wataten">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WATCH LOG</span>
+      <h2>追番记录</h2>
+      <p>每一部都是认真看完才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+    </div>
+    <article class="anime-card">
+      <div class="cover">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YFdZbJoNIoN8ynxKV5FcQuP7nJh" alt="天使降临到我身边 五人合影">
+        <span class="status-badge">已看完</span>
+      </div>
+      <div class="anime-info">
+        <div class="title-line">
+          <h3>天使降临到我身边！</h3>
+          <span class="jp">私に天使が舞い降りた！ Wataten!: An Angel Flew Down to Me</span>
+        </div>
+        <div class="meta-line">
+          <span class="chip">首播 <b>2019</b></span>
+          <span class="chip">制作 <b>动画工房</b></span>
+          <span class="chip">类型 <b>日常 / 喜剧 / 治愈</b></span>
+          <span class="chip">进度 <b>已看完</b></span>
+        </div>
+        <p class="desc">改编自椋木ななつ连载于一迅社《Comic百合姬》的四格漫画。性格怕生、闭门不出的女大学生星野宫子，被妹妹日向带到家里的朋友白咲花彻底击中萌点，从此开始笨拙又热情的"投喂"生活。日向、乃爱、小依一群小学生来来往往，屋子里永远飘着点心的甜香。</p>
+        <div class="note"><span class="who">我的短评：</span>萌到血压升高的治愈系。动画工房把小学生的圆脸蛋和眼神画得太会了，宫子每次花式搭讪都让人又心疼又想笑。</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="cast-sec" id="cast-wataten">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">私に天使が舞い降りた</span>
+      <h2>屋子里的小天使们</h2>
+      <p>一个社恐女大，和五个吵吵闹闹的小学生。</p>
+    </div>
+    <div class="cast-grid">
+      <div class="cast" data-char="wataten_miyako">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/T8BLbD7gJoJlO2xKLrVc8w8Qnkb" alt="星野宫子 Q版头像"></div>
+        <h4>星野宫子</h4><div class="romaji">Miyako Hoshino</div>
+        <div class="duty">宅女大学生</div>
+        <p>躲在家里做cos服的社恐，被小花一眼击中萌点。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="wataten_hinata">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/N1bfbiiE9oYrgsxgWu0cEeyVngf" alt="星野日向 Q版头像"></div>
+        <h4>星野日向</h4><div class="romaji">Hinata Hoshino</div>
+        <div class="duty">元气妹妹</div>
+        <p>宫子的亲妹妹，元气满满，最喜欢姐姐。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="wataten_hana">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TsZcbByHhoQF4UxQToncKIwanh4" alt="白咲花 Q版头像"></div>
+        <h4>白咲花</h4><div class="romaji">Hana Shirosaki</div>
+        <div class="duty">甜食控天使</div>
+        <p>表面严肃的小学生，其实超爱甜点、内心温柔。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="wataten_noa">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/RBkWb2hDtoM491xjrSPce75PnFf" alt="姬坂乃爱 Q版头像"></div>
+        <h4>姬坂乃爱</h4><div class="romaji">Noa Himesaka</div>
+        <div class="duty">自信转学生</div>
+        <p>一口一个"我超可爱"，其实是个爱哭鬼。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="wataten_koyori">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Lt9mb72PVoedecxBrWHclEUBnZd" alt="种村小依 Q版头像"></div>
+        <h4>种村小依</h4><div class="romaji">Koyori Tanemura</div>
+        <div class="duty">冒失娘</div>
+        <p>想成为被人依靠的可靠大人，却总是笨手笨脚。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-sec" id="gallery-wataten">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GALLERY</span>
+      <h2>图片收藏</h2>
+      <p>收集了一些清晰的官方原图与高清截图，点击任意一张可以放大查看。</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YFdZbJoNIoN8ynxKV5FcQuP7nJh" alt="五人空中合影"><figcaption>五人在空中的合照 · 主视觉</figcaption></figure>
+      <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/P65IbcxpAoElDtxRzCfcJPT5nMg" alt="姬坂乃爱"><figcaption>正式海报 · 六人集结</figcaption></figure>
+      <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MNG8bxJlUovcRSxWNNfccEbrnAd" alt="星野日向"><figcaption>蓝天之下 · 全员海报</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ===== 二级页：紫罗兰永恒花园 ===== -->
+<div id="view-anime-violet" class="view-anime bg-violet">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">紫罗兰永恒花园</span>
+    </div>
+  </div>
+
+<section class="records" id="records-violet">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WATCH LOG</span>
+      <h2>追番记录</h2>
+      <p>每一部都是认真看完才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+    </div>
+    <article class="anime-card">
+      <div class="cover">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/D4yYb1dgXow5fmxkTNwcetenn7g" alt="紫罗兰永恒花园 草原主视觉">
+        <span class="status-badge">已看完</span>
+      </div>
+      <div class="anime-info">
+        <div class="title-line">
+          <h3>紫罗兰永恒花园</h3>
+          <span class="jp">ヴァイオレット・エヴァーガーデン Violet Evergarden</span>
+        </div>
+        <div class="meta-line">
+          <span class="chip">首播 <b>2018</b></span>
+          <span class="chip">制作 <b>京都动画</b></span>
+          <span class="chip">类型 <b>剧情 / 治愈 / 书信</b></span>
+          <span class="chip">进度 <b>已看完</b></span>
+        </div>
+        <p class="desc">改编自晓佳奈创作、京都动画大奖获奖的同名轻小说。大战结束后，曾被当作武器养大的少女薇尔莉特·伊芙加登，在C·H邮政公司当上自动手记人偶，替委托人将思念化作书信。她一边代写别人的心意，一边追寻战场上吉尔伯特少校对她说过的那句"我爱你"究竟是什么意思。</p>
+        <div class="note"><span class="who">我的短评：</span>京阿尼的画质天花板之一。每一封代笔书信都像在拆一颗糖纸，薇尔莉特从不懂爱到学会爱的过程，配着石川由依的声音，后劲很大。</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="cast-sec" id="cast-violet">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">VIOLET EVERGARDEN</span>
+      <h2>C·H邮政公司的人们</h2>
+      <p>一个不懂爱的少女，和一群替她写信的人。</p>
+    </div>
+    <div class="cast-grid cg6">
+      <div class="cast" data-char="violet_violet">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/O6x4blDBXohDRnx97J0coSklnKf" alt="薇尔莉特 Q版头像"></div>
+        <h4>薇尔莉特</h4><div class="romaji">Violet Evergarden</div>
+        <div class="duty">自动手记人偶</div>
+        <p>前军人少女，追寻"我爱你"的真正含义。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="violet_gilbert">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AxzubdZQyoQAKuxbwaAcFs5Xnpd" alt="吉尔伯特 Q版头像"></div>
+        <h4>吉尔伯特</h4><div class="romaji">Gilbert Bougainvillea</div>
+        <div class="duty">陆军少校</div>
+        <p>薇尔莉特的恩人，战场上对她说出那句话的人。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="violet_hodgins">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/KBwabkTYYoL6syxC3H8cYQ4UnIg" alt="霍金斯 Q版头像"></div>
+        <h4>霍金斯</h4><div class="romaji">Claudia Hodgins</div>
+        <div class="duty">C·H邮政社长</div>
+        <p>吉尔伯特的旧战友，收留薇尔莉特的豪爽大叔。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="violet_cattleya">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/VTczbscZXoPAudxPU1icyDmInIc" alt="嘉德丽雅 Q版头像"></div>
+        <h4>嘉德丽雅</h4><div class="romaji">Cattleya Baudelaire</div>
+        <div class="duty">资深人偶</div>
+        <p>自动手记人偶的大前辈，可靠又温柔的大姐姐。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="violet_benedict">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/CBMpb7AkkoNfc3xddtTcUtAgnph" alt="贝内迪克特 Q版头像"></div>
+        <h4>贝内迪克特</h4><div class="romaji">Benedict Blue</div>
+        <div class="duty">配送员</div>
+        <p>骑着摩托风风火火送信的快递小哥。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="violet_iris">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FZvKb5wtaogikXxK1m2cQ3senRO" alt="爱丽丝 Q版头像"></div>
+        <h4>爱丽丝</h4><div class="romaji">Iris Cannary</div>
+        <div class="duty">新人偶</div>
+        <p>好强又认真的新人自动手记人偶。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-sec" id="gallery-violet">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GALLERY</span>
+      <h2>图片收藏</h2>
+      <p>收集了一些清晰的官方原图与高清壁纸，点击任意一张可以放大查看。</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/D4yYb1dgXow5fmxkTNwcetenn7g" alt="草原主视觉"><figcaption>草原与蓝天 · 主视觉</figcaption></figure>
+      <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Kt42bO22fo7Tf4xENfqcjAWvnGg" alt="官方壁纸"><figcaption>官方壁纸 · 玫瑰与信</figcaption></figure>
+      <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Cgu3b5D1PoiP88xAc5ic28ednUf" alt="吉尔伯特少校"><figcaption>海边假日 · 薇尔莉特</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ===== 二级页：变态王子与不笑猫。 ===== -->
+<div id="view-anime-henneko" class="view-anime bg-henneko">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">变态王子与不笑猫。</span>
+    </div>
+  </div>
+
+<section class="records" id="records-henneko">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WATCH LOG</span>
+      <h2>追番记录</h2>
+      <p>每一部都是认真看完才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+    </div>
+    <article class="anime-card">
+      <div class="cover">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ODoHbyUEhoVrYyx6n64cNCgxnAK" alt="变态王子与不笑猫 官方海报">
+        <span class="status-badge">已看完</span>
+      </div>
+      <div class="anime-info">
+        <div class="title-line">
+          <h3>变态王子与不笑猫。</h3>
+          <span class="jp">変態王子と笑わない猫。 The "Hentai" Prince and the Stony Cat.</span>
+        </div>
+        <div class="meta-line">
+          <span class="chip">首播 <b>2013</b></span>
+          <span class="chip">制作 <b>J.C.STAFF</b></span>
+          <span class="chip">类型 <b>恋爱 / 喜剧 / 校园</b></span>
+          <span class="chip">进度 <b>已看完</b></span>
+        </div>
+        <p class="desc">改编自相乐总创作的同名轻小说、J.C.STAFF制作的恋爱喜剧。向"不笑猫像"许愿后，横寺阳人失去了说场面话的能力，心里的绅士念头全都会脱口而出；同病相怜的还有再也无法流露真心的三无少女筒隐月子。两人为取回失去的东西四处奔走，被卷入小豆梓、姐姐筑紫等人的热闹日常。</p>
+        <div class="note"><span class="who">我的短评：</span>十几年前的校园恋爱喜剧老番，不笑猫的设定现在看依然好玩。月子的三无和阳人的变态互怼，节奏轻快不油腻。</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="cast-sec" id="cast-henneko">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">変態王子と笑わない猫</span>
+      <h2>被不笑猫捉弄的众人</h2>
+      <p>一群向猫像许愿，却把真心弄丢的高中生。</p>
+    </div>
+    <div class="cast-grid">
+      <div class="cast" data-char="henneko_youto">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QH1obo0NroKnhjx6JMkcX66unfe" alt="横寺阳人 Q版头像"></div>
+        <h4>横寺阳人</h4><div class="romaji">Youto Yokodera</div>
+        <div class="duty">变态王子</div>
+        <p>许愿后内心话全外露，被称作"变态王子"的高二生。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="henneko_tsukiko">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XTWGb0uiBo5GcFxigxDcc8G0nie" alt="筒隐月子 Q版头像"></div>
+        <h4>筒隐月子</h4><div class="romaji">Tsukiko Tsutsukakushi</div>
+        <div class="duty">三无少女</div>
+        <p>失去表情的少女，嘴上毒舌，心里其实很柔软。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="henneko_emi">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/GnfxbXcYEotNUexB1N8cRgKen3f" alt="艾米 Q版头像"></div>
+        <h4>艾米</h4><div class="romaji">Emi (Emmanuella)</div>
+        <div class="duty">笑容假面</div>
+        <p>借猫神之力伪装成百分百笑容的少女，眼神其实凶凶的。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="henneko_tsukushi">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZP0mbSWNBoRHr8xXXnBcvlounQc" alt="筒隐筑紫 Q版头像"></div>
+        <h4>筒隐筑紫</h4><div class="romaji">Tsukushi Tsutsukakushi</div>
+        <div class="duty">钢铁之王</div>
+        <p>月子的姐姐，田径部部长，人称"钢铁之王"。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-sec" id="gallery-henneko">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GALLERY</span>
+      <h2>图片收藏</h2>
+      <p>收集了一些清晰的官方原图与高清截图，点击任意一张可以放大查看。</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ODoHbyUEhoVrYyx6n64cNCgxnAK" alt="官方海报"><figcaption>官方海报 · 主视觉</figcaption></figure>
+      <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HzTibbHSloBx4IxxY8jcfnuqnRa" alt="筒隐月子抱黑猫"><figcaption>全角色海报 · 心形背景</figcaption></figure>
+      <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EkZubljMwoa2O7x78JEc7n2Ynaf" alt="横寺阳人"><figcaption>蓝天群像 · 全员集结</figcaption></figure>
+      <figure class="g-item" data-gi="3"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/H2nlbqQcXovMC8x54sWc7Zwpnpy" alt="筒隐筑紫"><figcaption>预告海报 · 月子与阳人</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ===== 二级页：地。关于地球的运动 ===== -->
+<div id="view-anime-chikyu" class="view-anime bg-chikyu">
+  <div class="backbar">
+    <div class="wrap">
+      <a href="#home"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><path d="M15 6l-6 6 6 6"/></svg>追番手账</a>
+      <span class="bb-title">地。关于地球的运动</span>
+    </div>
+  </div>
+
+<section class="records" id="records-chikyu">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WATCH LOG</span>
+      <h2>追番记录</h2>
+      <p>每一部都是认真看完才归档。点开封面大图，收藏那些舍不得删的画面。</p>
+    </div>
+    <article class="anime-card">
+      <div class="cover">
+        <img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/I0DXb6gQsoEyImxAE1ncDQB1nBb" alt="地。关于地球的运动 星轨主视觉">
+        <span class="status-badge">已看完</span>
+      </div>
+      <div class="anime-info">
+        <div class="title-line">
+          <h3>地。关于地球的运动</h3>
+          <span class="jp">チ。―地球の運動について― Orb: On the Movements of the Earth</span>
+        </div>
+        <div class="meta-line">
+          <span class="chip">首播 <b>2024</b></span>
+          <span class="chip">制作 <b>MADHOUSE</b></span>
+          <span class="chip">类型 <b>历史 / 剧情 / 天文</b></span>
+          <span class="chip">进度 <b>已看完</b></span>
+        </div>
+        <p class="desc">改编自鱼丰创作、荣获手冢治虫文化赏漫画大奖的同名漫画，MADHOUSE制作。15世纪的波兰，跳级进入大学的神童拉法尔，遇到因研究日心说而被当作异端拷问的学者休伯特。在"地动说"被视为禁忌的年代，一群人冒着被火刑的风险，只为证明脚下这片大地其实在转动。</p>
+        <div class="note"><span class="who">我的短评：</span>一部用生命换真理的硬核历史剧。没有打怪升级，只有在信仰与真相之间燃烧的人，每集都沉重却上头，结尾尤其戳心。</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="cast-sec" id="cast-chikyu">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">ORB: ON THE MOVEMENTS OF THE EARTH</span>
+      <h2>追逐真理的人们</h2>
+      <p>一群在火刑柱阴影下仰望星空的人。</p>
+    </div>
+    <div class="cast-grid">
+      <div class="cast" data-char="chikyu_rafal">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Hz8kbg9x6ogTodxEekPcH9jhntb" alt="拉法尔 Q版头像"></div>
+        <h4>拉法尔</h4><div class="romaji">Rafal</div>
+        <div class="duty">神童</div>
+        <p>12岁跳级进大学的神童，被地动说深深吸引。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="chikyu_hubert">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MPqabTuCgoSigHxrp6WcVXHdnv9" alt="休伯特 Q版头像"></div>
+        <h4>休伯特</h4><div class="romaji">Hubert</div>
+        <div class="duty">异端学者</div>
+        <p>因研究地动说而遭受拷问的神秘学者。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="chikyu_jolanta">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/BzZRb7E1EosSOzxmPNNcY65inhd" alt="约兰达 Q版头像"></div>
+        <h4>约兰达</h4><div class="romaji">Jolanta</div>
+        <div class="duty">天文助手</div>
+        <p>因身为女性而不被承认的天文研究助手。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="chikyu_badeni">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/RizZbwIEMoIQC4x7lxWc2pVOn3e" alt="巴德尼 Q版头像"></div>
+        <h4>巴德尼</h4><div class="romaji">Badeni</div>
+        <div class="duty">独眼修士</div>
+        <p>不守教会规矩、纯粹追求知识的独眼修士。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+      <div class="cast" data-char="chikyu_oczy">
+        <div class="role-icon"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Goe6bSzZboNqM7xGWKocHf49n7d" alt="奥奇 Q版头像"></div>
+        <h4>奥奇</h4><div class="romaji">Oczy</div>
+        <div class="duty">代斗士</div>
+        <p>视力绝佳却唯独不敢仰望天空的沉默男子。</p>
+        <div class="open-hint">点我看详情</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-sec" id="gallery-chikyu">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">GALLERY</span>
+      <h2>图片收藏</h2>
+      <p>收集了一些清晰的官方原图与高清截图，点击任意一张可以放大查看。</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="g-item" data-gi="0"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/I0DXb6gQsoEyImxAE1ncDQB1nBb" alt="星轨主视觉"><figcaption>星轨下的拉法尔 · 主视觉</figcaption></figure>
+      <figure class="g-item" data-gi="1"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Ex4abEK6aoE715xCadWc0dgPndh" alt="星轨海报"><figcaption>星轨海报 · 追逐真理的人们</figcaption></figure>
+      <figure class="g-item" data-gi="2"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/C8B7bj4LGoZdYJxyVQCcaZ5MnRc" alt="NHK新视觉"><figcaption>NHK 新视觉 · 仰望星空</figcaption></figure>
+      <figure class="g-item" data-gi="3"><img src="https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/R0Owb3TpBouO2zxOAlrc1MEcnQg" alt="星轨之下"><figcaption>星轨之下 · 命运的转动</figcaption></figure>
+    </div>
+  </div>
+</section>
+</div>
+<!-- SLICE4-VIEW-END -->
+
+<!-- ===== Lightbox ===== -->
+<div class="lightbox" id="lightbox" role="dialog" aria-label="图片放大查看">
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="上一张">&#8249;</button>
+  <img id="lbImg" src="" alt="">
+  <button class="lb-nav lb-next" id="lbNext" aria-label="下一张">&#8250;</button>
+  <div class="lb-caption" id="lbCaption"></div>
+</div>
+
+<!-- ===== 角色详情弹窗 ===== -->
+<div class="char-modal" id="charModal" role="dialog" aria-label="角色详情">
+  <div class="sheet">
+    <div class="cimg"><img id="cmImg" src="" alt=""></div>
+    <div class="cinfo">
+      <div class="cname"><h3 id="cmName"></h3><span class="cjp" id="cmJp"></span></div>
+      <div class="ctags" id="cmTags"></div>
+      <ul class="citems" id="cmItems"></ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 返回顶部 ===== -->
+<button class="back-top" id="backTop" aria-label="返回顶部">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M6 14l6-6 6 6"/></svg>
+</button>
+
+<script>
+/* 画廊图片列表（按番分库）：新增图片时，把图片 URL 和标题加进对应数组即可 */
+var GALLERIES = {
+  kon: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AxfRb5w98ohayHxS2adccZfjn4d", cap:"放学后的茶会 · 五人合影"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TrSZbScgvoO1Inxhv2ScbGM7nxd", cap:"部室墙上的“放课后Tea Time”"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/NnjpbCbjfoPPZfxnCJOcs0THnVg", cap:"晴空下的日常"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MhTSbd3tXoU9PGxiXtFcczqYn8G", cap:"“部员募集！”练习时间"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JeAkb8fOPooZ3wxbcFbcKRIYn9c", cap:"秋山澪 · 秋日湖畔"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FKo2bs1U1odVt7x8d48c04vZntf", cap:"放学后的练习室"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/LAPVbDvL3oBIZaxbYRgcJjzenNd", cap:"夏日 · 树荫下的午休"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EQqCbdZQwoW6wAxvLW2ci8sgnAc", cap:"官方海报 · “想悄悄传达给你”"}
+  ],
+  chuuni: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DtZHbodACoTZDexwsqqcqNEAn4b", cap:"昼寝结社 · 六花与她的“使魔们”"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DUuZbzgAooEGdKxQBCPcGiuXnik", cap:"邪王真眼 · 夜之城"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QPw6bGh0hoUFVSxl2LLcADgenNg", cap:"新春参拜 · 脸贴脸的暖意"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TTIfbCOd2oEUn1x3yvpc0qUbnJK", cap:"地板上的青春 · 和一只黑猫"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/O0A1bh0cmoa23RxShYOc54oenAg", cap:"勇太 & 森夏 · 冤家日常"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DBhObJuavoHUbLx5gwccBu1WnCe", cap:"冬日神社 · 指额头的约定"}
+  ],
+  /* SLICE1-GALL-BEGIN */
+  charlotte: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Cf0ibI4cjo5k3cxGBIuc6Ltande", cap:"学生会四人 · 青空之下"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/UW1QbRmNWo4v8KxxKZKcXBVsn5d", cap:"星之海的夜晚 · 五人集合"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QadabrRSdomJ1axJp0gcG0Vmnab", cap:"官方版权绘 · 学生会四人"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/R3m8bOARzoGFUbxb49Qcjda9nxg", cap:"角色群像 · 白底立绘"}
+  ],
+  cells: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MEnib7N7XoArBoxbRJtcs8D4nFg", cap:"红细胞与白细胞 · 体内大作战"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/CfStbQAu2oNmPNxrKuNcQsrcnog", cap:"血小板们 · 蜂蜜与矿泉水"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Ak09bH4odoSY06xjrxfcyf38nZg", cap:"血小板列队 · 全体集合"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Z3IbbnFhVowbhVxZ9oJcE4kMnCh", cap:"第二季海报 · 体内大作战"}
+  ],
+  hanako: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TfhLbFzNuo9AUYxZqIqcfzjxntg", cap:"屋顶上的五人 · 一起跳起来"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/T2sybkIbzogeLpxtiSncpWLcnub", cap:"万圣节主视觉 · 全员狂欢"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/OKlkbpnAJoxWUsxQ0TVcrf21n6d", cap:"花子与宁宁 · 红墙之下"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MC0mbwmEjotvJDxwvBOcWw2Nn6c", cap:"花子与宁宁 · 暗红亲昵"}
+  ],
+  spy: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JyXdbvMjlo2rcRxV3p2cPgcqndf", cap:"福杰一家 · 藏起身份的合影"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/FfXjbgO6soaGcuxkdHqc6lNInGd", cap:"官方主视觉 · 一家与邦德"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZxDFbb84loDKcjxgQOicLCYqnMe", cap:"温馨全家福 · 高清壁纸"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HDm6ba0JNoMlwxx7WbbcymaQnob", cap:"春日野餐 · 官方海报"}
+  ],
+  /* SLICE1-GALL-END */
+  /* SLICE2-GALL-BEGIN */
+  eva: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YFZsbWbBwoddB4xeithcVJKWntc", cap:"红色海面 · 初号机与少年们"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/SGwBbG1Y2ovTTuxl8Z5cB3yInwc", cap:"新剧场版：序 · 夕阳下的初号机"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QF3lbKdqqoGDhHxCNHRcAM1JnhO", cap:"新剧场版：终 · 再见了所有的福音战士"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/CSg6bMyssov8CtxhLOmcEcKhnmo", cap:"白沙滩上的五人 · 最终章视觉"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/PXd7blTwqouPCKxOL9nc51xWn3q", cap:"教室托腮 · 真嗣的日常"}
+  ],
+  kimetsu: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/UfzBbASXAo2XM4x7ZpBcJ64jnGf", cap:"黄金云下 · 四人战斗姿态"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DdqDb3FXAoGzuDxfLUPcSyOTnXd", cap:"蓝窗之前 · 主角团方图"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Z6uybbD5soAhBtxpp9xcxvgknWd", cap:"蝶屋敷之夜 · 风与蝴蝶"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/RKqxb0YfGoqvfRxVQoVcySwYnKu", cap:"雪山预告 · 炭治郎护住祢豆子"}
+  ],
+  anohana: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QmxKbQUznoSEsyxAcBpcIwVMn5n", cap:"那座天桥 · 六人与面码"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Fne1bi5OMo7dwcxWTH0c8fxMnUM", cap:"夏日花田 · 面码奔跑"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AKflbbWyjoEYvvx6ZhmcMIpenPe", cap:"街道重逢 · 面码与仁太"}
+  ],
+  initiald: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/APE3bPOgCoay1RxdDu9cXhPZn4f", cap:"夜色山道 · 群马车手集结"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MZyNbXzc9o8Cs7xM4bbc327Invb", cap:"新剧场版：觉醒 · 黄昏六人"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/TQlEbopDYoabAsxDGa0cJlFgnyd", cap:"新剧场版 · 黄昏山脊"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HDv5bkkQboJIUZx0sGycRDyynTD", cap:"AE86 Trueno · 藤原豆腐店"}
+  ],
+  /* SLICE2-GALL-END */
+  /* SLICE3-GALL-BEGIN */
+  clannad: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Uu0ubSI3OoOhCjxiYpycu84Jncg", cap:"After Story · 夏日的坡道与一家人"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HC6OberUOoMHzWxB1oBccH12nIc", cap:"樱花树下的女主们"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XmvEbMdCwomqx9xYsYsch7HOnKb", cap:"黄昏下 · 朋也与渚"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/CKLCbOtd9oXgisxJG0mckNOznUh", cap:"After Story · 朋也肩上的汐"}
+  ],
+  railgun: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/N1XLbpVDWo7mIxxpBAWclB4Ynrc", cap:"指尖跃动的电光 · 最强电击使"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZGqEbK0tnoYyYaxGef3cU10knah", cap:"雨天的都市 · 碎裂的车窗"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZKrIbEzUZoWdwRx5b7rcdCUunnf", cap:"黑暗中的雷光"}
+  ],
+  girlslt: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/VF96butA8oTV1dxkNFNcD9lbnAb", cap:"驾驶半履带摩托 · 向上层进发"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XWglbHl13oFsmwxzh2HctReinlf", cap:"废墟里漂浮的气泡"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MHqtbaj0moZVYGxUjw8cuB7Jnmf", cap:"灰白的废弃城市天际线"}
+  ],
+  shigatsu: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/INDGbFpXFovAKgxAce0cJS5OnFh", cap:"樱花树下的钢琴与小提琴"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EPGZbtUC5oWfkaxdjRfcpVFVnoh", cap:"秋与冬 · 两个人的方向"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/T820boUD2oyZsnxzq4gcCfk5ngg", cap:"樱花树下 · 没有你的四月"}
+  ],
+  /* SLICE3-GALL-END */
+  /* SLICE4-GALL-BEGIN */
+  wataten: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YFdZbJoNIoN8ynxKV5FcQuP7nJh", cap:"五人在空中的合照 · 主视觉"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/P65IbcxpAoElDtxRzCfcJPT5nMg", cap:"正式海报 · 六人集结"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MNG8bxJlUovcRSxWNNfccEbrnAd", cap:"蓝天之下 · 全员海报"},
+  ],
+  violet: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/D4yYb1dgXow5fmxkTNwcetenn7g", cap:"草原与蓝天 · 主视觉"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Kt42bO22fo7Tf4xENfqcjAWvnGg", cap:"官方壁纸 · 玫瑰与信"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Cgu3b5D1PoiP88xAc5ic28ednUf", cap:"海边假日 · 薇尔莉特"},
+  ],
+  henneko: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ODoHbyUEhoVrYyx6n64cNCgxnAK", cap:"官方海报 · 主视觉"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HzTibbHSloBx4IxxY8jcfnuqnRa", cap:"全角色海报 · 心形背景"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EkZubljMwoa2O7x78JEc7n2Ynaf", cap:"蓝天群像 · 全员集结"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/H2nlbqQcXovMC8x54sWc7Zwpnpy", cap:"预告海报 · 月子与阳人"}
+  ],
+  chikyu: [
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/I0DXb6gQsoEyImxAE1ncDQB1nBb", cap:"星轨下的拉法尔 · 主视觉"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Ex4abEK6aoE715xCadWc0dgPndh", cap:"星轨海报 · 追逐真理的人们"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/C8B7bj4LGoZdYJxyVQCcaZ5MnRc", cap:"NHK 新视觉 · 仰望星空"},
+    {src:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/R0Owb3TpBouO2zxOAlrc1MEcnQg", cap:"星轨之下 · 命运的转动"}
+  ],
+  /* SLICE4-GALL-END */
+};
+var currentAnime = 'kon';
+function curG(){ return GALLERIES[currentAnime] || GALLERIES.kon; }
+
+var lb = document.getElementById('lightbox');
+var lbImg = document.getElementById('lbImg');
+var lbCap = document.getElementById('lbCaption');
+var cur = 0;
+
+function openLb(i, el){
+  if(el){
+    var r = el.getBoundingClientRect();
+    lbImg.style.transformOrigin = ((r.left + r.width/2) / window.innerWidth * 100) + '% ' + ((r.top + r.height/2) / window.innerHeight * 100) + '%';
+  }else{
+    lbImg.style.transformOrigin = '50% 50%';
+  }
+  var g = curG();
+  cur = i % g.length;
+  lbImg.src = g[cur].src;
+  lbImg.alt = g[cur].cap;
+  lbCap.textContent = (cur + 1) + " / " + g.length + "　" + g[cur].cap;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLb(){
+  lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function stepLb(d){
+  var g = curG();
+  cur = (cur + d + g.length) % g.length;
+  lbImg.src = g[cur].src;
+  lbImg.alt = g[cur].cap;
+  lbCap.textContent = (cur + 1) + " / " + g.length + "　" + g[cur].cap;
+}
+
+/* 给画廊每个格子绑定点击：index 取自 data-gi（当前番画廊内的序号），避免跨番错位 */
+var items = document.querySelectorAll('.g-item');
+for(var i=0;i<items.length;i++){
+  (function(idx, el){
+    el.addEventListener('click', function(){
+      var gi = parseInt(el.getAttribute('data-gi'), 10);
+      if(isNaN(gi)) gi = idx;
+      openLb(gi, el);
+    });
+  })(i, items[i]);
+}
+
+/* 点击任意位置关闭；箭头切图不触发关闭 */
+document.getElementById('lbPrev').addEventListener('click', function(e){ e.stopPropagation(); stepLb(-1); });
+document.getElementById('lbNext').addEventListener('click', function(e){ e.stopPropagation(); stepLb(1); });
+lb.addEventListener('click', function(){ closeLb(); });
+document.addEventListener('keydown', function(e){
+  if(lb.classList.contains('open')){
+    if(e.key === 'Escape') closeLb();
+    if(e.key === 'ArrowLeft') stepLb(-1);
+    if(e.key === 'ArrowRight') stepLb(1);
+  }else if(cm.classList.contains('open')){
+    if(e.key === 'Escape') closeCharModal();
+  }
+});
+
+/* ===== 角色资料 ===== */
+var CHAR_DATA = {
+  yui: {
+    name:"平泽唯", jp:"Yui Hirasawa · ひらさわ ゆい",
+    tags:["吉他 · 主唱"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JDdmbFKg6ocDDJxS6eScgxDtnde",
+    items:[
+      ["乐器","吉他“吉太”（Gibson Les Paul 樱桃渐变款）"],
+      ["年级","高一 → 高三"],
+      ["生日","11月27日"],
+      ["性格","天然呆、嗜甜、迷迷糊糊，却有着惊人的音乐天赋；为了蛋糕可以全力以赴"],
+      ["家庭","父母 + 妹妹平泽忧（家务全能的可靠孩子）"],
+      ["CV","丰崎爱生"],
+      ["小细节","入部时连吉他都不会弹，用存了很久的钱买下“吉太”后开始自学成才"]
+    ]
+  },
+  mio: {
+    name:"秋山澪", jp:"Mio Akiyama · あきやま みお",
+    tags:["贝斯 · 词曲"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/P1XjbBiZqoAk0KxvYqEc8SHHn0e",
+    items:[
+      ["乐器","贝斯“伊丽莎白”（Fender Jazz Bass，左撇子款）"],
+      ["年级","高一 → 高三"],
+      ["生日","1月15日"],
+      ["性格","认真内敛、成绩优秀，但怕生又怕鬼；乐队的大部分词曲都出自她手"],
+      ["家庭","父母（爸爸是摄影师，常被女儿吐槽）"],
+      ["CV","日笠阳子"],
+      ["小细节","左撇子；在学园祭上人气极高，却总是想把自己藏起来"]
+    ]
+  },
+  ritsu: {
+    name:"田井中律", jp:"Ritsu Tainaka · たいなか りつ",
+    tags:["鼓手 · 部长"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Z7ENb2HNhoWhtHx1XdcclC6Bnzg",
+    items:[
+      ["乐器","架子鼓（Yamaha 套装）"],
+      ["年级","高一 → 高三"],
+      ["生日","8月21日"],
+      ["性格","元气满满、大大咧咧，行动力超强；最喜欢捉弄澪，也是把乐队凑起来的发起人"],
+      ["家庭","父母 + 弟弟田井中聪"],
+      ["CV","佐藤聪美"],
+      ["小细节","平时吊儿郎当，关键时刻意外可靠；和澪是从小的好朋友"]
+    ]
+  },
+  mugi: {
+    name:"琴吹紬", jp:"Tsumugi Kotobuki · ことぶき つむぎ",
+    tags:["键盘"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Qrr6bWS6foSBJbxIZsdcj5bYnSN",
+    items:[
+      ["乐器","键盘（KORG Triton）"],
+      ["年级","高一 → 高三"],
+      ["生日","7月2日"],
+      ["性格","温柔体贴的大小姐，向往普通高中生的日常；家里有游泳池和别墅"],
+      ["家庭","富豪家庭，父亲是公司社长"],
+      ["CV","寿美菜子"],
+      ["小细节","看起来文静，其实好奇心旺盛、力气大得惊人；部室的点心茶水基本由她包办"]
+    ]
+  },
+  azusa: {
+    name:"中野梓", jp:"Azusa Nakano · なかの あずさ",
+    tags:["吉他 · 后辈"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HarobXg8fot7VYxEwBYcpIBWnNe",
+    items:[
+      ["乐器","吉他（Fender Mustang 白色款）"],
+      ["年级","后辈（前辈毕业后继任部长）"],
+      ["生日","11月11日"],
+      ["性格","认真努力、基本功扎实，一开始觉得前辈们太松懈，后来彻底喜欢上轻音部"],
+      ["家庭","父母，曾在轻音部演出时到场支持"],
+      ["CV","竹达彩奈"],
+      ["小细节","因为名字像猫叫被唯叫作“梓喵”；是所有前辈的团宠"]
+    ]
+  },
+  rikka: {
+    name:"小鸟游六花", jp:"Rikka Takanashi · たかなし りっか",
+    tags:["邪王真眼"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Xj3bbGpwyoZsKux4yGHccsSun0b",
+    items:[
+      ["中二设定","“邪王真眼使”，眼罩下藏着金色的邪王真眼，使魔是猫又“圣调律者”"],
+      ["年级","一年级新生"],
+      ["生日","12月31日"],
+      ["性格","固执又纯真，把妄想世界当成必须守护的宝物；怕打针、怕去医院"],
+      ["家庭","父亲早逝，与姐姐小鸟游十花、母亲同住"],
+      ["CV","内田真礼"],
+      ["小细节","“邪王真眼是最强的！”——其实只是想守住和勇太的约定"]
+    ]
+  },
+  yuta: {
+    name:"富樫勇太", jp:"Yuuta Togashi · とがし ゆうた",
+    tags:["漆黑烈火使"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HMxebhFAuog9IIxBbJoclQlgnVf",
+    items:[
+      ["中二设定","曾经的“漆黑烈火使”，升入高中后立志封印黑历史、做个普通高中生"],
+      ["年级","一年级"],
+      ["性格","温柔负责、容易害羞，总被六花带进妄想里又嘴硬不承认"],
+      ["家庭","父母 + 妹妹富樫千寻"],
+      ["CV","福山润"],
+      ["小细节","中二黑历史笔记本被六花发现，从此被迫成为她的“契约者”"]
+    ]
+  },
+  shinka: {
+    name:"丹生谷森夏", jp:"Shinka Nibutani · にぶたに しんか",
+    tags:["森大人"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/WzxXblkuuorGqhxrRZ0c4eeXn7f",
+    items:[
+      ["中二设定","曾自称“森大人（Mori Summer）”，如今对黑历史深恶痛绝"],
+      ["身份","班级优等生、学生会会长候补"],
+      ["性格","表面完美现充大小姐，一被提黑历史就瞬间炸毛"],
+      ["CV","赤﨑千夏"],
+      ["小细节","被凸守追着叫“森大人”叫到崩溃的经典日常"]
+    ]
+  },
+  kumin: {
+    name:"五月七日茴香", jp:"Kumin Tsuyuri · つゆり くみん",
+    tags:["软绵绵前辈"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/VISAbwJdloBGoSxkUa3coDBXngh",
+    items:[
+      ["口头禅","“软绵绵的时间……”"],
+      ["身份","二年级学姐，比六花她们高一届"],
+      ["性格","慵懒软萌、治愈系，到哪里都能睡着的午睡大师"],
+      ["CV","久保由利香"],
+      ["小细节","曾经在社团活动时睡着被整队“搬运”走"]
+    ]
+  },
+  deko: {
+    name:"凸守早苗", jp:"Sanae Dekomori · でこもり さなえ",
+    tags:["雷神战机"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/T4rZbiNnUoh5xLxIn7ocdG5fnTg",
+    items:[
+      ["中二设定","自称“雷神战机·雷神小锤”，森大人的头号弟子"],
+      ["身份","中二病后辈，元气担当"],
+      ["性格","说话带“であります”口癖，精力旺盛的中二狂热者"],
+      ["CV","早见沙织"],
+      ["小细节","信仰“森大人”到完全无视本人否认的程度"]
+    ]
+  },
+  satone: {
+    name:"七宫智音", jp:"Satone Shichimiya · しちみや さとね",
+    tags:["魔法魔王少女"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/OPbmb0s8GoFDklxOzwOckgqMnNc",
+    items:[
+      ["中二设定","自称“魔法魔王少女·希尔维娅”"],
+      ["身份","勇太的小学同学，转学而来"],
+      ["性格","开朗直率、天然系中二，永远元气满满"],
+      ["CV","上坂堇"],
+      ["小细节","喜欢勇太，和六花是互为“情敌”又互相认可的朋友"]
+    ]
+  },
+  /* SLICE1-CHAR-BEGIN */
+  charlotte_yu: {
+    name:"乙坂有宇", jp:"Yuu Otosaka · おとさか ゆう",
+    tags:["掠夺者"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/I8a7brpEBoOIgfxhW0QchGQvnPb",
+    items:[
+      ["特殊能力","附身他人5秒，后期觉醒为可“掠夺”他人能力"],
+      ["身份","星之海学园一年级，乙坂步未的哥哥"],
+      ["性格","表面轻浮爱作弊，实则为了妹妹可以赌上一切"],
+      ["CV","内山昂辉"],
+      ["恋人","友利奈绪"],
+      ["小细节","最终掠夺全世界能力拯救世界，却因此失去了所有记忆"]
+    ]
+  },
+  charlotte_nao: {
+    name:"友利奈绪", jp:"Nao Tomori · ともり なお",
+    tags:["学生会长"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/T4dybe4rFotABJxND4fcoJ3wnxe",
+    items:[
+      ["特殊能力","让自己从某一个特定对象的视野中消失（只能作用于一人）"],
+      ["身份","星之海学园学生会长"],
+      ["性格","强硬傲娇、行动力极强，私下是后摇滚乐队 ZHIEND 的死忠"],
+      ["CV","佐仓绫音"],
+      ["格斗","脚法凌厉，一记飞踢能把人踹下楼"],
+      ["小细节","对有宇表面严厉，关键时刻却第一个站出来保护他"]
+    ]
+  },
+  charlotte_yusa: {
+    name:"西森柚咲", jp:"Yusa Nishimori · にしもり ゆさ",
+    tags:["现役偶像"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/A0CKbGtP2oHbaBxWzk7cwf7Cnoc",
+    items:[
+      ["特殊能力","口寄せ（招魂），但只能被已故姐姐美砂凭依，本人毫无自觉"],
+      ["身份","摇滚乐队 How-Low-Hello 的主唱，人气高中生偶像"],
+      ["性格","笑容甜美、性格乖巧，被姐姐附身时气质骤变"],
+      ["CV","内田真礼（同时为姐姐黑羽美砂配音）"],
+      ["小细节","姐姐美砂凭依时可使用“发火”能力，瞳色与发色都会改变"]
+    ]
+  },
+  charlotte_takajo: {
+    name:"高城丈士朗", jp:"Jojiro Takajo · たかじょう じょうじろう",
+    tags:["学生会成员"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/WHFabObBBoJMr3xs9sQcaRTHn2C",
+    items:[
+      ["特殊能力","超高速移动，一旦冲刺就很难急停"],
+      ["身份","学生会成员，学生会的眼镜绅士"],
+      ["性格","一本正经，实则是西森柚咲的狂热粉丝"],
+      ["CV","水岛大宙"],
+      ["小细节","因为急停不能，经常一头撞进墙或玻璃门"]
+    ]
+  },
+  charlotte_ayumi: {
+    name:"乙坂步未", jp:"Ayumi Otosaka · おとさか あゆみ",
+    tags:["有宇的妹妹"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/X2vSbpCYIoBc2JxqbkMcFa0znce",
+    items:[
+      ["身份","有宇的妹妹，初中生"],
+      ["性格","温柔懂事、天然呆，最拿手的是做蛋包饭"],
+      ["CV","麻仓桃"],
+      ["口头禅","“哥哥，今天吃蛋包饭哦”"],
+      ["小细节","她的意外是整部故事急转直下的关键转折"]
+    ]
+  },
+  charlotte_kumagami: {
+    name:"熊耳", jp:"Kumagami · くまがみ",
+    tags:["学生会协力者"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AJ8fbgSRWoA12IxSgu7cqzPCnAc",
+    items:[
+      ["特殊能力","用水滴落在地图上，即可定位能力者所在位置"],
+      ["身份","星之海学生会的协力者"],
+      ["特征","总是全身湿透、头发盖住半边脸的神秘青年"],
+      ["CV","竹本英史"],
+      ["小细节","为保护友利奈绪而负伤，是片中令人鼻酸的配角"]
+    ]
+  },
+  cells_rbc: {
+    name:"红细胞", jp:"AE3803 · 赤血球",
+    tags:["氧气配送"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/LuTgbENfFotN6mx52Lwc9l6Invg",
+    items:[
+      ["番号","AE3803，新人红细胞"],
+      ["工作","在血管里搬运氧气与二氧化碳"],
+      ["性格","路痴又冒失，送货路上经常迷路、遇险"],
+      ["CV","花泽香菜"],
+      ["小细节","每次陷入危机都被白细胞 U-1146 及时救下"]
+    ]
+  },
+  cells_wbc: {
+    name:"白细胞", jp:"U-1146 · 好中球",
+    tags:["除菌部队"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Ykv5bfwi6ouGFUxntmbcnoD7ns3",
+    items:[
+      ["番号","U-1146，中性粒细胞"],
+      ["工作","识别并消灭侵入体内的细菌与病毒"],
+      ["性格","冷酷高效、沉默寡言，永远第一个冲向敌人"],
+      ["CV","前野智昭"],
+      ["小细节","对红细胞格外关照，是身体里最可靠的“保镖”"]
+    ]
+  },
+  cells_platelet: {
+    name:"血小板", jp:"Platelet · 血小板",
+    tags:["止血凝血"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/OFTobW15Bo3VVbx6Jj4cqg6cn1c",
+    items:[
+      ["工作","伤口处手拉手结成血栓，堵住出血点"],
+      ["外形","个头最小的幼女军团，戴大盖帽"],
+      ["性格","认真又努力，喊口号时一本正经"],
+      ["CV","长绳麻理亚（队长）"],
+      ["小细节","凭一己之力成为全片最出圈的人气角色"]
+    ]
+  },
+  cells_killt: {
+    name:"杀手T细胞", jp:"Killer T Cell · キラーT細胞",
+    tags:["攻击部队"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/WKGObn5sfoo5ZexnqI1cdzaOnDg",
+    items:[
+      ["工作","处决被病毒感染的细胞与癌细胞"],
+      ["外形","一身黑制服、写着 KILL 的帽子，满身肌肉"],
+      ["性格","暴躁热血、嗓门极大，张口就是“KILL”"],
+      ["CV","小野大辅"],
+      ["小细节","和白细胞既是战友也常互相较劲"]
+    ]
+  },
+  cells_macro: {
+    name:"巨噬细胞", jp:"Macrophage · マクロファージ",
+    tags:["清扫警备"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YjfTbIajmoEWGIxIulxczp13ned",
+    items:[
+      ["工作","吞噬细菌，同时担任免疫细胞的保姆与教官"],
+      ["外形","穿白色女仆装，手持大太刀"],
+      ["性格","优雅温柔，挥刀时却飒气十足"],
+      ["CV","井上喜久子"],
+      ["小细节","战力在免疫部队里名列前茅，是真正的“姐姐大人”"]
+    ]
+  },
+  hanako_hanako: {
+    name:"花子君", jp:"Hanako-kun · 花子くん / 柚木普",
+    tags:["第七大不可思议"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/A4CcbiMgXoY4djx96rqc9RQkneb",
+    items:[
+      ["身份","海鸥学园七大不可思议之第七位，厕所的幽灵"],
+      ["特征","戴旧制学生帽，脸颊贴着“封”字符"],
+      ["性格","表面调皮爱逗宁宁，实则背负着沉重的过去"],
+      ["CV","绪方惠美"],
+      ["小细节","本名柚木普，以怪异的身份留在校园里守护宁宁"]
+    ]
+  },
+  hanako_nene: {
+    name:"八寻宁宁", jp:"Nene Yashiro · やしろ ねね",
+    tags:["主人公 · 助手"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Zewhb07gmosOnRxj3TocRv6bnlh",
+    items:[
+      ["身份","海鸥学园二年级，花子君的助手"],
+      ["特征","因误食“海之 selenium”，激动时会露出金鱼腿"],
+      ["性格","憧憬恋爱的花痴少女，善良又为朋友拼命"],
+      ["CV","鬼头明里"],
+      ["小细节","为了花子君，不惜付出自己的生命"]
+    ]
+  },
+  hanako_light: {
+    name:"源光", jp:"Ko Minamoto · みなもと こう",
+    tags:["驱魔师一族"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZTBUbf5zJozKW3xSU9FcA8j1nTe",
+    items:[
+      ["身份","驱魔师名门源家的次子"],
+      ["武器","手持雷霆法杖"],
+      ["性格","开朗热血，一开始想除掉花子君，后来成了伙伴"],
+      ["CV","千叶翔也"],
+      ["小细节","是源辉的弟弟，对宁宁抱有好感"]
+    ]
+  },
+  hanako_akane: {
+    name:"苍井茜", jp:"Akane Aoi · あおい あかね",
+    tags:["学生会副会长"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Fo1db3s1uoxNVTxVCticcSdjn9b",
+    items:[
+      ["身份","学生会副会长，第三时钟的守护者"],
+      ["特征","认真的红发少年，戴眼镜"],
+      ["性格","做事一板一眼，唯独对赤根葵毫无办法"],
+      ["CV","土岐隼一"],
+      ["小细节","深爱青梅竹马赤根葵，会为她动用暂停时间的能力"]
+    ]
+  },
+  hanako_mitsukri: {
+    name:"源辉", jp:"Teru Minamoto · みなもと てる",
+    tags:["学生会长"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/KN2RbhDojo3wdcx7mODcb9Ysnpf",
+    items:[
+      ["身份","学生会长，源光的哥哥"],
+      ["特长","除妖实力在源家堪称天才"],
+      ["性格","文武双全的理想前辈，对怪异毫不留情"],
+      ["CV","内田雄马"],
+      ["小细节","表面温和，实则是让怪异们闻风丧胆的存在"]
+    ]
+  },
+  hanako_sakura: {
+    name:"七峰樱", jp:"Sakura Nanamine · ななみね さくら",
+    tags:["神秘少女"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/I06Kb2kxSocsnix7aGoc1tLen0z",
+    items:[
+      ["身份","谜之转学生，站在怪异一侧的人物"],
+      ["特征","浅绿色长发，佩戴宝石胸针"],
+      ["性格","举止优雅、说话轻缓，带着疏离感"],
+      ["CV","安济知佳"],
+      ["小细节","与七大不可思议的秩序变动有着千丝万缕的联系"]
+    ]
+  },
+  spy_loid: {
+    name:"劳埃德·福杰", jp:"Loid Forger / 黄昏 · ロイド・フォージャー",
+    tags:["间谍爸爸"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Wgy7bwxzwohqYjxaaWDceqhOny6",
+    items:[
+      ["代号","黄昏（Twilight），西国顶尖间谍"],
+      ["伪装身份","东国精神病院医生劳埃德·福杰"],
+      ["性格","冷静缜密的战术家，演父亲时却越来越入戏"],
+      ["CV","江口拓也"],
+      ["小细节","为执行“枭”作战组建假家庭，渐渐动了真情"]
+    ]
+  },
+  spy_yor: {
+    name:"约尔·福杰", jp:"Yor Forger / 荆棘公主 · ヨル・フォージャー",
+    tags:["杀手妈妈"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/CuQPbmBIAojLC4xi80octFMinnf",
+    items:[
+      ["代号","荆棘公主（Princess Thorn），东国职业杀手"],
+      ["伪装身份","市公所公务员，阿尼亚的妈妈"],
+      ["性格","战斗时凌厉果断，日常生活却天然呆、不懂人情世故"],
+      ["CV","早见沙织"],
+      ["小细节","为掩人耳目与劳埃德假结婚，对弟弟尤里格外护短"]
+    ]
+  },
+  spy_anya: {
+    name:"阿尼亚·福杰", jp:"Anya Forger · アーニャ・フォージャー",
+    tags:["读心女儿"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/BypabRGzXorAwdx4HnscXW8Enif",
+    items:[
+      ["代号","实验体 007，前身为某实验机构的超能力儿童"],
+      ["特殊能力","读心术，能听见周围所有人的心声"],
+      ["性格","机灵懂事、表情丰富，是行走的表情包"],
+      ["CV","种崎敦美"],
+      ["小细节","拼命在伊甸学园刷“星星”，只为帮爸爸完成任务"]
+    ]
+  },
+  spy_bond: {
+    name:"邦德·福杰", jp:"Bond Forger · ボンド・フォージャー",
+    tags:["预知犬"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XCuVbZK5yox1Z8xufHHcx50hnFe",
+    items:[
+      ["来历","原“苹果计划”第8号实验动物"],
+      ["特殊能力","能够预知未来"],
+      ["性格","体型庞大却温柔忠诚，最疼阿尼亚"],
+      ["CV","松田健一郎"],
+      ["小细节","戴着黑色蝴蝶结领结，是福杰家的一员大狗"]
+    ]
+  },
+  spy_damian: {
+    name:"达米安·德斯蒙", jp:"Damian Desmond · ダミアン・デズモンド",
+    tags:["伊甸学园同学"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/RpPvbjgGKoHH0NxWRL5cSuB6nce",
+    items:[
+      ["身份","东国政治家多诺万·德斯蒙的次子，阿尼亚的同学"],
+      ["性格","傲娇富二代，嘴上不饶人却心地正直"],
+      ["CV","藤原夏海"],
+      ["小细节","被阿尼亚一拳打中后，反而对她产生了好感"],
+      ["爱好","踢足球，每天早上必喝一杯牛奶"]
+    ]
+  },
+  /* SLICE1-CHAR-END */
+  /* SLICE2-CHAR-BEGIN */
+  eva_shinji: {
+    name:"碇真嗣", jp:"Shinji Ikari · いかり しんじ",
+    tags:["初号机驾驶员"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZpJCbLQkMoMQMmxMyrxcAclvnqh",
+    items:[
+      ["生日","6月6日"],
+      ["身份","第三少年，NERV所属EVA初号机驾驶员"],
+      ["性格","内向自卑、习惯逃避，却在关键时刻被推上驾驶舱"],
+      ["家庭","父亲碇源堂；母亲碇唯在实验中消失于初号机"],
+      ["CV","绪方惠美"],
+      ["小细节","招牌台词“不能逃避”；被父亲叫到NERV时正在电车站哭泣"]
+    ]
+  },
+  eva_rei: {
+    name:"绫波丽", jp:"Rei Ayanami · あやなみ レイ",
+    tags:["零号机驾驶员"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/OItEbz5CtoC90wxUsCEcko7fnzb",
+    items:[
+      ["生日","3月30日（设定）"],
+      ["身份","第一少女，EVA零号机驾驶员，淀的克隆人"],
+      ["性格","沉默寡言、面无表情，情感如人偶般淡薄"],
+      ["居所","NERV地下的宿舍，常独自一人看书"],
+      ["CV","林原惠美"],
+      ["小细节","白发红瞳，是 EVA 史上第一个“三无少女”的原型"]
+    ]
+  },
+  eva_asuka: {
+    name:"式波明日香", jp:"Asuka Langley Soryu · そうりゅう アスカ ラングレー",
+    tags:["二号机驾驶员"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XxPsbtJkpoglCwxj8kUc7NGpnNd",
+    items:[
+      ["生日","12月4日"],
+      ["身份","第二少女，EVA二号机驾驶员，德日混血"],
+      ["性格","骄傲好强、自信外露，内心极度渴望被认可"],
+      ["随身物","红色 plugsuit、头部数据接口"],
+      ["CV","宫村优子"],
+      ["小细节","口头禅“あんたバカ？”（你是笨蛋吗？）；在剧中多次与真嗣同居"]
+    ]
+  },
+  eva_kaworu: {
+    name:"渚薰", jp:"Kaworu Nagisa · なぎさ カヲル",
+    tags:["第五少年"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/IqExbXg2xo6fbCxcfJCcvddVnqe",
+    items:[
+      ["生日","不详"],
+      ["身份","第五少年，EVA临时驾驶员，实为第十七使徒"],
+      ["性格","温柔优雅、洞悉一切，钢琴弹得极好"],
+      ["使徒身份","自由天使Tabris"],
+      ["CV","石田彰"],
+      ["小细节","第24话登场即高潮；最终要求真嗣亲手消灭自己"]
+    ]
+  },
+  eva_misato: {
+    name:"葛城美里", jp:"Misato Katsuragi · かつらぎ みさと",
+    tags:["作战部长"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AVXdbMkvyo3wmnxIDT5cIYQknfh",
+    items:[
+      ["生日","1986年12月8日"],
+      ["身份","NERV战术作战部一课科长（三佐），真嗣的监护人"],
+      ["性格","工作干练、私下邋遢酒鬼，像姐姐一样照顾真嗣"],
+      ["标志物","红色十字项链"],
+      ["CV","三石琴乃"],
+      ["小细节","第二次冲击的幸存者；和加持良治有旧情"]
+    ]
+  },
+  eva_gendo: {
+    name:"碇源堂", jp:"Gendo Ikari · いかり ゲンドウ",
+    tags:["NERV司令官"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XHGVb4413o9KcVxUnIWciU00neg",
+    items:[
+      ["生日","不详"],
+      ["身份","NERV司令官，真嗣的父亲，SEELE核心成员"],
+      ["性格","冷酷城府深，为达目的不择手段"],
+      ["标志物","双手交叠放在下巴前的姿势、单片眼镜"],
+      ["CV","立木文彦"],
+      ["小细节","一切行动都为了与亡妻碇唯重逢的人类补完计划"]
+    ]
+  },
+  kimetsu_tanjiro: {
+    name:"灶门炭治郎", jp:"Tanjirou Kamado · かまど たんじろう",
+    tags:["水之呼吸 / 主角"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/RfdVbpQpGoJPgxxs85xcjiBEnIe",
+    items:[
+      ["生日","7月14日"],
+      ["身份","灶门家长子，鬼杀队队员，水之呼吸→日之呼吸"],
+      ["性格","善良温柔、坚忍不拔，能闻到“气味”辨人心"],
+      ["标志物","额头烧伤伤疤、花牌耳饰、绿黑格羽织"],
+      ["CV","花江夏树"],
+      ["小细节","耳饰是父亲炭十郎遗物；为把妹妹变回人类而加入鬼杀队"]
+    ]
+  },
+  kimetsu_nezuko: {
+    name:"灶门祢豆子", jp:"Nezuko Kamado · かまど ねずこ",
+    tags:["鬼 / 主角妹妹"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/KLyjbwsFEoh14oxDqQyc7nNPn9e",
+    items:[
+      ["生日","12月28日"],
+      ["身份","炭治郎的妹妹，被鬼舞辻无惨变成鬼却保持人性"],
+      ["性格","保护哥哥、天真，靠睡眠而非吃人血恢复体力"],
+      ["标志物","嘴咬绿色竹筒、粉色蝴蝶结、粉色和服"],
+      ["CV","鬼头明里"],
+      ["小细节","能爆发出鬼化战力；在阳光下也不会被烧死（突破鬼的弱点）"]
+    ]
+  },
+  kimetsu_zenitsu: {
+    name:"我妻善逸", jp:"Zenitsu Agatsuma · あがつま ぜんいつ",
+    tags:["雷之呼吸"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/PmDtbmZTSopD5dxr8SzcAVAbn5e",
+    items:[
+      ["生日","9月3日"],
+      ["身份","鬼杀队队员，雷之呼吸传人"],
+      ["性格","平时胆小爱哭、一被吓晕就觉醒为天才剑士"],
+      ["流派","雷之呼吸（师父是桑岛慈悟郎）"],
+      ["CV","下野纮"],
+      ["小细节","唯一掌握柒之型“火雷神”；非常喜欢祢豆子"]
+    ]
+  },
+  kimetsu_inosuke: {
+    name:"嘴平伊之助", jp:"Inosuke Hashibira · はしびら いのすけ",
+    tags:["兽之呼吸"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/D5TdbHWfAo1aEvx8KuxcBrBJn0g",
+    items:[
+      ["生日","4月22日"],
+      ["身份","鬼杀队队员，自创“兽之呼吸”的双刀流"],
+      ["性格","好战自负、头戴猪头套，实际长相清秀"],
+      ["成长","在山中被野猪养大"],
+      ["CV","松冈祯丞"],
+      ["小细节","对自己的美貌毫无自觉；脱下头套大家都惊艳"]
+    ]
+  },
+  kimetsu_giyuu: {
+    name:"富冈义勇", jp:"Giyuu Tomioka · とみおか ぎゆう",
+    tags:["水柱"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DXzebvViNoyYLOxXcbCckW87nGh",
+    items:[
+      ["生日","2月8日"],
+      ["身份","鬼杀队水柱，九柱之一"],
+      ["性格","沉默寡言、孤高，被队友误解为“被讨厌的人”"],
+      ["标志物","左右不对称的羽织（一半纯色一半枫叶纹）"],
+      ["CV","樱井孝宏"],
+      ["小细节","羽织一半是挚友锖兔遗物，一半是姐姐富冈茑子遗物"]
+    ]
+  },
+  kimetsu_shinobu: {
+    name:"蝴蝶忍", jp:"Shinobu Kochou · こちょう しのぶ",
+    tags:["虫柱"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/EWKDbaJgtomQxlxUzZVcSNwznSh",
+    items:[
+      ["生日","2月24日"],
+      ["身份","鬼杀队虫柱，蝶屋主人"],
+      ["性格","永远微笑，用藤花毒素刺击杀鬼"],
+      ["武器","细太刀 + 藤花毒素"],
+      ["CV","早见沙织"],
+      ["小细节","身高不足无法砍断头，改走毒素路线；姐姐香奈惠被鬼所杀"]
+    ]
+  },
+  anohana_jintan: {
+    name:"宿海仁太", jp:"Jinta Yadomi · やどみ じんた",
+    tags:["超和平Busters / 主角"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/U2X0bW4MUof1bZxcp5pcOY65nsd",
+    items:[
+      ["生日","4月16日"],
+      ["身份","主角，儿时是超和平Busters队长，高中后退学家里蹲"],
+      ["性格","消沉腼腆，只有他能看见面码的幽灵"],
+      ["标志物","红色“地底人”T恤"],
+      ["CV","入野自由"],
+      ["小细节","儿时曾当面码说出“喜欢”，却被面码误以为是拒绝"]
+    ]
+  },
+  anohana_menma: {
+    name:"本间芽衣子", jp:"Meiko Honma · ほんま めいこ",
+    tags:["幽灵 / 面码"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/OU6Ib9WrkoI6JjxqyJmc3kzBnXE",
+    items:[
+      ["生日","9月18日"],
+      ["身份","儿时因落水意外去世，以幽灵形态回到仁太身边"],
+      ["性格","温柔开朗、天然呆，希望伙伴们重归于好"],
+      ["标志物","白色连衣裙、银白长发"],
+      ["CV","茅野爱衣"],
+      ["小细节","愿望是“再和大家一起玩”；最后一集的“找到你了”名场面"]
+    ]
+  },
+  anohana_anaru: {
+    name:"安城鸣子", jp:"Naruko Anjou · あんじょう なるこ",
+    tags:["超和平Busters"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/W9rWb22MtorVtHxUg2ZcAc7OnSh",
+    items:[
+      ["生日","1月11日"],
+      ["身份","仁太的同班同学，橙发双马尾"],
+      ["性格","爱慕仁太又不好意思，夹在友情与爱情间"],
+      ["外号","あなる（音近“肛门”，被伙伴拿来开玩笑）"],
+      ["CV","户松遥"],
+      ["小细节","小时候因仁太那句告白受伤，关系疏远多年"]
+    ]
+  },
+  anohana_yukiatsu: {
+    name:"松雪集", jp:"Atsumu Matsuyuki · まつゆき あつむ",
+    tags:["超和平Busters"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QIHwbentGoOccexg2LXcWM4PnQb",
+    items:[
+      ["生日","9月3日"],
+      ["身份","优等生学生会长，眉清目秀"],
+      ["性格","好胜心强，表面光鲜内心执念于面码"],
+      ["外号","ゆきあつ"],
+      ["CV","樱井孝宏"],
+      ["小细节","曾偷穿面码的白裙子扮面码，是全剧最催泪的秘密之一"]
+    ]
+  },
+  anohana_tsuruko: {
+    name:"鹤见知利子", jp:"Chiriko Tsurumi · つるみ ちりこ",
+    tags:["超和平Busters"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/KtXGb1xbmoC34ExUMTfcZlj1nQf",
+    items:[
+      ["生日","7月7日"],
+      ["身份","戴眼镜的文静少女，暗恋雪集"],
+      ["性格","冷静理智、最早看穿每个人的心事"],
+      ["外号","つるこ"],
+      ["CV","早见沙织"],
+      ["小细节","读书时最安静，却早就知道所有人都没忘记面码"]
+    ]
+  },
+  anohana_poppo: {
+    name:"久川铁道", jp:"Tetsudo Hisakawa · ひさかわ てつどう",
+    tags:["超和平Busters"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/HVfQbIIVyowQoEx1DeccTHBqnWd",
+    items:[
+      ["生日","1月8日"],
+      ["身份","穿花衬衫的开朗男生，毕业后周游世界"],
+      ["性格","阳光热血，最早相信面码真的存在"],
+      ["外号","ぽっぽ"],
+      ["CV","近藤孝行"],
+      ["小细节","儿时目睹面码落水，一直自责，靠旅行赎罪"]
+    ]
+  },
+  initiald_takumi: {
+    name:"藤原拓海", jp:"Takumi Fujiwara · ふじわら たくみ",
+    tags:["AE86 / 主角"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZjE9bfs02oNkKUxh7BScEuL5nJh",
+    items:[
+      ["生日","1月6日"],
+      ["身份","群马县涩谷高校三年级，藤原豆腐店儿子"],
+      ["性格","平时木讷迟钝，开车时判若两人的天才"],
+      ["座驾","丰田 Sprinter Trueno AE86（黑白熊猫色）"],
+      ["CV","三木真一郎"],
+      ["小细节","每天凌晨4点送豆腐跑秋名山练出惯性漂移过弯"]
+    ]
+  },
+  initiald_bunta: {
+    name:"藤原文太", jp:"Bunta Fujiwara · ふじわら ぶんた",
+    tags:["豆腐店 / 传说"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MzAGbeAeAorXQYxVBkGcZmHinFh",
+    items:[
+      ["生日","不详"],
+      ["身份","藤原豆腐店老板，拓海的父亲"],
+      ["性格","叼烟老练，曾是传说中的下坡车手"],
+      ["座驾","Subaru Impreza WRX STI"],
+      ["CV","石冢运升"],
+      ["小细节","单手方向盘边抽烟边漂移；把AE86交给拓海当练习车"]
+    ]
+  },
+  initiald_ryosuke: {
+    name:"高桥凉介", jp:"Ryosuke Takahashi · たかはし りょうすけ",
+    tags:["赤城RedSuns / 队长"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Kjn5bMXhQo5vLaxnNmNc0JDmn5d",
+    items:[
+      ["生日","不详"],
+      ["身份","医学院学生，赤城RedSuns车队队长"],
+      ["性格","冷静智慧，“公路最速理论”倡导者"],
+      ["座驾","Mazda RX-7 FC3S（白色）"],
+      ["CV","子安武人"],
+      ["小细节","头脑派车手，后来组建“Project D”远征关东"]
+    ]
+  },
+  initiald_keisuke: {
+    name:"高桥启介", jp:"Keisuke Takahashi · たかはし けいすけ",
+    tags:["赤城RedSuns"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/GUWxboJhAov0dJx55xbcbCf3nKc",
+    items:[
+      ["生日","不详"],
+      ["身份","凉介的弟弟，RedSuns副将"],
+      ["性格","热血冲动、黄毛"],
+      ["座驾","Mazda RX-7 FD3S（黄色）"],
+      ["CV","关智一"],
+      ["小细节","初登场被拓海的86击败，从此视其为一生劲敌"]
+    ]
+  },
+  initiald_natsuki: {
+    name:"茂木夏树", jp:"Natsuki Mogi · もぎ なつき",
+    tags:["女主角"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MOxsb7w72okX0Axueu8cqnN2n8g",
+    items:[
+      ["生日","不详"],
+      ["身份","拓海的高中同学与暗恋对象"],
+      ["性格","温柔开朗，打工攒钱"],
+      ["经历","与“先生”有援交关系，是拓海感情线的痛点"],
+      ["CV","川澄绫子"],
+      ["小细节","在剧中一度被拓海撞见援助交际，关系破裂后努力挽回"]
+    ]
+  },
+  initiald_nakazato: {
+    name:"中里毅", jp:"Takeshi Nakazato · なかざと たけし",
+    tags:["妙义NightKids / 队长"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/URNBblqo2oeOhLxtYdncGuWGnje",
+    items:[
+      ["生日","不详"],
+      ["身份","妙义NightKids车队队长"],
+      ["性格","严肃自信，主张抓地跑法（对抗漂移派）"],
+      ["座驾","Nissan Skyline GT-R R32（黑色）"],
+      ["CV","桧山修之"],
+      ["小细节","最早向拓海下战书的车队队长之一，被86的下坡击败"]
+    ]
+  },
+  /* SLICE2-CHAR-END */
+  /* SLICE3-CHAR-BEGIN */
+  clannad_tomoya: {
+    name:"冈崎朋也", jp:"Tomoya Okazaki · おかざき ともや",
+    tags:["主角"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AurgbtdksoLzZGxPXvzcfcaEnNd",
+    items:[
+      ["身份","光坂高校三年级 → 后来成为建筑公司职员"],
+      ["生日","1984 年 1 月"],
+      ["性格","嘴硬心软、表面不良实则比谁都负责；从逃避父亲到撑起整个家"],
+      ["家庭","母亲早逝，与父亲长期冷战；后与古河渚成婚，育有一女汐"],
+      ["CV","中村悠一"],
+      ["小细节","高中时与春原一起被称为「樱花町不良二人组」；After Story 里那句「我会成为出色的父亲」是全番最戳人的成长"]
+    ]
+  },
+  clannad_nagisa: {
+    name:"古河渚", jp:"Nagisa Furukawa · ふるかわ なぎさ",
+    tags:["女主角"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/E6Y0bxMgDoTbGaxPZxZc83mhnab",
+    items:[
+      ["身份","光坂高校三年级（因病留级一年）"],
+      ["生日","12月24日"],
+      ["性格","体弱多病、温柔怯生，但在喜欢的事情上意外倔强"],
+      ["家庭","父母古河秋生、古河早苗经营面包店；后与朋也成婚"],
+      ["CV","中原麻衣"],
+      ["小细节","口头禅是「团子大家族」；After Story 生产汐时的剧情是全番最大泪点之一"]
+    ]
+  },
+  clannad_tomoyo: {
+    name:"坂上智代", jp:"Tomoyo Sakagami · さかがみ ともよ",
+    tags:["学生会长"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QnDbbAiHWoaitOxYXwycCaZYnhb",
+    items:[
+      ["身份","光坂高校留学生，后期学生会长"],
+      ["生日","2月2日"],
+      ["性格","武力值全年级第一，外表英气凛然，内心却很容易害羞"],
+      ["动机","为了守护开满樱花的坡道而努力成为学生会长"],
+      ["CV","桑岛法子"],
+      ["小细节","后来有独立外传《智代 After》；打架能一打十，却怕蝴蝶"]
+    ]
+  },
+  clannad_kotomi: {
+    name:"一之濑琴美", jp:"Kotomi Ichinose · いちのせ ことみ",
+    tags:["学霸"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Y9GEbbnJBoglOjxC5z6c66WbnLf",
+    items:[
+      ["身份","光坂高校同班，常年年级第一的天才"],
+      ["生日","5月14日"],
+      ["性格","沉默寡言、喜欢一个人在图书室读书，自带翻译机式语言"],
+      ["过去","父母是学者，幼年因飞机失事失去双亲，与朋也是青梅竹马"],
+      ["CV","能登麻美子"],
+      ["小细节","经典台词「こっこ」（小猫）；总是抱着厚厚的外文词典"]
+    ]
+  },
+  clannad_youhei: {
+    name:"春原阳平", jp:"Youhei Sunohara · すのはら ようへい",
+    tags:["损友"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/C6qsbMltJoAklDxRvgKcoCYNnPb",
+    items:[
+      ["身份","光坂高校三年级，篮球部退出生"],
+      ["生日","2月17日"],
+      ["性格","金发笨蛋、容易被撩，是全番主要的搞笑担当"],
+      ["家庭","有个妹妹春原芽衣，极度妹控"],
+      ["CV","阪口大助"],
+      ["小细节","每次被智代、杏、渚等人轮流欺负；但朋也人生最低谷时唯一陪在身边的人"]
+    ]
+  },
+  clannad_kyou: {
+    name:"藤林杏", jp:"Kyou Fujibayashi · ふじばやし きょう",
+    tags:["班长"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JSFwb592yoKl5Oxwz4xcqDSwnBc",
+    items:[
+      ["身份","光坂高校三年级，朋也班级的班长"],
+      ["生日","5月4日"],
+      ["性格","爆辣强势、开车猛如虎，实则很会照顾双胞胎妹妹椋"],
+      ["特长","摩托车驾驶、字典攻击（会拿字典砸人）"],
+      ["CV","广桥凉"],
+      ["小细节","有个双胞胎妹妹藤林椋；在智代线之外是朋也的重要支持者"]
+    ]
+  },
+  railgun_mikoto: {
+    name:"御坂美琴", jp:"Mikoto Misaka · みさか みこと",
+    tags:["Level 5"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MynDbVXgko4LWIxShaFc18vInFc",
+    items:[
+      ["身份","常盘台中学二年级，学园都市排名第三位的超能力者"],
+      ["生日","5月2日"],
+      ["能力","电击使（电击使），能以三倍音速射出硬币「超电磁炮」"],
+      ["性格","好胜心强、讨厌被人叫「放电妹」，喜欢呱太玩偶和自动贩卖机"],
+      ["CV","佐藤利奈"],
+      ["小细节","代号「炮姐」；妹妹篇里的「绝对能力者计划」是她最痛的过往"]
+    ]
+  },
+  railgun_kuroko: {
+    name:"白井黑子", jp:"Kuroko Shirai · しらい くろこ",
+    tags:["风纪委员"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Rp6qbk9LLo7yntxdzNXcdW3NnGc",
+    items:[
+      ["身份","常盘台中学一年级，风纪委员第177活动支部所属"],
+      ["生日","7月14日"],
+      ["能力","空间移动（Teleport），能把自己和物体瞬时移动"],
+      ["性格","双马尾卷发、自称「姐姐大人的守护者」，常常变态发言被美琴电"],
+      ["CV","新井里美"],
+      ["小细节","武器是带刺铁刺枪；对初春和泪子是可靠的前辈"]
+    ]
+  },
+  railgun_ruiko: {
+    name:"佐天泪子", jp:"Ruiko Saten · さてん るいこ",
+    tags:["Level 0"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JxvEbsXNNolw70xdmsUcFVpgnyh",
+    items:[
+      ["身份","栅川中学一年级，初春的好朋友"],
+      ["生日","未公开"],
+      ["能力","无（Level 0）"],
+      ["性格","普通温柔的少女，总是穿水手服，喜欢掀初春的裙子"],
+      ["CV","伊藤加奈惠"],
+      ["小细节","幻想御手篇的核心角色；因为自己没能力而一度自卑"]
+    ]
+  },
+  railgun_uiharu: {
+    name:"初春饰利", jp:"Kazari Uiharu · ういはる かざり",
+    tags:["风纪委员"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QulgbzOiMogi1txU2IEcRu0Bnrh",
+    items:[
+      ["身份","栅川中学一年级，风纪委员第177活动支部所属"],
+      ["生日","10月11日"],
+      ["能力","定温保存（Thermal Hand），其实主要价值是超强黑客"],
+      ["性格","害羞宅女，头上永远装饰着粉色花环（自己说是「守护神」）"],
+      ["CV","丰崎爱生"],
+      ["小细节","「守护神」花环从不摘下；电脑技术比绝大多数人都强"]
+    ]
+  },
+  railgun_misaki: {
+    name:"食蜂操祈", jp:"Misaki Shokuhou · しょくほう みさき",
+    tags:["Level 5"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/SHcEbCqLPovomrxaJxkc7Z6wn3c",
+    items:[
+      ["身份","常盘台中学最大派阀的女王，学园都市第五位 Level 5"],
+      ["生日","未公开"],
+      ["能力","心理掌握（Mental Out），能读写记忆、操控他人"],
+      ["性格","金发星星眼、穿白色荷叶边礼服，自称「女王大人」"],
+      ["CV","浅仓杏美"],
+      ["小细节","与美琴是常盘台两极；与上条当麻有一段被抹消的过去"]
+    ]
+  },
+  girlslt_chito: {
+    name:"千户", jp:"Chito · チト",
+    tags:["知识担当"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/F6ygbYpiQo7NLrxxYrhcTdw4nuh",
+    items:[
+      ["身份","末日旅行的驾驶员，黑发双辫的少女"],
+      ["能力","读书识字、会修理机械、写旅行笔记"],
+      ["性格","认真谨慎、喜欢吐槽尤莉，是队伍里的「理智」"],
+      ["座驾","半履带摩托车（Kettenkrad）"],
+      ["CV","水濑祈"],
+      ["小细节","戴黑色德军钢盔；雪天会拿面包当干粮"]
+    ]
+  },
+  girlslt_yuri: {
+    name:"尤莉", jp:"Yuri · ユーリ",
+    tags:["机枪担当"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/CQDNbLLPzoz5Ttxb4pWcMBV9nEb",
+    items:[
+      ["身份","末日旅行的机枪手，金发天然呆"],
+      ["能力","枪法极准、胃口极好"],
+      ["性格","随口说话、爱开玩笑，是队伍里的「浪漫主义」"],
+      ["武器","随身携带的步枪"],
+      ["CV","久保由利香"],
+      ["小细节","不识字，所有知识都靠千户讲给她听；会把罐头当音乐听"]
+    ]
+  },
+  shigatsu_kousei: {
+    name:"有马公生", jp:"Kousei Arima · ありま こうせい",
+    tags:["钢琴家"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/DIVtbcZfhoizOUx2MHacCofxnow",
+    items:[
+      ["身份","国中生，曾经的「人形节拍器」天才钢琴少年"],
+      ["生日","未公开"],
+      ["创伤","母亲去世后再也听不见自己弹奏的钢琴声"],
+      ["性格","认真、死板、自我压抑，被宫园薰强行拉回舞台"],
+      ["CV","花江夏树"],
+      ["小细节","在薰的伴奏下重新弹起《爱的忧伤》；最后那个「友人A」是他一生的谎言"]
+    ]
+  },
+  shigatsu_kaori: {
+    name:"宫园薰", jp:"Kaori Miyazono · みやぞの かをり",
+    tags:["小提琴手"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/KC2fb8nEfo3njSxxbVfcFp21nZc",
+    items:[
+      ["身份","公立初中三年级，金发小提琴手"],
+      ["生日","未公开"],
+      ["病情","身患重病，手术成功率极低"],
+      ["性格","自由奔放、不按谱演奏，像风一样闯入公生的世界"],
+      ["CV","种田梨沙"],
+      ["小细节","公开「喜欢渡亮太」只是为了接近公生而不伤害椿；那封信是全番最痛的告白"]
+    ]
+  },
+  shigatsu_tsubaki: {
+    name:"泽部椿", jp:"Tsubaki Sawabe · さわべ つばき",
+    tags:["青梅竹马"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/MpCpb4XGJoxsfPxLWsAceq78nrg",
+    items:[
+      ["身份","公生的邻居青梅竹马，棒球社的女生"],
+      ["生日","未公开"],
+      ["性格","短碎发运动系、爽朗直率，却在感情上极其笨拙"],
+      ["关系","从小一起长大，一直默默喜欢公生"],
+      ["CV","佐仓绫音"],
+      ["小细节","跑着去公生家的名场面；被公生当作「妹妹」而非「喜欢的人」"]
+    ]
+  },
+  shigatsu_watari: {
+    name:"渡亮太", jp:"Ryouta Watari · わたり りょうた",
+    tags:["足球少年"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/A08kbzFjSoYzbbxDsC3c2InunFh",
+    items:[
+      ["身份","公生的好友，足球社的王牌前锋"],
+      ["生日","未公开"],
+      ["性格","阳光帅气、待人温柔，是校园里的偶像级人物"],
+      ["关系","公开被宫园薰「喜欢」，其实是薰为了接近公生的幌子"],
+      ["CV","逢坂良太"],
+      ["小细节","知道薰的心意后，仍然温柔地配合她演出"]
+    ]
+  },
+  shigatsu_emi: {
+    name:"井川绘见", jp:"Emi Igawa · いがわ えみ",
+    tags:["钢琴对手"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/V3ayb00RAoMh7vx8HRacfS7qnXc",
+    items:[
+      ["身份","年轻的女钢琴家，公生的比赛对手"],
+      ["生日","未公开"],
+      ["性格","黑长直、外表冷静，实则把公生当作唯一必须超越的人"],
+      ["动机","小时候听过公生的演奏后立志成为钢琴家"],
+      ["CV","早见沙织"],
+      ["小细节","在公开比赛中对公生爆发过「我才是最想弹给你听的人」"]
+    ]
+  },
+  shigatsu_takeshi: {
+    name:"相座武士", jp:"Takeshi Aiza · あいざ たけし",
+    tags:["钢琴对手"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XEtVb7YqeoLrm8xQFHVcUemenNf",
+    items:[
+      ["身份","年轻的男钢琴家，公生的比赛对手"],
+      ["生日","未公开"],
+      ["性格","金色刺猬头、好胜心极强，把公生当作追赶目标"],
+      ["关系","有个妹妹相座凪，是小椿的学生"],
+      ["CV","梶裕贵"],
+      ["小细节","每次见公生都嚷嚷「我要超越你」，却始终是他最忠实的听众"]
+    ]
+  },
+  /* SLICE3-CHAR-END */
+  /* SLICE4-CHAR-BEGIN */
+  wataten_miyako: {
+    name:"星野宫子", jp:"Miyako Hoshino · ほしの みやこ",
+    tags:["宅女大学生"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/CeugbR3diocXoGxK7GZcaA53nMf",
+    items:[
+      ["生日","9月9日"],
+      ["身高","162.7cm"],
+      ["身份","女大学生 / 星野日向的姐姐"],
+      ["性格","怕生、有社交障碍，在家埋头做cosplay服装，被小花一眼戳中萌点"],
+      ["CV","上田丽奈"],
+      ["小细节","对日向带来家里的小花一见钟情，从此开始笨拙又热情的搭讪"]
+    ]
+  },
+  wataten_hinata: {
+    name:"星野日向", jp:"Hinata Hoshino · ほしの ひなた",
+    tags:["元气妹妹"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/LH6zbHqA7oheTcxnsEWcszwrnbc",
+    items:[
+      ["生日","5月10日"],
+      ["身高","141cm"],
+      ["身份","小学生 / 宫子的妹妹"],
+      ["性格","开朗元气、表里如一，做什么都先想着姐姐宫子"],
+      ["CV","长江里加"],
+      ["小细节","把好朋友小花带到家里，间接开启了宫子的“惨剧”日常"]
+    ]
+  },
+  wataten_hana: {
+    name:"白咲花", jp:"Hana Shirosaki · しろさき はな",
+    tags:["甜食控天使"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/VCJ4bu1IjoMWCxxSTPbcLdF8nuh",
+    items:[
+      ["生日","3月7日"],
+      ["身高","142.3cm"],
+      ["身份","小学五年级学生"],
+      ["性格","表面严肃认真，其实超爱甜点，温柔善良"],
+      ["CV","指出毬亚"],
+      ["小细节","被宫子花式追求，为了吃到点心勉强应付她的热情"]
+    ]
+  },
+  wataten_noa: {
+    name:"姬坂乃爱", jp:"Noa Himesaka · ひめさか のあ",
+    tags:["自信转学生"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/JZC8bm8DUoA2u8xH4NVcu7dnnVd",
+    items:[
+      ["生日","11月24日"],
+      ["身高","142.7cm"],
+      ["身份","转学生 / 日向和小花的同学"],
+      ["性格","自来熟、一口一个“我超可爱”，其实是个爱哭鬼"],
+      ["CV","鬼头明里"],
+      ["小细节","刚转来就搬进了宫子家隔壁，立刻加入小学生阵容"]
+    ]
+  },
+  wataten_koyori: {
+    name:"种村小依", jp:"Koyori Tanemura · たねむら こより",
+    tags:["冒失娘"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/OrRObcNOLo9v2rxnyuocTxMgnTA",
+    items:[
+      ["生日","2月20日"],
+      ["身高","138.6cm"],
+      ["身份","小学生"],
+      ["性格","想成为被人依靠的帅气大人，却总是笨手笨脚"],
+      ["CV","大和田仁美"],
+      ["小细节","和小之森夏音是自小一起长大的好友"]
+    ]
+  },
+  violet_violet: {
+    name:"薇尔莉特·伊芙加登", jp:"Violet Evergarden · ヴァイオレット・エヴァーガーデン",
+    tags:["自动手记人偶"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Ub74bC2oMoEZXGxmoRgc89MZnqf",
+    items:[
+      ["身份","C·H邮政公司 自动手记人偶"],
+      ["经历","战争中被当作武器养大的少女"],
+      ["目的","追寻吉尔伯特少校所说的“我爱你”究竟是什么意思"],
+      ["性格","起初不懂人情，在代笔中逐渐学会理解他人的思念"],
+      ["CV","石川由依"],
+      ["小细节","金发碧眼，手臂是义手，胸前佩戴绿色宝石胸针"]
+    ]
+  },
+  violet_gilbert: {
+    name:"吉尔伯特·布甘比利亚", jp:"Gilbert Bougainvillea · ギルベルト・ブーゲンビリア",
+    tags:["陆军少校"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/D9pTbgo7no8Q4axGmNDcryZynji",
+    items:[
+      ["身份","莱顿沙夫特里希陆军少校"],
+      ["关系","薇尔莉特的监护人与恩人"],
+      ["关键台词","在战场上下达命令般地对薇尔莉特说“我爱你”"],
+      ["性格","温柔，坚持把薇尔莉特当人而非武器看待"],
+      ["CV","浪川大辅"],
+      ["小细节","霍金斯的旧战友，战争结束后生死未卜"]
+    ]
+  },
+  violet_hodgins: {
+    name:"克劳迪娅·霍金斯", jp:"Claudia Hodgins · クラウディア・ホッジンズ",
+    tags:["邮政社长"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/QJHjb2SAUoyqTkx2EvGccpUOnid",
+    items:[
+      ["身份","C·H邮政公司社长"],
+      ["关系","吉尔伯特的旧战友"],
+      ["性格","豪爽风趣，像大哥哥一样照顾薇尔莉特"],
+      ["工作","战争结束后创立邮政公司"],
+      ["CV","子安武人"],
+      ["小细节","给茫然无措的薇尔莉特安排了自动手记人偶的工作"]
+    ]
+  },
+  violet_cattleya: {
+    name:"嘉德丽雅·波德莱尔", jp:"Cattleya Baudelaire · カトレア・ボードレール",
+    tags:["资深人偶"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/YEgYbbVqfocgS1xMCYkcjiIVnMg",
+    items:[
+      ["身份","C·H邮政 自动手记人偶"],
+      ["定位","薇尔莉特的前辈与可靠大姐姐"],
+      ["性格","成熟、情感丰富，拥有罕见的怪力"],
+      ["专长","常替为恋爱烦恼的委托人代笔"],
+      ["CV","远藤绫"],
+      ["小细节","一直暗恋霍金斯，积极示好却总被忽略"]
+    ]
+  },
+  violet_benedict: {
+    name:"贝内迪克特·布卢", jp:"Benedict Blue · ベネディクト・ブルー",
+    tags:["配送员"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/RZdcbk95hoapvkxNg65cxqkmnNf",
+    items:[
+      ["身份","C·H邮政 配送员"],
+      ["性格","直爽、风风火火"],
+      ["工作","骑着摩托在城里穿梭送信"],
+      ["团队","与薇尔莉特、嘉德丽雅同属邮政团队"],
+      ["CV","内山昂辉"],
+      ["小细节","蓝眼金发，是团队里的速递担当"]
+    ]
+  },
+  violet_iris: {
+    name:"爱丽丝·卡纳利", jp:"Iris Cannary · アイリス・カナリー",
+    tags:["新人偶"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/AEa5bp8mvoJCgwx39UNcyzxsnke",
+    items:[
+      ["身份","C·H邮政 新人自动手记人偶"],
+      ["性格","好强认真、容易紧张爱哭"],
+      ["定位","与薇尔莉特同期成长的后辈"],
+      ["家乡","来自乡下的小城市"],
+      ["CV","户松遥"],
+      ["小细节","起初对完美的薇尔莉特又敬又畏"]
+    ]
+  },
+  henneko_youto: {
+    name:"横寺阳人", jp:"Youto Yokodera · よこでら ようと",
+    tags:["变态王子"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/CokUb5RLJoxrZXxbZQ9ciaAlnQf",
+    items:[
+      ["年龄","17岁 / 高中二年级"],
+      ["身高","168cm"],
+      ["身份","田径部部员"],
+      ["性格","脑子里全是绅士念头，许愿后竟会脱口而出"],
+      ["CV","梶裕贵"],
+      ["小细节","向不笑猫像许愿丢掉“场面话”，从此被叫做变态王子"]
+    ]
+  },
+  henneko_tsukiko: {
+    name:"筒隐月子", jp:"Tsukiko Tsutsukakushi · つつかくし つきこ",
+    tags:["三无少女"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/WVXIbGMpso1hipxBcSIc3cVsnhF",
+    items:[
+      ["生日","7月26日"],
+      ["身高","149cm"],
+      ["身份","阳人的学妹"],
+      ["性格","失去表情后面无表情，嘴上毒舌、心里柔软"],
+      ["CV","小仓唯"],
+      ["小细节","向不笑猫许愿后再也无法流露真心，和阳人组成同盟"]
+    ]
+  },
+  henneko_emi: {
+    name:"艾米", jp:"Emi · エミ（エマヌエーラ）",
+    tags:["笑容假面"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/IKxzbYRvYoUmvLxsyOJchPjRnrb",
+    items:[
+      ["全名","艾玛努爱拉·珀尔拉萝拉"],
+      ["身份","借猫神之力的神秘少女"],
+      ["性格","表面是百分百笑容，其实眼神凶凶"],
+      ["特征","粉色双马尾，身材像小学生"],
+      ["CV","寺川爱美"],
+      ["小细节","叫阳人“欧尼酱”，两年前就和他有过约定"]
+    ]
+  },
+  henneko_tsukushi: {
+    name:"筒隐筑紫", jp:"Tsukushi Tsutsukakushi · つつかくし つくし",
+    tags:["钢铁之王"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/OuwTbwH0tomkLYxVlH9cQmX0nbg",
+    items:[
+      ["身份","高三生 / 田径部部长"],
+      ["外号","钢铁之王"],
+      ["关系","筒隐月子的姐姐"],
+      ["性格","外表美人，恋爱洁癖，实力强悍"],
+      ["CV","田村由香里"],
+      ["小细节","田径部的绝对王牌，对阳人抱有好感"]
+    ]
+  },
+  chikyu_rafal: {
+    name:"拉法尔", jp:"Rafal · ラファウ",
+    tags:["神童"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/BQO9biVJKoG91exWm0ucnxVfnAf",
+    items:[
+      ["年龄","12岁"],
+      ["身份","跳级进入大学的神童"],
+      ["处境","原本按期待攻读神学，却难以舍弃天文学"],
+      ["性格","聪慧顺从，逐渐鼓起追求真理的勇气"],
+      ["CV","坂本真绫"],
+      ["小细节","遇到休伯特后，继承了地动说的研究火种"]
+    ]
+  },
+  chikyu_hubert: {
+    name:"休伯特", jp:"Hubert · フベルト",
+    tags:["异端学者"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/ZhQFbEKq6ozlZexuKjHcotdOn1c",
+    items:[
+      ["身份","研究地动说的学者"],
+      ["处境","因异端思想遭受拷问、被关入监狱"],
+      ["信念","地球其实围绕太阳转动"],
+      ["性格","坚毅，甘愿把真相托付给后来人"],
+      ["CV","速水奖"],
+      ["小细节","与拉法尔相遇，点燃了改变历史的火种"]
+    ]
+  },
+  chikyu_jolanta: {
+    name:"约兰达", jp:"Jolanta · ヨレンタ",
+    tags:["天文助手"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/XkQ8bC8rLot9NixbFT6ce3FQnJg",
+    items:[
+      ["身份","学术机构的天文研究助手"],
+      ["困境","因身为女性而不被允许获得学术成就"],
+      ["性格","热爱知识、坚韧不拔"],
+      ["信念","同样渴望仰望星空"],
+      ["CV","仁见纱绫"],
+      ["小细节","在男性主导的学界里，坚持做自己的研究"]
+    ]
+  },
+  chikyu_badeni: {
+    name:"巴德尼", jp:"Badeni · バデーニ",
+    tags:["独眼修士"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Pt6wb7ExMo5qLdxSHdAcfWJynJg",
+    items:[
+      ["身份","修士"],
+      ["特征","左眼戴黑色眼罩"],
+      ["性格","不守教会规矩，纯粹追求知识与“特别的瞬间”"],
+      ["暗线","暗中进行天文研究"],
+      ["CV","中村悠一"],
+      ["小细节","在审问官的眼皮底下周旋，守护地动说的证据"]
+    ]
+  },
+  chikyu_oczy: {
+    name:"奥奇", jp:"Oczy · オクジー",
+    tags:["代斗士"],
+    img:"https://media.doubao.com/space/api/box/stream/download/all_by_mount_point/Cl6MbU5cZovHw5xeRn1cDkJyn91",
+    items:[
+      ["身份","代斗士（格斗士）"],
+      ["特征","视力极佳，却唯独不敢仰望天空"],
+      ["性格","消极寡言、沉默"],
+      ["命运","被卷入地动说的巨大漩涡"],
+      ["CV","小西克幸"],
+      ["小细节","与巴德尼等人相遇后，人生被彻底改变"]
+    ]
+  },
+  /* SLICE4-CHAR-END */
+};
+
+/* ===== 角色弹窗 ===== */
+var cm = document.getElementById('charModal');
+var cmImg = document.getElementById('cmImg');
+var cmName = document.getElementById('cmName');
+var cmJp = document.getElementById('cmJp');
+var cmTags = document.getElementById('cmTags');
+var cmItems = document.getElementById('cmItems');
+
+function openCharModal(key, el){
+  var d = CHAR_DATA[key];
+  if(!d) return;
+  var sheet = cm.querySelector('.sheet');
+  if(el){
+    var r = el.getBoundingClientRect();
+    sheet.style.transformOrigin = ((r.left + r.width/2) / window.innerWidth * 100) + '% ' + ((r.top + r.height/2) / window.innerHeight * 100) + '%';
+  }else{
+    sheet.style.transformOrigin = '50% 50%';
+  }
+  cmImg.src = d.img;
+  cmImg.alt = d.name;
+  cmName.textContent = d.name;
+  cmJp.textContent = d.jp;
+  cmTags.innerHTML = "";
+  for(var i=0;i<d.tags.length;i++){
+    var s = document.createElement('span');
+    s.className = 'chip';
+    s.innerHTML = '<b>' + d.tags[i] + '</b>';
+    cmTags.appendChild(s);
+  }
+  cmItems.innerHTML = "";
+  for(var j=0;j<d.items.length;j++){
+    var li = document.createElement('li');
+    li.innerHTML = '<span class="k">' + d.items[j][0] + '</span><span class="v">' + d.items[j][1] + '</span>';
+    cmItems.appendChild(li);
+  }
+  cm.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCharModal(){
+  cm.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* 绑定角色卡片点击 */
+var casts = document.querySelectorAll('.cast');
+for(var c=0;c<casts.length;c++){
+  (function(el){
+    el.addEventListener('click', function(){
+      openCharModal(el.getAttribute('data-char'), el);
+    });
+  })(casts[c]);
+}
+/* 点击任意位置关闭 */
+cm.addEventListener('click', function(){ closeCharModal(); });
+
+/* ===== 返回顶部 ===== */
+var backTop = document.getElementById('backTop');
+window.addEventListener('scroll', function(){
+  if(window.scrollY > 480){
+    backTop.classList.add('show');
+  }else{
+    backTop.classList.remove('show');
+  }
+});
+backTop.addEventListener('click', function(){
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+/* ===== 两级路由：一级番列表 / 二级番详情 ===== */
+function route(){
+  var h = location.hash || '#home';
+  var home = document.getElementById('view-home');
+  var views = document.querySelectorAll('.view-anime');
+  if(h.indexOf('#anime/') === 0){
+    var id = h.slice('#anime/'.length);
+    var target = document.getElementById('view-anime-' + id);
+    if(!target){ location.hash = '#home'; return; }
+    currentAnime = id;
+    home.style.display = 'none';
+    for(var i=0;i<views.length;i++){
+      views[i].style.display = (views[i] === target) ? 'block' : 'none';
+    }
+  }else{
+    home.style.display = '';
+    for(var j=0;j<views.length;j++){
+      views[j].style.display = 'none';
+    }
+  }
+  instantScrollToTop();
+}
+window.addEventListener('hashchange', route);
+route();
+
+/* ===== 视图过渡动画：卡片展开进入 / 全屏收束返回 ===== */
+function tileImgSrc(tile){
+  var im = tile.querySelector('img');
+  return im ? im.src : '';
+}
+function tileTitle(tile){
+  var t = tile.querySelector('.tile-text h3');
+  return t ? t.textContent : '';
+}
+
+/* 瞬时回到顶部：禁用平滑滚动，避免视图切换时出现向上滚动动画 */
+function instantScrollToTop(){
+  var h = document.documentElement;
+  var oldSb = h.style.scrollBehavior;
+  h.style.scrollBehavior = 'auto';
+  window.scrollTo(0,0);
+  h.style.scrollBehavior = oldSb;
+}
+
+/* 手动切换视图（同步执行，不依赖 hashchange 时序） */
+function switchView(id){
+  var home = document.getElementById('view-home');
+  var views = document.querySelectorAll('.view-anime');
+  if(id){
+    var target = document.getElementById('view-anime-' + id);
+    if(!target) return false;
+    home.style.display = 'none';
+    for(var i=0;i<views.length;i++){
+      views[i].style.display = (views[i] === target) ? 'block' : 'none';
+    }
+  }else{
+    home.style.display = '';
+    for(var j=0;j<views.length;j++){
+      views[j].style.display = 'none';
+    }
+  }
+  instantScrollToTop();
+  return true;
+}
+
+/* 进入二级页：卡片画面放大填满屏幕，番名落到顶部 */
+function openAnime(id, tile){
+  currentAnime = id;
+  var r = tile.getBoundingClientRect();
+  var ov = document.createElement('div');
+  ov.className = 'vt-overlay';
+  ov.innerHTML = '<img src="' + tileImgSrc(tile) + '" alt=""><div class="vt-mask"></div><div class="vt-title">' + tileTitle(tile) + '</div>';
+  ov.style.left = r.left + 'px';
+  ov.style.top = r.top + 'px';
+  ov.style.width = r.width + 'px';
+  ov.style.height = r.height + 'px';
+  document.body.appendChild(ov);
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      ov.classList.add('vt-expand');
+      ov.querySelector('.vt-title').classList.add('vt-title-show');
+    });
+  });
+  setTimeout(function(){
+    if(switchView(id)) history.replaceState(null, '', '#anime/' + id);
+    ov.classList.add('vt-fade');
+    document.body.style.overflow = '';
+    setTimeout(function(){ if(ov.parentNode) ov.parentNode.removeChild(ov); }, 420);
+  }, 560);
+}
+
+/* 返回列表：当前全屏收束回卡片，露出上一级 */
+function goHome(){
+  var tile = document.querySelector('.anime-tile[data-id="' + currentAnime + '"]');
+  if(!tile) tile = document.querySelector('.anime-tile:not(.placeholder)');
+  if(!tile) return;
+  var ov = document.createElement('div');
+  ov.className = 'vt-overlay';
+  ov.innerHTML = '<img src="' + tileImgSrc(tile) + '" alt=""><div class="vt-mask"></div>';
+  ov.style.left = '0px'; ov.style.top = '0px';
+  ov.style.width = '100vw'; ov.style.height = '100vh';
+  ov.style.borderRadius = '0px';
+  document.body.appendChild(ov);
+  document.body.style.overflow = 'hidden';
+  switchView(null);
+  history.replaceState(null, '', '#home');
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      /* 临时禁用平滑滚动：确保卡片立即滚到视口中央，缩小动画才能精准落在卡片原位 */
+      var h = document.documentElement;
+      var oldSb = h.style.scrollBehavior;
+      h.style.scrollBehavior = 'auto';
+      tile.scrollIntoView({block:'center'});
+      var r = tile.getBoundingClientRect();
+      h.style.scrollBehavior = oldSb;
+      ov.style.left = r.left + 'px';
+      ov.style.top = r.top + 'px';
+      ov.style.width = r.width + 'px';
+      ov.style.height = r.height + 'px';
+      ov.style.borderRadius = '16px';
+    });
+  });
+  setTimeout(function(){
+    if(ov.parentNode) ov.parentNode.removeChild(ov);
+    document.body.style.overflow = '';
+  }, 600);
+}
+
+/* 卡片点击：拦截默认跳转，改走展开动画 */
+var animeTiles = document.querySelectorAll('.anime-tile:not(.placeholder)');
+for(var t=0;t<animeTiles.length;t++){
+  (function(el){
+    el.addEventListener('click', function(e){
+      e.preventDefault();
+      openAnime(el.getAttribute('data-id'), el);
+    });
+  })(animeTiles[t]);
+}
+
+/* 返回按钮：拦截默认跳转，改走收束动画 */
+var backLinks = document.querySelectorAll('.backbar a');
+for(var b=0;b<backLinks.length;b++){
+  (function(el){
+    el.addEventListener('click', function(e){
+      e.preventDefault();
+      goHome();
+    });
+  })(backLinks[b]);
+}
+</script>
+</body>
+</html>
