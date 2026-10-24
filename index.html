@@ -579,8 +579,8 @@ footer .cp{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,25
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">NOW PLAYING</span>
-      <h2>音乐<span class="demo-tag">示例内容 · 无音频源</span></h2>
-      <p>可以切歌、收藏、看进度，但这一版没有接音频文件，所以不出声——是纯粹的歌单展示位。</p>
+      <h2>音乐<span class="demo-tag">网易云外链 · 在线播放</span></h2>
+      <p>可以切歌、收藏、看进度，音频接的是网易云外链，访客不用登录、不用会员。</p>
     </div>
     <div class="music">
       <div class="player">
@@ -734,12 +734,12 @@ var TIMELINE = [
   {d:"2026.10.08", kind:"分享", t:"写了一篇关于日常系动画的短随笔", s:"想说的是：为什么没有大事发生的番，反而最容易被反复重看。", c:"g"}
 ];
 var TRACKS = [
-  {t:"ふわふわ時間", a:"桜高軽音部", len:"4:06", url:""},
-  {t:"Only My Railgun", a:"fripSide", len:"4:14", url:""},
-  {t:"Brave Song", a:"Lia", len:"5:20", url:""},
-  {t:"secret base 〜君がくれたもの〜", a:"本間芽衣子 / 安城鳴子 / 鶴見知利子", len:"4:41", url:""},
-  {t:"シュガーソングとビターステップ", a:"UNISON SQUARE GARDEN", len:"4:04", url:""},
-  {t:"Sparkle", a:"RADWIMPS", len:"4:35", url:""}
+  {t:"ふわふわ時間", a:"桜高軽音部", len:"4:06", nid:"26201899"},
+  {t:"Only My Railgun", a:"fripSide", len:"1:36", nid:"33255251"},
+  {t:"Brave Song", a:"多田葵", len:"5:20", nid:"759946"},
+  {t:"secret base 〜君がくれたもの〜", a:"本間芽衣子 / 安城鳴子 / 鶴見知利子", len:"4:41", nid:"22817150"},
+  {t:"シュガーソングとビターステップ", a:"UNISON SQUARE GARDEN", len:"4:04", nid:"420500903"},
+  {t:"Sparkle", a:"RADWIMPS", len:"4:35", nid:"501912542"}
 ];
 var NOTES = [
   {tag:"随笔", t:"为什么日常系番最耐重看", s:"因为没有大事发生。角色只是在部室里喝茶、练习、抱怨作业，可是每次重看都能被同一个瞬间击中。大概是因为那些瞬间本来就是我想要的生活形状。", d:"2026.10.08", c:"c-pink"},
@@ -833,7 +833,7 @@ document.getElementById("lbClose").addEventListener("click", closeLb);
 lbMask.addEventListener("click", function(e){ if(e.target === lbMask) closeLb(); });
 document.addEventListener("keydown", function(e){ if(e.key === "Escape") closeLb(); });
 
-/* SECTION: music 播放器（真实音频 + 全局迷你条联动） */
+/* SECTION: music 播放器（网易云外链音频 + 全局迷你条联动） */
 var cur = 0, playing = false;
 var disc = document.getElementById("disc");
 var npTitle = document.getElementById("npTitle");
@@ -847,10 +847,6 @@ try{ liked = JSON.parse(localStorage.getItem("three_liked") || "{}"); }catch(err
 var audio = new Audio();
 audio.preload = "metadata";
 
-function secs(str){
-  var p = str.split(":");
-  return (parseInt(p[0],10) || 0) * 60 + (parseInt(p[1],10) || 0);
-}
 function fmt(n){
   var m = Math.floor(n/60), s = Math.floor(n%60);
   return m + ":" + (s < 10 ? "0" + s : s);
@@ -862,13 +858,14 @@ function toast(msg){
   clearTimeout(toast._t);
   toast._t = setTimeout(function(){ t.classList.remove("show"); }, 2400);
 }
+function trackUrl(tr){ return "https://music.163.com/song/media/outer/url?id=" + tr.nid + ".mp3"; }
 function loadTrack(i){
   cur = i;
-  if(TRACKS[i] && TRACKS[i].url){ audio.src = TRACKS[i].url; }
+  if(TRACKS[i]){ audio.src = trackUrl(TRACKS[i]); }
 }
 function play(){
   var tr = TRACKS[cur];
-  if(!tr.url){ toast("这首歌还没接上音频链接，把 mp3 链接发我补上"); return; }
+  if(!tr){ return; }
   if(!audio.src) loadTrack(cur);
   audio.play().then(function(){ playing = true; renderNow(); }).catch(function(){ playing = true; renderNow(); });
 }
@@ -884,6 +881,13 @@ audio.addEventListener("timeupdate", function(){
     tmNow.textContent = fmt(audio.currentTime);
     progBar.style.width = Math.round(audio.currentTime / d * 100) + "%";
   }
+});
+audio.addEventListener("loadedmetadata", function(){
+  var d = audio.duration;
+  if(d && isFinite(d) && d > 0){ document.getElementById("tmAll").textContent = fmt(d); }
+});
+audio.addEventListener("error", function(){
+  if(audio.src){ toast("这首歌暂时播不了，稍后再试"); }
 });
 
 function renderTracks(){
@@ -919,7 +923,7 @@ function renderNow(){
   var tr = TRACKS[cur];
   npTitle.textContent = tr.t;
   npArtist.textContent = tr.a;
-  document.getElementById("tmAll").textContent = tr.url ? tr.len : "待接入音频";
+  document.getElementById("tmAll").textContent = tr.len;
   tmNow.textContent = "0:00";
   progBar.style.width = "0%";
   disc.classList.toggle("playing", playing);
@@ -938,23 +942,6 @@ document.getElementById("mPlay").addEventListener("click", toggle);
 document.getElementById("mNext").addEventListener("click", next);
 document.getElementById("mPrev").addEventListener("click", prev);
 renderNow();
-
-/* SECTION: 首屏自动播放（浏览器要求先有一次点击/触摸才能出声） */
-var started = false;
-function startOnce(e){
-  if(started) return;
-  if(e && e.target && e.target.closest && e.target.closest("#miniP")) return;
-  started = true;
-  if(!playing){
-    if(TRACKS[cur] && TRACKS[cur].url){
-      play();
-    }else{
-      toast("音乐还没接上音频链接，把 mp3 链接发我补上");
-    }
-  }
-}
-document.addEventListener("click", startOnce, {once:true});
-document.addEventListener("touchstart", startOnce, {once:true});
 
 /* SECTION: share 卡片流 */
 (function(){
