@@ -512,6 +512,24 @@ footer .hint{margin-top:14px;color:#A08E87;font-size:12.5px}
 /* SECTION: back-home 返回首页入口 */
 .back-home{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border:1px solid var(--pink);border-radius:999px;color:var(--pink-deep)!important;background:rgba(239,156,176,.1)}
 .back-home:hover{background:var(--pink);color:#fff!important}
+/* SECTION: guest 访客留言板（与主页同款：发站长邮箱 / 存站长 GitHub） */
+.comment-sec{background:var(--bg-soft)}
+.comment-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;max-width:760px}
+.comment-card .hint{font-size:13px;color:var(--ink-soft);margin-bottom:16px}
+.g-form2{display:flex;flex-direction:column;gap:10px}
+.g-form2 input,.g-form2 textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);font-family:inherit;font-size:16px;color:var(--ink);resize:vertical}
+.g-form2 textarea{min-height:88px}
+.g-form2 input:focus,.g-form2 textarea:focus{outline:2px solid rgba(239,156,176,.5);border-color:var(--pink)}
+.g-row2{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.g-msg2{font-size:13px;color:var(--pink-deep);min-height:20px}
+.g-btn2{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:999px;font-size:14.5px;font-weight:700;background:var(--pink);color:#fff;cursor:pointer;transition:background .18s ease}
+.g-btn2:hover{background:var(--pink-deep)}
+.g-list2{margin-top:18px;border-top:1px dashed var(--line);padding-top:14px;display:flex;flex-direction:column;gap:12px}
+.g-item2{background:var(--bg-soft);border-radius:12px;padding:12px 14px}
+.g-item2 .who{font-size:13px;font-weight:700;display:flex;justify-content:space-between;gap:12px}
+.g-item2 .who time{font-weight:400;color:var(--ink-soft);font-size:11.5px}
+.g-item2 p{font-size:13.5px;color:var(--ink-soft);margin-top:2px;word-break:break-word}
+.empty2{font-size:13px;color:var(--ink-soft);text-align:center;padding:14px;background:var(--bg-soft);border-radius:12px}
 </style>
 </head>
 <body>
@@ -526,6 +544,7 @@ footer .hint{margin-top:14px;color:#A08E87;font-size:12.5px}
     <div class="nav-links">
       <a class="back-home" href="index.html">&larr; 回到小窝</a>
       <a href="#anime-list">番列表</a>
+      <a href="#comments" id="navComments">留言板</a>
     </div>
   </div>
 </nav>
@@ -739,6 +758,33 @@ footer .hint{margin-top:14px;color:#A08E87;font-size:12.5px}
         </a>
         <!-- SLICE4-TILE-END -->
         <div class="anime-tile placeholder">下一部番 · 待定</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 访客留言板（与主页同款：发站长邮箱 / 存站长 GitHub） ===== -->
+  <section class="comment-sec" id="comments">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">GUEST BOOK</span>
+        <h2>访客留言板</h2>
+        <p>对哪部番有话说？留个言，站长会在邮箱或 GitHub 里收到。</p>
+      </div>
+      <div class="comment-card">
+        <div class="hint" id="gHint2">留言会直接发到站长邮箱，同时在这台设备留一份本地记录。</div>
+        <div id="gFormWrap2">
+          <form class="g-form2" id="gForm2">
+            <input type="text" id="gName2" maxlength="20" placeholder="你的名字（可留空，默认写 路人）" autocomplete="off">
+            <textarea id="gText2" maxlength="200" placeholder="想说点什么？最多 200 字"></textarea>
+            <input type="text" id="gHoney2" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;top:0;opacity:0;height:0;width:0;border:0;padding:0">
+            <div class="g-row2">
+              <span class="g-msg2" id="gMsg2"></span>
+              <button type="submit" class="g-btn2">留下这句话</button>
+            </div>
+          </form>
+        </div>
+        <div id="giscusBox2" style="display:none"></div>
+        <div class="g-list2" id="gList2"></div>
       </div>
     </div>
   </section>
@@ -4328,6 +4374,204 @@ for(var b=0;b<backLinks.length;b++){
     });
   })(backLinks[b]);
 }
+
+/* ===== 访客留言板（与主页同款配置：发站长邮箱 / 存站长 GitHub，二选一，免服务器） ===== */
+/* 站长配置：把下面值填好即可（与主页 index.html 的 COMMENT_CONFIG 保持一致）：
+ * mode: "email"  → 留言通过 FormSubmit 免费服务直发你的邮箱（首次有人留言后去收件箱点激活确认）
+ *        "github" → 访客用 GitHub 账号评论，留言以 Discussions 存进你的仓库（GitHub 自动邮件通知）
+ * github 模式参数在 https://giscus.app 生成（需仓库公开并开启 Discussions）。
+ */
+var COMMENT_CONFIG = {
+  mode: "email",
+  email: "three130032@qq.com",
+  giscus: {
+    repo: "用户名/仓库名",
+    repoId: "",
+    category: "Announcements",
+    categoryId: ""
+  }
+};
+/* ============================== */
+var gForm2 = document.getElementById("gForm2");
+var gName2 = document.getElementById("gName2");
+var gText2 = document.getElementById("gText2");
+var gHoney2 = document.getElementById("gHoney2");
+var gMsg2 = document.getElementById("gMsg2");
+var gList2 = document.getElementById("gList2");
+var gHint2 = document.getElementById("gHint2");
+var gFormWrap2 = document.getElementById("gFormWrap2");
+var giscusBox2 = document.getElementById("giscusBox2");
+var KEY2 = "three_guestbook_bili";
+function loadMsgs2(){
+  try{ return JSON.parse(localStorage.getItem(KEY2) || "[]"); }catch(err){ return []; }
+}
+function saveMsgs2(arr){
+  try{ localStorage.setItem(KEY2, JSON.stringify(arr)); return true; }catch(err){ return false; }
+}
+function renderMsgs2(){
+  var arr = loadMsgs2();
+  gList2.innerHTML = "";
+  if(!arr.length){
+    var e1 = document.createElement("div");
+    e1.className = "empty2";
+    e1.textContent = "还没有留言。第一条留给你自己写。";
+    gList2.appendChild(e1);
+    return;
+  }
+  arr.forEach(function(m){
+    var box = document.createElement("div");
+    box.className = "g-item2";
+    var who = document.createElement("div");
+    who.className = "who";
+    var nm = document.createElement("span");
+    nm.textContent = m.name;
+    var tm = document.createElement("time");
+    tm.textContent = m.at;
+    who.appendChild(nm);
+    who.appendChild(tm);
+    var p = document.createElement("p");
+    p.textContent = m.text;
+    box.appendChild(who);
+    box.appendChild(p);
+    gList2.appendChild(box);
+  });
+}
+function addLocalMsg2(name, text){
+  var arr = loadMsgs2();
+  var now = new Date();
+  var pad = function(n){ return n < 10 ? "0" + n : String(n); };
+  arr.unshift({
+    name: name,
+    text: text,
+    at: now.getFullYear() + "-" + pad(now.getMonth()+1) + "-" + pad(now.getDate()) + " " + pad(now.getHours()) + ":" + pad(now.getMinutes())
+  });
+  if(saveMsgs2(arr)) renderMsgs2();
+  return arr;
+}
+function isEmailConfigured2(){
+  return COMMENT_CONFIG.mode === "email" && !/^YOUR@/i.test(COMMENT_CONFIG.email) && COMMENT_CONFIG.email.indexOf("@") > 0;
+}
+function isGiscusConfigured2(){
+  var g = COMMENT_CONFIG.giscus || {};
+  return !!g.repo && g.repo.indexOf("用户名") === -1 && g.repo.indexOf("/") > 0 && !!g.repoId && !!g.categoryId;
+}
+function applyCommentMode2(){
+  if(COMMENT_CONFIG.mode === "github"){
+    if(isGiscusConfigured2()){
+      gFormWrap2.style.display = "none";
+      gList2.style.display = "none";
+      giscusBox2.style.display = "";
+      gHint2.textContent = "用 GitHub 账号评论：留言会以讨论的形式存进站长的仓库，站长会自动收到邮件通知。";
+      if(!giscusBox2.getAttribute("data-loaded")){
+        var s = document.createElement("script");
+        s.src = "https://giscus.app/client.js";
+        s.setAttribute("data-repo", COMMENT_CONFIG.giscus.repo);
+        s.setAttribute("data-repo-id", COMMENT_CONFIG.giscus.repoId);
+        s.setAttribute("data-category", COMMENT_CONFIG.giscus.category);
+        s.setAttribute("data-category-id", COMMENT_CONFIG.giscus.categoryId);
+        s.setAttribute("data-mapping", "pathname");
+        s.setAttribute("data-strict", "0");
+        s.setAttribute("data-reactions-enabled", "1");
+        s.setAttribute("data-emit-metadata", "0");
+        s.setAttribute("data-input-position", "top");
+        s.setAttribute("data-theme", "light");
+        s.setAttribute("data-lang", "zh-CN");
+        s.setAttribute("crossorigin", "anonymous");
+        s.async = true;
+        giscusBox2.appendChild(s);
+        giscusBox2.setAttribute("data-loaded", "1");
+      }
+    } else {
+      gFormWrap2.style.display = "none";
+      gList2.style.display = "";
+      giscusBox2.style.display = "none";
+      gHint2.textContent = "GitHub 评论模式待配置：按上方注释到 giscus.app 生成参数填入后刷新即可。";
+    }
+    return;
+  }
+  gFormWrap2.style.display = "";
+  gList2.style.display = "";
+  giscusBox2.style.display = "none";
+  gHint2.textContent = isEmailConfigured2()
+    ? "留言会直接发到站长邮箱，同时在这台设备留一份本地记录。"
+    : "留言窗口待配置：站长把 COMMENT_CONFIG 里的邮箱换成真实地址并激活后，留言会自动发到邮箱；当前留言仅保存在本机。";
+}
+applyCommentMode2();
+
+if(gForm2){
+  gForm2.addEventListener("submit", function(e){
+    e.preventDefault();
+    var text = gText2.value.trim();
+    gMsg2.style.color = "#E0789A";
+    if(!text){
+      gMsg2.style.color = "#C4657F";
+      gMsg2.textContent = "先写一句再提交吧";
+      return;
+    }
+    var name = gName2.value.trim() || "路人";
+    addLocalMsg2(name, text);
+    if(!isEmailConfigured2()){
+      gText2.value = "";
+      gMsg2.textContent = "已留在本机（站长配置邮箱后，这条会自动发到邮箱）";
+      return;
+    }
+    gText2.value = "";
+    gMsg2.textContent = "正在发送到站长邮箱…";
+    fetch("https://formsubmit.co/ajax/" + encodeURIComponent(COMMENT_CONFIG.email), {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        name: name,
+        message: text,
+        _subject: "【追番手账】收到一条新留言",
+        _template: "table",
+        _captcha: "false",
+        _honey: gHoney2.value
+      })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d && d.success === "true"){
+        gMsg2.textContent = "已发送到站长邮箱，本机也留了一份";
+      } else {
+        gMsg2.style.color = "#C4657F";
+        gMsg2.textContent = "发送失败，请稍后再试（留言已留在本机）";
+      }
+    })
+    .catch(function(){
+      gMsg2.style.color = "#C4657F";
+      gMsg2.textContent = "网络异常，邮件暂未发出（留言已留在本机）";
+    });
+  });
+}
+renderMsgs2();
+
+/* 导航「留言板」：在番详情页先回列表，再平滑滚到留言区 */
+var navComments = document.getElementById("navComments");
+if(navComments){
+  navComments.addEventListener("click", function(e){
+    e.preventDefault();
+    var home = document.getElementById("view-home");
+    var sec = document.getElementById("comments");
+    if(home && home.style.display === "none"){
+      goHome();
+      setTimeout(function(){ if(sec) sec.scrollIntoView({behavior:"smooth"}); }, 780);
+    } else if(sec){
+      sec.scrollIntoView({behavior:"smooth"});
+    }
+  });
+}
+
+/* 从番详情返回列表后，让 giscus 评论框重新测量高度（仅 github 模式生效） */
+var _origGoHome = goHome;
+goHome = function(){
+  _origGoHome();
+  setTimeout(function(){
+    var gf = document.querySelector("iframe.giscus-frame");
+    if(gf){ gf.style.height = ""; }
+    window.dispatchEvent(new Event("resize"));
+  }, 700);
+};
 </script>
 </body>
 </html>
