@@ -589,9 +589,17 @@ footer .cp{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,25
         </div>
       </div>
       <div class="guest">
-        <h4>留言板</h4>
-        <div class="hint">留个昵称就能说话，不用登录任何账号。所有人看到的是同一条评论区。</div>
-        <div id="waline-thread"></div>
+        <h4>给站主留言</h4>
+        <div class="hint">留个昵称，说点什么吧。留言存在这台设备的浏览器里。</div>
+        <form class="g-form" id="gForm">
+          <input type="text" id="gName" maxlength="20" placeholder="你的名字（可留空，默认写 路人）" autocomplete="off">
+          <textarea id="gText" maxlength="200" placeholder="想说点什么？最多 200 字"></textarea>
+          <div class="g-row">
+            <span class="g-msg" id="gMsg"></span>
+            <button type="submit" class="btn btn-primary" data-primary-action style="min-height:44px;padding:0 22px">留下这句话</button>
+          </div>
+        </form>
+        <div class="g-list" id="gList"></div>
       </div>
     </div>
   </div>
@@ -903,43 +911,64 @@ renderNow();
   });
 })();
 
-/* SECTION: Waline 匿名评论区 */
-/* 部署说明：
-   1. 打开 https://vercel.com 用 GitHub 登录
-   2. 访问 https://waline.js.org/guide/get-started/ 点 "Deploy to Vercel" 一键部署
-   3. 部署完会得到一个地址，类似 https://你的名字.vercel.app
-   4. 把那个地址填到下面 SERVER_URL 的位置即可
-   访客只需要填昵称就能留言，不需要登录任何账号。 */
-(function(){
-  var SERVER_URL = 'https://three-tau-flame.vercel.app';
-  var link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = 'https://unpkg.com/@waline/client@v3/dist/waline.css';
-  document.head.appendChild(link);
-  import('https://unpkg.com/@waline/client@v3/dist/waline.mjs').then(function(mod){
-    mod.init({
-      el: '#waline-thread',
-      serverURL: SERVER_URL,
-      locale: {
-        nick: '昵称',
-        mail: '邮箱（可选，不会公开）',
-        link: '个人网站（可选）',
-        placeholder: '说点什么吧...',
-        so: '搜索',
-        level0: '脚印',
-        level1: '脚印',
-        level2: '足迹',
-        level3: '踪迹',
-        level4: '足迹',
-        level5: '传说',
-      },
-      reaction: false,
-      pageSize: 10,
-      requiredMeta: ['nick'],
-      login: 'disable',
-    });
+/* SECTION: guestbook 留言板（localStorage） */
+var gForm = document.getElementById("gForm");
+var gName = document.getElementById("gName");
+var gText = document.getElementById("gText");
+var gMsg = document.getElementById("gMsg");
+var gList = document.getElementById("gList");
+var KEY = "three_guestbook";
+function loadMsgs(){
+  try{ return JSON.parse(localStorage.getItem(KEY) || "[]"); }catch(err){ return []; }
+}
+function saveMsgs(arr){
+  try{ localStorage.setItem(KEY, JSON.stringify(arr)); return true; }catch(err){ return false; }
+}
+function renderMsgs(){
+  var arr = loadMsgs();
+  gList.innerHTML = "";
+  if(!arr.length){
+    gList.appendChild(el("div","empty","还没有留言。第一条留给你自己写。"));
+    return;
+  }
+  arr.forEach(function(m){
+    var box = el("div","g-item");
+    var who = el("div","who");
+    who.appendChild(el("span",null, m.name));
+    who.appendChild(document.createElement("time"));
+    who.lastChild.textContent = m.at;
+    box.appendChild(who);
+    box.appendChild(el("p",null, m.text));
+    gList.appendChild(box);
   });
-})();
+}
+gForm.addEventListener("submit", function(e){
+  e.preventDefault();
+  var text = gText.value.trim();
+  gMsg.style.color = "#5F9A70";
+  if(!text){
+    gMsg.style.color = "#C4657F";
+    gMsg.textContent = "先写一句再提交吧";
+    return;
+  }
+  var arr = loadMsgs();
+  var now = new Date();
+  var pad = function(n){ return n < 10 ? "0" + n : String(n); };
+  arr.unshift({
+    name: gName.value.trim() || "路人",
+    text: text,
+    at: now.getFullYear() + "-" + pad(now.getMonth()+1) + "-" + pad(now.getDate()) + " " + pad(now.getHours()) + ":" + pad(now.getMinutes())
+  });
+  if(!saveMsgs(arr)){
+    gMsg.style.color = "#C4657F";
+    gMsg.textContent = "浏览器本地存储不可用，这条留言没能保存";
+    return;
+  }
+  gText.value = "";
+  gMsg.textContent = "已留下，存在这台设备的浏览器里";
+  renderMsgs();
+});
+renderMsgs();
 
 /* SECTION: totop 回顶 */
 var toTop = document.getElementById("toTop");
