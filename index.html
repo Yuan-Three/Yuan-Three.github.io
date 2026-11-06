@@ -188,6 +188,24 @@ section.block.alt{background:var(--bg-soft)}
 .bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--pink),var(--yellow))}
 .bar-row .vl{width:34px;text-align:right;color:var(--ink-soft);flex:none}
 .month-note .tip{margin-top:14px;font-size:12.5px;color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:12px}
+.rant-btn{
+  margin-top:18px;
+  padding:10px 24px;
+  font-size:13.5px;
+  color:var(--ink);
+  background:rgba(239,156,176,.15);
+  border:none;
+  border-radius:999px;
+  cursor:pointer;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  transition:all .3s ease;
+  letter-spacing:.02em;
+}
+.rant-btn:hover{
+  background:rgba(239,156,176,.28);
+  transform:translateY(-1px);
+}
 /* ===== SECTION: album 相册 ===== */
 .album{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .album button{
@@ -493,18 +511,6 @@ footer .cp{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,25
   </div>
 </section>
 
-<!-- SECTION: recent 最近动态 -->
-<section class="block alt" id="recent">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">LATEST</span>
-      <h2>最近在做什么<span class="demo-tag">示例内容 · 待替换</span></h2>
-      <p>把各个分区最新的动静汇到一处，一进来就知道这个小窝还活着。</p>
-    </div>
-    <div class="tl" id="tlList"></div>
-  </div>
-</section>
-
 <!-- SECTION: album 相册 -->
 <section class="block alt" id="album">
   <div class="wrap">
@@ -512,6 +518,7 @@ footer .cp{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,25
       <span class="eyebrow">PHOTO WALL</span>
       <h2>相册 · 运动会那一天</h2>
       <p>起跑、冲刺、钻圈、偷拍——操场上来不及记下的瞬间，都存在这里了。点任意一张看大图。</p>
+      <button id="btnReadRant" class="rant-btn">看完照片，想听听吐槽？</button>
     </div>
     <div class="album" id="albumGrid"></div>
   </div>
@@ -686,12 +693,6 @@ var PHOTOS = [
   {url:"https://aka.doubaocdn.com/s/8UKVKTlsBP", cap:"偷拍一张特写"},
   {url:"https://aka.doubaocdn.com/s/xJe72Pd6rR", cap:"侧脸也是风"}
 ];
-var TIMELINE = [
-  {d:"2026.10.17", kind:"追番", t:"补完《轻音少女！》第二季", s:"最后一话看完在沙发上坐了十分钟没动。已把记录和收藏图更新进手账。", c:""},
-  {d:"2026.10.14", kind:"音乐", t:"把《ふわふわ時間》加进秋天歌单", s:"循环了大概二十遍，进度条上那一段最喜欢。", c:"b"},
-  {d:"2026.10.12", kind:"生活", t:"沿湖走了一整圈", s:"芦苇全白了，风很凉。照片还没整理，先扔进相册待办。", c:"y"},
-  {d:"2026.10.08", kind:"分享", t:"写了一篇关于日常系动画的短随笔", s:"想说的是：为什么没有大事发生的番，反而最容易被反复重看。", c:"g"}
-];
 var TRACKS = [
   {t:"ふわふわ時間", a:"桜高軽音部", len:"4:06", nid:"26201899"},
   {t:"Only My Railgun", a:"fripSide", len:"1:36", nid:"33255251"},
@@ -701,11 +702,9 @@ var TRACKS = [
   {t:"Sparkle", a:"RADWIMPS", len:"4:35", nid:"501912542"}
 ];
 var NOTES = [
+  {tag:"碎碎念", t:"运动会这回事", s:"期待了挺久，结果就两天。项目砍得七零八落，很多连名字都没听过的就这么没了。老师说，高中了，和初中不一样了，学习才是正经事。可我一直觉得，学习、跑跳、唱歌画画，这些东西本来就不冲突。人又不是只靠分数活着的。大家总说要打破内卷，可每个学校都在把活动一砍再砍，把时间全挤给卷子，这不就是内卷本身吗？我们想做的事其实没那么多——就是好好开一场运动会，让该跑的跑、该跳的跳，而不是走个过场就散。风很大，操场很晒，结束的时候反而松了口气。", d:"2026.11.06", c:"c-yellow"},
   {tag:"随笔", t:"为什么日常系番最耐重看", s:"因为没有大事发生。角色只是在部室里喝茶、练习、抱怨作业，可是每次重看都能被同一个瞬间击中。大概是因为那些瞬间本来就是我想要的生活形状。", d:"2026.10.08", c:"c-pink"},
-  {tag:"书单", t:"这个月在读的三本", s:"一本讲植物图鉴的、一本旧小说、一本买了两年才拆封的画册。进度都不快，但都在手边放着。", d:"2026.10.03", c:"c-blue"},
-  {tag:"碎碎念", t:"下雨天适合补番", s:"窗外的声音刚好盖住杂念，屏幕里的世界反而更清楚。这种天气一天能看完四话。", d:"2026.09.28", c:"c-yellow"},
   {tag:"观后感", t:"《Charlotte》最后两话", s:"不剧透，只说情绪：前面铺了那么久的轻松，就是为了最后这一下。看完去阳台站了很久。", d:"2026.09.20", c:"c-green"},
-  {tag:"生活", t:"给自己定的三条小规矩", s:"每周至少出门走一次长路；看完的番当天写两句；不再睡前刷手机超过十分钟。第三条基本没做到。", d:"2026.09.11", c:"c-blue"},
   {tag:"分享", t:"收集喜欢的分镜", s:"开始把打动我的画面单独存一个文件夹，配上当时的一句话。以后打算做成一本电子手账。", d:"2026.09.02", c:"c-pink"}
 ];
 
@@ -746,23 +745,6 @@ navLinks.addEventListener("click", function(e){
     burger.setAttribute("aria-expanded","false");
   }
 });
-
-/* SECTION: timeline 渲染 */
-(function(){
-  var box = document.getElementById("tlList");
-  TIMELINE.forEach(function(it){
-    var wrap = el("div", "tl-item" + (it.c ? " " + it.c : ""));
-    wrap.appendChild(el("div","tl-date", it.d));
-    var body = el("div","tl-body");
-    var h = el("div","",null);
-    h.appendChild(el("span","tl-kind", it.kind));
-    h.appendChild(el("b",null, it.t));
-    body.appendChild(h);
-    body.appendChild(el("p",null, it.s));
-    wrap.appendChild(body);
-    box.appendChild(wrap);
-  });
-})();
 
 /* SECTION: album 渲染 + 灯箱 */
 var lbMask = document.getElementById("lbMask");
@@ -907,6 +889,7 @@ renderNow();
   var grid = document.getElementById("shareGrid");
   NOTES.forEach(function(n){
     var card = el("div","note " + n.c);
+    if(n.t === "运动会这回事") card.id = "note-sportsday";
     card.appendChild(el("div","tag", n.tag));
     card.appendChild(el("h4",null, n.t));
     card.appendChild(el("p",null, n.s));
@@ -1029,6 +1012,17 @@ gForm.addEventListener("submit", function(e){
   });
 });
 renderMsgs();
+
+/* SECTION: 吐槽按钮平滑滚动 */
+document.getElementById("btnReadRant").addEventListener("click", function(){
+  var target = document.getElementById("note-sportsday");
+  if(target){
+    target.scrollIntoView({behavior:"smooth", block:"center"});
+    target.style.transition = "background .6s ease";
+    target.style.background = "rgba(239,156,176,.2)";
+    setTimeout(function(){ target.style.background = ""; }, 1800);
+  }
+});
 
 /* SECTION: totop 回顶 */
 var toTop = document.getElementById("toTop");
