@@ -589,16 +589,20 @@ footer .cp{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,25
         </div>
       </div>
       <div class="guest">
-        <h4>给站主留言</h4>
-        <div class="hint">留个昵称，说点什么吧。留言存在这台设备的浏览器里。</div>
-        <form class="g-form" id="gForm">
-          <input type="text" id="gName" maxlength="20" placeholder="你的名字（可留空，默认写 路人）" autocomplete="off">
-          <textarea id="gText" maxlength="200" placeholder="想说点什么？最多 200 字"></textarea>
-          <div class="g-row">
-            <span class="g-msg" id="gMsg"></span>
-            <button type="submit" class="btn btn-primary" data-primary-action style="min-height:44px;padding:0 22px">留下这句话</button>
-          </div>
-        </form>
+        <h4>访客留言板</h4>
+        <div class="hint" id="gHint">留言会直接发到站长邮箱，同时在这台设备留一份本地记录。</div>
+        <div id="gFormWrap">
+          <form class="g-form" id="gForm">
+            <input type="text" id="gName" maxlength="20" placeholder="你的名字（可留空，默认写 路人）" autocomplete="off">
+            <textarea id="gText" maxlength="200" placeholder="想说点什么？最多 200 字"></textarea>
+            <input type="text" id="gHoney" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;top:0;opacity:0;height:0;width:0;border:0;padding:0">
+            <div class="g-row">
+              <span class="g-msg" id="gMsg"></span>
+              <button type="submit" class="btn btn-primary" data-primary-action style="min-height:44px;padding:0 22px">留下这句话</button>
+            </div>
+          </form>
+        </div>
+        <div id="giscusBox" style="display:none"></div>
         <div class="g-list" id="gList"></div>
       </div>
     </div>
@@ -911,12 +915,26 @@ renderNow();
   });
 })();
 
-/* SECTION: guestbook 留言板（localStorage） */
+/* SECTION: guestbook 访客留言板（免服务器：直发站长邮箱） */
+var COMMENT_CONFIG = {
+  mode: "email",
+  email: "ysr130032@qq.com",
+  giscus: {
+    repo: "用户名/仓库名",
+    repoId: "",
+    category: "Announcements",
+    categoryId: ""
+  }
+};
 var gForm = document.getElementById("gForm");
 var gName = document.getElementById("gName");
 var gText = document.getElementById("gText");
+var gHoney = document.getElementById("gHoney");
 var gMsg = document.getElementById("gMsg");
 var gList = document.getElementById("gList");
+var gHint = document.getElementById("gHint");
+var gFormWrap = document.getElementById("gFormWrap");
+var giscusBox = document.getElementById("giscusBox");
 var KEY = "three_guestbook";
 function loadMsgs(){
   try{ return JSON.parse(localStorage.getItem(KEY) || "[]"); }catch(err){ return []; }
@@ -942,6 +960,31 @@ function renderMsgs(){
     gList.appendChild(box);
   });
 }
+function addLocalMsg(name, text){
+  var arr = loadMsgs();
+  var now = new Date();
+  var pad = function(n){ return n < 10 ? "0" + n : String(n); };
+  arr.unshift({
+    name: name,
+    text: text,
+    at: now.getFullYear() + "-" + pad(now.getMonth()+1) + "-" + pad(now.getDate()) + " " + pad(now.getHours()) + ":" + pad(now.getMinutes())
+  });
+  if(saveMsgs(arr)) renderMsgs();
+  return arr;
+}
+function isEmailConfigured(){
+  return COMMENT_CONFIG.mode === "email" && !/^YOUR@/i.test(COMMENT_CONFIG.email) && COMMENT_CONFIG.email.indexOf("@") > 0;
+}
+function applyCommentMode(){
+  gFormWrap.style.display = "";
+  gList.style.display = "";
+  giscusBox.style.display = "none";
+  gHint.textContent = isEmailConfigured()
+    ? "留言会直接发到站长邮箱，同时在这台设备留一份本地记录。"
+    : "留言窗口待配置：站长把 COMMENT_CONFIG 里的邮箱换成真实地址并激活后，留言会自动发到邮箱；当前留言仅保存在本机。";
+}
+applyCommentMode();
+
 gForm.addEventListener("submit", function(e){
   e.preventDefault();
   var text = gText.value.trim();
@@ -951,22 +994,40 @@ gForm.addEventListener("submit", function(e){
     gMsg.textContent = "先写一句再提交吧";
     return;
   }
-  var arr = loadMsgs();
-  var now = new Date();
-  var pad = function(n){ return n < 10 ? "0" + n : String(n); };
-  arr.unshift({
-    name: gName.value.trim() || "路人",
-    text: text,
-    at: now.getFullYear() + "-" + pad(now.getMonth()+1) + "-" + pad(now.getDate()) + " " + pad(now.getHours()) + ":" + pad(now.getMinutes())
-  });
-  if(!saveMsgs(arr)){
-    gMsg.style.color = "#C4657F";
-    gMsg.textContent = "浏览器本地存储不可用，这条留言没能保存";
+  var name = gName.value.trim() || "路人";
+  addLocalMsg(name, text);
+  if(!isEmailConfigured()){
+    gText.value = "";
+    gMsg.textContent = "已留在本机（站长配置邮箱后，这条会自动发到邮箱）";
     return;
   }
   gText.value = "";
-  gMsg.textContent = "已留下，存在这台设备的浏览器里";
-  renderMsgs();
+  gMsg.textContent = "正在发送到站长邮箱…";
+  fetch("https://formsubmit.co/ajax/" + encodeURIComponent(COMMENT_CONFIG.email), {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify({
+      name: name,
+      message: text,
+      _subject: "【小窝】收到一条新留言",
+      _template: "table",
+      _captcha: "false",
+      _honey: gHoney.value
+    })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    if(d && d.success === "true"){
+      gMsg.textContent = "已发送到站长邮箱，本机也留了一份";
+    } else {
+      gMsg.style.color = "#C4657F";
+      gMsg.textContent = "发送失败，请稍后再试（留言已留在本机）";
+    }
+  })
+  .catch(function(){
+    gMsg.style.color = "#C4657F";
+    gMsg.textContent = "网络异常，邮件暂未发出（留言已留在本机）";
+  });
 });
 renderMsgs();
 
