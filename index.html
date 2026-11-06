@@ -915,16 +915,16 @@ renderNow();
   });
 })();
 
-/* SECTION: guestbook 访客留言板（免服务器：直发站长邮箱） */
+/* SECTION: guestbook 访客留言板（Web3Forms，国内可直连） */
+/* 站长配置：
+   1. 打开 https://web3forms.com
+   2. 输入你的邮箱 ysr130032@qq.com，点 "Create Access Key"
+   3. 邮箱会收到一封邮件，里面有一串 access key
+   4. 把那串 key 填到下面 ACCESS_KEY 的位置
+   之后访客留言就会自动发到你邮箱。 */
 var COMMENT_CONFIG = {
-  mode: "email",
-  email: "ysr130032@qq.com",
-  giscus: {
-    repo: "用户名/仓库名",
-    repoId: "",
-    category: "Announcements",
-    categoryId: ""
-  }
+  ACCESS_KEY: "在这里填你的Web3Forms access key",
+  email: "ysr130032@qq.com"
 };
 var gForm = document.getElementById("gForm");
 var gName = document.getElementById("gName");
@@ -973,7 +973,7 @@ function addLocalMsg(name, text){
   return arr;
 }
 function isEmailConfigured(){
-  return COMMENT_CONFIG.mode === "email" && !/^YOUR@/i.test(COMMENT_CONFIG.email) && COMMENT_CONFIG.email.indexOf("@") > 0;
+  return COMMENT_CONFIG.ACCESS_KEY && COMMENT_CONFIG.ACCESS_KEY.indexOf("在这里") === -1;
 }
 function applyCommentMode(){
   gFormWrap.style.display = "";
@@ -981,7 +981,7 @@ function applyCommentMode(){
   giscusBox.style.display = "none";
   gHint.textContent = isEmailConfigured()
     ? "留言会直接发到站长邮箱，同时在这台设备留一份本地记录。"
-    : "留言窗口待配置：站长把 COMMENT_CONFIG 里的邮箱换成真实地址并激活后，留言会自动发到邮箱；当前留言仅保存在本机。";
+    : "留言窗口待配置：站长把 Web3Forms 的 access key 填好后，留言会自动发到邮箱；当前留言仅保存在本机。";
 }
 applyCommentMode();
 
@@ -998,30 +998,29 @@ gForm.addEventListener("submit", function(e){
   addLocalMsg(name, text);
   if(!isEmailConfigured()){
     gText.value = "";
-    gMsg.textContent = "已留在本机（站长配置邮箱后，这条会自动发到邮箱）";
+    gMsg.textContent = "已留在本机（站长配置好 key 后，这条会自动发到邮箱）";
     return;
   }
   gText.value = "";
   gMsg.textContent = "正在发送到站长邮箱…";
-  fetch("https://formsubmit.co/ajax/" + encodeURIComponent(COMMENT_CONFIG.email), {
+  fetch("https://api.web3forms.com/submit", {
     method: "POST",
     headers: { "Content-Type": "application/json", "Accept": "application/json" },
     body: JSON.stringify({
+      access_key: COMMENT_CONFIG.ACCESS_KEY,
       name: name,
       message: text,
-      _subject: "【小窝】收到一条新留言",
-      _template: "table",
-      _captcha: "false",
-      _honey: gHoney.value
+      subject: "【小窝】收到一条新留言",
+      from_name: "Three小窝留言板"
     })
   })
   .then(function(r){ return r.json(); })
   .then(function(d){
-    if(d && d.success === "true"){
+    if(d && d.success === true){
       gMsg.textContent = "已发送到站长邮箱，本机也留了一份";
     } else {
       gMsg.style.color = "#C4657F";
-      gMsg.textContent = "发送失败，请稍后再试（留言已留在本机）";
+      gMsg.textContent = "发送失败：" + (d.message || "未知错误") + "（留言已留在本机）";
     }
   })
   .catch(function(){
