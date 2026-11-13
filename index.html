@@ -144,6 +144,36 @@ section.block.alt{background:var(--bg-soft)}
 .room.r4 .ico{background:rgba(156,199,168,.2)}
 .room.r5 .ico{background:rgba(239,156,176,.16)}
 .room.r6 .ico{background:rgba(127,168,217,.16)}
+/* ===== SECTION: quiet 静室入口 ===== */
+.quiet-card{
+  grid-column:1/-1;position:relative;overflow:hidden;display:grid;
+  grid-template-columns:minmax(0,1fr) auto;gap:30px;align-items:center;
+  padding:28px 32px;border-radius:20px;text-decoration:none;color:#F6EFE6;
+  border:1px solid rgba(239,156,176,.3);
+  background:
+    radial-gradient(620px 260px at 6% 118%,rgba(239,156,176,.13),transparent 70%),
+    radial-gradient(420px 240px at 96% -20%,rgba(127,168,217,.10),transparent 70%),
+    linear-gradient(150deg,#1B1416,#251A1D 58%,#191214);
+  transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+}
+.quiet-card:hover{transform:translateY(-4px);box-shadow:0 18px 38px rgba(75,59,58,.2);border-color:rgba(239,156,176,.55)}
+.quiet-card .q-eyebrow{font-size:11.5px;letter-spacing:.2em;color:var(--pink);font-weight:700}
+.quiet-card h3{font-family:"Noto Serif SC",serif;font-size:22px;font-weight:900;margin:9px 0 8px;line-height:1.3}
+.quiet-card p{font-size:13.5px;line-height:1.75;color:rgba(246,239,230,.66);max-width:33em}
+.quiet-card .q-go{display:inline-flex;align-items:center;gap:7px;margin-top:16px;font-size:13px;font-weight:700;color:var(--pink)}
+.quiet-window{
+  min-width:236px;padding:24px 28px;border-radius:16px;text-align:center;
+  background:rgba(10,7,8,.5);border:1px solid rgba(246,239,230,.12);
+}
+.qw-time{
+  font-family:"Noto Serif SC",serif;font-weight:700;line-height:1;
+  font-size:clamp(30px,4.4vw,44px);font-variant-numeric:tabular-nums;color:#F6EFE6;
+}
+.qw-time small{
+  font-family:"Noto Sans SC",sans-serif;font-size:.4em;font-weight:400;
+  color:rgba(246,239,230,.5);margin-left:.2em;letter-spacing:.05em;
+}
+.qw-cap{margin-top:11px;font-size:10.5px;letter-spacing:.28em;text-indent:.28em;color:rgba(246,239,230,.44)}
 /* ===== SECTION: timeline 最近动态 ===== */
 .tl{position:relative;padding-left:26px}
 .tl::before{content:"";position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:var(--line);border-radius:2px}
@@ -386,6 +416,8 @@ footer .cp{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,25
   .pol img{height:140px}
   .pol.p2{left:130px}
   .hero-meta{gap:16px}
+  .quiet-card{grid-template-columns:1fr;padding:24px 22px;gap:22px}
+  .quiet-window{min-width:0;padding:20px}
 }
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
@@ -408,6 +440,7 @@ footer .cp{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,25
       <a href="#music">音乐</a>
       <a href="#share">日常分享</a>
       <a href="#about">关于我</a>
+      <a href="clock.html">静室</a>
       <a class="is-live" href="bilibili.html">追番手账</a>
     </div>
   </div>
@@ -459,7 +492,7 @@ footer .cp{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,25
     <div class="section-head">
       <span class="eyebrow">ROOM GUIDE</span>
       <h2>小窝分区</h2>
-      <p>六个房间，各放各的东西。追番手账已经完整开放，其余分区当前是示例内容，素材给我之后逐个替换。</p>
+      <p>六个小房间，各放各的东西。追番手账和静室都已经是能用的真功能，其余分区当前是示例内容，素材给我之后逐个替换。</p>
     </div>
     <div class="rooms">
       <a class="room r1" href="bilibili.html">
@@ -506,6 +539,20 @@ footer .cp{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,25
         <span class="go">认识一下
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
         </span>
+      </a>
+      <a class="quiet-card" href="clock.html">
+        <div>
+          <div class="q-eyebrow">THE QUIET ROOM</div>
+          <h3>静室 · 只留一块表</h3>
+          <p>点进来就只剩一个时间。轻点屏幕能换背景、设倒计时和闹钟；到点时整间屋子会一起呼吸，明暗慢慢闪，直到你按下关闭。</p>
+          <span class="q-go">进静室
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="quiet-window" aria-hidden="true">
+          <div class="qw-time" id="qwTime">00:00<small>00</small></div>
+          <div class="qw-cap">此刻</div>
+        </div>
       </a>
     </div>
   </div>
@@ -627,9 +674,10 @@ footer .cp{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,25
       <a href="#music">音乐</a>
       <a href="#share">日常分享</a>
       <a href="#about">关于我</a>
+      <a href="clock.html">静室</a>
       <a href="#top">回到顶部</a>
     </div>
-    <div class="cp">除追番手账外，各分区当前为示例占位内容，替换素材后更新。© 2026 Three</div>
+    <div class="cp">除追番手账与静室外，各分区当前为示例占位内容，替换素材后更新。© 2026 Three · v1.3.0</div>
     <div style="margin-top:18px;text-align:center">
       <!-- 把下面 href 改成你网站仓库的地址，比如 https://github.com/Yuan-Three/你的仓库名 -->
       <a href="https://github.com/Yuan-Three" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;font-size:13.5px;font-weight:700;text-decoration:none;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,.22)'" onmouseout="this.style.background='rgba(255,255,255,.12)'">
@@ -1023,6 +1071,19 @@ document.getElementById("btnReadRant").addEventListener("click", function(){
     setTimeout(function(){ target.style.background = ""; }, 1800);
   }
 });
+
+/* SECTION: quiet 静室实时时钟 */
+(function(){
+  var box = document.getElementById("qwTime");
+  if(!box) return;
+  var p = function(v){ return v < 10 ? "0" + v : String(v); };
+  function tickQuiet(){
+    var n = new Date();
+    box.innerHTML = p(n.getHours()) + ":" + p(n.getMinutes()) + "<small>" + p(n.getSeconds()) + "</small>";
+  }
+  tickQuiet();
+  setInterval(tickQuiet, 1000);
+})();
 
 /* SECTION: totop 回顶 */
 var toTop = document.getElementById("toTop");
